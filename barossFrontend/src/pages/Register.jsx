@@ -28,20 +28,16 @@ function Register() {
     console.log(psw);
   }, [psw,email,fullname,userClass])*/
 
-  const handleSubmit = async(e) =>{
+  const handleSubmit = async (e) =>{
       e.preventDefault();
-      setSubmitted(true);
+      
       try {
-         const response = api.post('/user/register', {
-           fullname: fullname,
-           userClass: userClass,
-           email:email,
-           psw:psw
-         })
 
+         const response = await api.post('/user/register', {fullname,userClass,email,psw})
+         setSubmitted(true);
          console.log(response)
       } catch (error) {
-         console.log(error)
+         console.log(error.response)
       }
   }
 
@@ -53,7 +49,7 @@ function Register() {
     const hasNumber = /[0-9]/.test(password);
    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>_\-+=~`[\]\\;/']/ .test(password);
 
-    if (password.length == minLength) passwordStrength++;
+    if (password.length >= minLength) passwordStrength++;
     if (hasUpperCase) passwordStrength++;
     if (hasLowerCase) passwordStrength++;
     if (hasNumber) passwordStrength++;

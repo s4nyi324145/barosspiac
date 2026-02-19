@@ -23,7 +23,7 @@ export default function DataProtModal({ isOpen, onClose }) {
         <div>
           <h1 className="font-bold">2. Kezelt adatok köre</h1>
 
-          <p>
+     
             A rendszer az alábbi adatokat kezelheti:
             <ul className="list-disc list-inside">
               <li>Név</li>
@@ -32,7 +32,7 @@ export default function DataProtModal({ isOpen, onClose }) {
               <li>Profilkép (opcionális)</li>
               <li>Feltöltött hirdetések adatai</li>
             </ul>
-          </p>
+       
         </div>
         <div>
           <h1 className="font-bold">3. Az adatkezelés jogalapja</h1>
@@ -62,7 +62,7 @@ export default function DataProtModal({ isOpen, onClose }) {
         <div>
           <h1 className="font-bold">6. Felhasználói jogok</h1>
 
-          <p>
+    
             A felhasználó jogosult:
             <ul className="list-disc list-inside">
               <li>Adatai megtekintésére</li>
@@ -70,7 +70,7 @@ export default function DataProtModal({ isOpen, onClose }) {
               <li>Fiókjának törlésére</li>
             </ul>
             Ezt az alkalmazáson belül vagy az üzemeltetőnél kezdeményezheti.
-          </p>
+ 
         </div>
       </div>
     </div>
