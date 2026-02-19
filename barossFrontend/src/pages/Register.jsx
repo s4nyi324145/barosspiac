@@ -5,6 +5,7 @@ import { useNavigate } from 'react-router-dom'
 import {User, Book, Mail,Lock, Eye, EyeClosed} from 'lucide-react'
 import AszfModal from '../components/registerComponents/aszfModal.jsx'
 import DataProtModal from '../components/registerComponents/dataProtModal.jsx'
+import { useToast } from '../context/toastContext.jsx'
 
 function Register() {
 
@@ -19,7 +20,10 @@ function Register() {
   const [isAszfOpen, setIsAszfOpen] = useState(false);
   const [isDataProtOpen, setIsDataProtOpen] = useState(false);
   const navigate = useNavigate();
+  const {showSuccess, showError, toasts} = useToast()
 
+
+  useEffect(() => {console.log(toasts)}, [toasts])
 
 /*  useEffect(() =>{
     console.log(fullname),
@@ -35,9 +39,10 @@ function Register() {
 
          const response = await api.post('/user/register', {fullname,userClass,email,psw})
          setSubmitted(true);
-         console.log(response)
+         
       } catch (error) {
-         console.log(error.response)
+         showError(error.response?.data?.message || "Hiba történt a regisztráció során.")
+         console.error(error.response)
       }
   }
 

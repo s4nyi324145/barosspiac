@@ -1,12 +1,30 @@
 import { useEffect, useState } from 'react'
 import { Mail,Lock, Eye, EyeClosed} from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
+import api from '../config/api'
+import { useToast } from '../context/toastContext'
 export default function Login(){
 
      const [email, setEmail] = useState("")
      const [psw, setPsw] = useState("")
      const [hidePassword, setHidePassword] = useState(true);
+     const { showError, showSuccess } = useToast()
      const navigate = useNavigate();
+
+
+     const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+          const response = await api.post('/user/login', {email,psw})
+          localStorage.setItem('token', response.data.token);
+          showSuccess("Sikeres bejelentkezés!")
+          
+        }
+        catch (error) {
+          showError(error.response?.data?.message || "Hiba történt a bejelentkezés során.")
+          console.error(error.response)
+        }
+      }
 
         return (
     
