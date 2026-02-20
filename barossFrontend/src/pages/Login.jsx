@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useEffectEvent, useRef, useState } from 'react'
 import { Mail,Lock, Eye, EyeClosed} from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import api from '../config/api'
@@ -9,7 +9,15 @@ export default function Login(){
      const [psw, setPsw] = useState("")
      const [hidePassword, setHidePassword] = useState(true);
      const { showError, showSuccess } = useToast()
+     const inputRef = useRef(null);
      const navigate = useNavigate();
+
+
+     useEffect(() => {
+      if (inputRef.current) {
+        inputRef.current.focus();
+      }
+    }, []);
 
 
      const handleSubmit = async (e) => {
@@ -64,6 +72,7 @@ export default function Login(){
                     <input
                       type="email"
                       required
+                      ref={inputRef}
                       value={email}
                       onChange={(e) => setEmail(e.target.value)}
                       placeholder="kovacs.anna.400@dszcbaross.edu.hu"

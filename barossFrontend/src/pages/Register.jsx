@@ -1,4 +1,4 @@
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import {Routes, Route, BrowserRouter} from 'react-router-dom'
 import api from '../config/api.js'
 import { useNavigate } from 'react-router-dom'
@@ -6,6 +6,7 @@ import {User, Book, Mail,Lock, Eye, EyeClosed} from 'lucide-react'
 import AszfModal from '../components/registerComponents/aszfModal.jsx'
 import DataProtModal from '../components/registerComponents/dataProtModal.jsx'
 import { useToast } from '../context/toastContext.jsx'
+
 
 function Register() {
 
@@ -19,11 +20,19 @@ function Register() {
   const [passwordStrength, setPasswordStrength] = useState(0)
   const [isAszfOpen, setIsAszfOpen] = useState(false);
   const [isDataProtOpen, setIsDataProtOpen] = useState(false);
+  const [loading, setLoading] = useState(false);
   const navigate = useNavigate();
+  const inputFocus = useRef(null);
   const {showSuccess, showError, toasts} = useToast()
 
 
   useEffect(() => {console.log(toasts)}, [toasts])
+
+  useEffect(() => {
+    if (inputFocus.current) {
+      inputFocus.current.focus();
+    }
+  }, [])
 
 /*  useEffect(() =>{
     console.log(fullname),
@@ -34,16 +43,22 @@ function Register() {
 
   const handleSubmit = async (e) =>{
       e.preventDefault();
-      
+      setLoading(true);
       try {
 
-         const response = await api.post('/user/register', {fullname,userClass,email,psw})
-         setSubmitted(true);
+        const response = await api.post('/user/register', {fullname,userClass,email,psw})
+        setSubmitted(true);
+        
          
       } catch (error) {
-         showError(error.response?.data?.message || "Hiba történt a regisztráció során.")
+         showError(error.response?.data?.message || error.response?.data?.error || "Hiba történt a regisztráció során.")
          console.error(error.response)
+         setTimeout(() => {
+          setLoading(false);
+         }, 1000);
       }
+
+
   }
 
   const passwordValidation = (password) => {
@@ -122,6 +137,7 @@ function Register() {
                     <input
                       type="text"
                       required
+                      ref={inputFocus}
                       value={fullname}
                       onChange={(e) => setFullname(e.target.value)}
                       placeholder="pl. Kovács Anna"
@@ -235,14 +251,21 @@ function Register() {
       
                 <button
                   type='submit'
-                  disabled={!checked || passwordStrength < 3 || psw.length < 8}
+                  disabled={!checked || passwordStrength < 3 || psw.length < 8 || loading}
                   className={`w-full py-4 rounded-xl text-sm font-semibold text-white tracking-wide transition-all duration-200 ${
-                    checked && passwordStrength >= 3 && psw.length >= 8
+                    checked && passwordStrength >= 3 && psw.length >= 8 && !loading
                       ? "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-lg shadow-blue-600/30 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
                       : "bg-slate-800 text-slate-500 cursor-not-allowed"
                   }`}
                 >
-                  Regisztráció →
+                  {loading ? (
+                    <span className="flex items-center justify-center">
+                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                      Regisztráció folyamatban...
+                    </span>
+                  ) : (
+                    "Regisztráció →"
+                  )}
                 </button>
                 </form>
     
