@@ -3,6 +3,7 @@ import Register from '../pages/Register'
 import Login from '../pages/Login'
 import { ToastProvider } from '../context/toastContext';
 import Toast from '../components/toastComponents/Toast'
+import Home from "./Home";
 
 export default function App() {
   return (
@@ -12,6 +13,7 @@ export default function App() {
         <Routes>
           <Route path="/register" element={<Register />} />
           <Route path="/login" element={<Login />} />
+          <Route path="/" element={<Home />} />
         </Routes>
       </BrowserRouter>
     </ToastProvider>

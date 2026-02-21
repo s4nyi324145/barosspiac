@@ -21,6 +21,7 @@ function Register() {
   const [isAszfOpen, setIsAszfOpen] = useState(false);
   const [isDataProtOpen, setIsDataProtOpen] = useState(false);
   const [loading, setLoading] = useState(false);
+  const [errorField,setErrorField] = useState("")
   const navigate = useNavigate();
   const inputFocus = useRef(null);
   const {showSuccess, showError, toasts} = useToast()
@@ -52,6 +53,7 @@ function Register() {
          
       } catch (error) {
          showError(error.response?.data?.message || error.response?.data?.error || "Hiba történt a regisztráció során.")
+         setErrorField(error.response?.data?.errorField || "")
          console.error(error.response)
          setTimeout(() => {
           setLoading(false);
@@ -89,8 +91,8 @@ function Register() {
     
         <div className="min-h-screen bg-slate-950 flex items-center  justify-center px-4 py-12 relative overflow-hidden">
     
-          <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute bottom-0 left-0 w-80 h-80 bg-blue-400 opacity-10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute  top-0 right-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full blur-3xl pointer-events-none" />
+          <div className="absolute   bottom-0 left-0 w-80 h-80 bg-blue-400 opacity-10 rounded-full blur-3xl pointer-events-none" />
 
           {isAszfOpen && <AszfModal isOpen={isAszfOpen} onClose={() => setIsAszfOpen(false)} />}
           {isDataProtOpen && <DataProtModal isOpen={isDataProtOpen} onClose={() => setIsDataProtOpen(false)} />}
@@ -178,9 +180,13 @@ function Register() {
                       type="email"
                       required
                       value={email}
-                      onChange={(e) => setEmail(e.target.value)}
+                      onChange={(e) => {
+                        setEmail(e.target.value)
+                        if(errorField === "email") setErrorField("")
+                        
+                      }}
                       placeholder="kovacs.anna.400@dszcbaross.edu.hu"
-                      className="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                      className={`w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 ${errorField === 'email' ? 'border-red-600' : ''}`}
                     />
                   </div>
                 </div>
