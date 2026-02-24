@@ -10,7 +10,7 @@ export default function Header() {
 
     return (
         <>
-            <div className="header flex flex-row  flex-1  p-3 items-start justify-evenly gap-4 border-b bg-slate-950 border-slate-800">
+            <div className="header flex flex-row  flex-1  p-3 items-start justify-evenly gap-4 bg-slate-950 ">
                 {/*Bal oldal*/}
                 <div className="p-10  flex-1 flex flex-col gap-6 ">
                     {/*Header badge */}

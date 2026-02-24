@@ -23,5 +23,18 @@
       to   { transform: translateX(110%); opacity: 0; }
     }
     .toast-enter { animation: slideIn 0.35s ease-in-out forwards; }
+
+
+    .card-flow{
+      animation: cardFlow 20s linear infinite forwards;
+    }
+    .card-flow:hover{
+      animation-play-state: paused;
+    }
+
+    @keyframes cardFlow {
+      from { transform: translateX(0);   ; }
+      to   { transform: translateX(-110%);  }
+    }
     
 }
