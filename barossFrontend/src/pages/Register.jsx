@@ -6,6 +6,7 @@ import {User, Book, Mail,Lock, Eye, EyeClosed} from 'lucide-react'
 import AszfModal from '../components/registerComponents/aszfModal.jsx'
 import DataProtModal from '../components/registerComponents/dataProtModal.jsx'
 import { useToast } from '../context/toastContext.jsx'
+import { useAuth } from '../context/authContext.jsx'
 
 
 function Register() {
@@ -24,6 +25,7 @@ function Register() {
   const [errorField,setErrorField] = useState("")
   const navigate = useNavigate();
   const inputFocus = useRef(null);
+  const {register} = useAuth()
   const {showSuccess, showError, toasts} = useToast()
 
 
@@ -47,8 +49,8 @@ function Register() {
       setLoading(true);
       try {
 
-        const response = await api.post('/user/register', {fullname,userClass,email,psw})
-        setSubmitted(true);
+        const response = await register(fullname,email,psw,userClass)
+        console.log(response.data);
         
          
       } catch (error) {

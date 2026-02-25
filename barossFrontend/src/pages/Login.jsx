@@ -3,6 +3,7 @@ import { Mail,Lock, Eye, EyeClosed} from 'lucide-react'
 import { useNavigate } from 'react-router-dom'
 import api from '../config/api'
 import { useToast } from '../context/toastContext'
+import { useAuth } from '../context/authContext'
 export default function Login(){
 
      const [email, setEmail] = useState("")
@@ -11,6 +12,7 @@ export default function Login(){
      const { showError, showSuccess } = useToast()
      const [errorField, setErrorField] = useState([])
      const inputRef = useRef(null);
+     const {login} = useAuth();
      const navigate = useNavigate();
 
 
@@ -29,8 +31,8 @@ export default function Login(){
      const handleSubmit = async (e) => {
         e.preventDefault();
         try {
-          const response = await api.post('/user/login', {email,psw})
-          localStorage.setItem('token', response.data.token);
+          const response = await login(email,psw)
+          
           showSuccess("Sikeres bejelentkezés!")
           setTimeout(() => {
             navigate('/')

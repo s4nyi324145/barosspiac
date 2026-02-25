@@ -21,7 +21,7 @@ export default function Header() {
                     <h1 className="text-4xl font-bold text-white mb-4">Adj új esélyt a cuccaidnak – építsük együtt a <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Baross</span> közösségét!</h1>
                     <p className="text-slate-400 text-base leading-relaxed max-w-md">Vásárolj tudatosan, adj el egyszerűen! Egy hely, ahol a régi kedvencedből más új kincse válhat.</p>
                     <div className="flex gap-4">
-                        <a href="/login"
+                        <a href="/browser"
                             className="text-sm font-medium bg-slate-900 text-slate-300 hover:text-white transition-colors duration-200 border border-slate-700/50 px-4 py-2 rounded-xl hover:bg-slate-800/60"
                         >
                             Böngészés
