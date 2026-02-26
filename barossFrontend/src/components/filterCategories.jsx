@@ -3,12 +3,69 @@ import { ChevronDown } from "lucide-react"
 import api from '../config/api.js'
 export default function FilterCategories({filter,setFilter}) {
 
-    const [categories, setCategories] = useState([])
+    //const [categories, setCategories] = useState([])
     const [openCategory, setOpenCategory] = useState(null);
     const [openSubcategory, setOpenSubcategory] = useState(null);
     const [selectedItem, setSelectedItem] = useState("")
 
-    const getCategories = async () => {
+     const categories = [
+        {
+            name: "Női",
+            subcategories: [
+                { name: "Alap ruhadarabok", items: ["Pólók", "Pulcsik", "Farmer", "Kabátok"] },
+                { name: "Cipők", items: ["Sportcipők", "Bakancsok", "Tornacipők"] },
+                { name: "Kiegészítők", items: ["Sapkák", "Táskák", "Övek", "Ékszerek"] },
+                { name: "Alkalmi ruhák", items: ["Szalagavatóra", "Ballagásra", "Bulikra"] },
+            ],
+        },
+        {
+            name: "Férfi",
+            subcategories: [
+                { name: "Alap ruhadarabok", items: ["Pólók", "Pulcsik", "Farmer", "Kabátok"] },
+                { name: "Cipők", items: ["Sportcipők", "Bakancsok", "Tornacipők"] },
+                { name: "Kiegészítők", items: ["Sapkák", "Táskák", "Övek"] },
+                { name: "Alkalmi ruhák", items: ["Ballagásra", "Bulikra"] },
+            ],
+        },
+        {
+            name: "Iskolai felszerelés",
+            subcategories: [
+                { name: "Könyvek & jegyzetek", items: ["Tankönyvek", "Munkafüzetek", "Saját jegyzetek"] },
+                { name: "Írószerek", items: ["Tollak", "Ceruzák", "Markerek"] },
+                { name: "Táskák & tolltartók", items: ["Hátizsákok", "Oldaltáskák", "Tolltartók"] },
+                { name: "Egyéb", items: ["Vonalzók", "Körzők", "Számológépek"] },
+            ],
+        },
+        {
+            name: "Elektronika",
+            subcategories: [
+                { name: "Számítástechnika", items: ["Laptopok", "Egerek", "Billentyűzetek", "Fejhallgatók"] },
+                { name: "Telefonok", items: ["Okostelefonok", "Tokok", "Töltők"] },
+                { name: "Játék", items: ["Konzolok", "Játékok", "Kontrollerek"] },
+                { name: "Egyéb", items: ["Hangszórók", "Kábelek"] },
+            ],
+        },
+        {
+            name: "Szórakozás",
+            subcategories: [
+                { name: "Játékok", items: ["Társasjátékok", "Kártyajátékok", "Puzzle"] },
+                { name: "Sport", items: ["Labdák", "Ütők", "Védőfelszerelés"] },
+                { name: "Zene", items: ["Hangszerek", "Kották"] },
+                { name: "Könyvek", items: ["Regények", "Képregények", "Magazinok"] },
+            ],
+        },
+        {
+            name: "Egyéb",
+            subcategories: [
+                { name: "Lakberendezés", items: ["Poszterek", "Lámpák", "Dekorációk"] },
+                { name: "Élelmiszer", items: ["Házi készítésű finomságok"] },
+                { name: "Szolgáltatások", items: ["Korrepetálás", "Fotózás"] },
+                { name: "Minden más", items: ["Egyéb"] },
+            ],
+        },
+    ];
+
+   {/* const getCategories = async () => {
         try {
 
             const response = await api.get('/category/getCategory')
@@ -26,7 +83,7 @@ export default function FilterCategories({filter,setFilter}) {
     
     useEffect(() =>{
         console.log(categories);
-    }, [categories])
+    }, [categories]) */}
 
 
 
@@ -89,11 +146,11 @@ export default function FilterCategories({filter,setFilter}) {
                                         <div className="ml-2 border-l border-slate-700/40 pl-2 flex flex-col gap-0.5 mt-0.5 mb-1">
                                             {subcategory.items.map((item) => (
                                                 <button
-                                                    key={item.name}
-                                                    onClick={() => setSelectedItem(item.name)}
+                                                    key={item}
+                                                    onClick={() => setSelectedItem(item)}
                                                     className="w-full text-left px-3 py-1.5 rounded-lg text-xs text-slate-500 hover:text-blue-400 hover:bg-slate-800/40 transition-all duration-200"
                                                 >
-                                                    {item.name}
+                                                    {item}
                                                 </button>
                                             ))}
                                         </div>

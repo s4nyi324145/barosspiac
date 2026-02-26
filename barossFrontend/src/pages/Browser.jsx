@@ -1,6 +1,7 @@
 import { useState } from "react"
 import Navbar from "../components/Navbar"
-import FilterContainer from "../components/filterContainer"
+import FilterContainer from "../components/FilterContainer"
+import BrowserSite from "../components/BrowserSite"
 
 export default function Browser(){
 
@@ -20,6 +21,7 @@ export default function Browser(){
                 <Navbar/>
                 <div className="flex">
                     <FilterContainer filter={filter} setFilter={setFilter}/>
+                    <BrowserSite filter={filter} setFilter={setFilter}/>
                 </div>
           
     </>)
