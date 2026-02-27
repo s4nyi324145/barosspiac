@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Navbar from "../components/Navbar"
-import FilterContainer from "../components/FilterContainer"
+import FilterContainer from "../components/filterContainer"
 import BrowserSite from "../components/BrowserSite"
 
 export default function Browser(){
@@ -11,9 +11,9 @@ export default function Browser(){
         item: null,
         priceMin: null,
         priceMax: null,
-        condition: null,
-        userClass: null,
-        size: null
+        condition: [],
+        subject: null,
+        size: []
     })
 
     return(<>

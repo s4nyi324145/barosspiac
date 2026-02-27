@@ -17,10 +17,10 @@ export default function FilterContainer({filter,setFilter}) {
     return (<>
         <div className="bg-slate-900 border-r border-slate-800 w-52 min-w-52 min-h-screen">
             <FilterCategories filter={filter} setFilter={setFilter}/>
-            <FilterPrice/>
+            <FilterPrice filter={filter} setFilter={setFilter}/>
             <FilterConditions filter={filter} setFilter={setFilter}/>
-            <FilterSize/>
-            <FilterClass/>
+            <FilterSize filter={filter} setFilter={setFilter}/>
+            <FilterClass filter={filter} setFilter={setFilter}/>
         </div>
 
     </>)

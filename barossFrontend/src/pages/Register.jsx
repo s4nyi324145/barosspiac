@@ -51,6 +51,7 @@ function Register() {
 
         const response = await register(fullname,email,psw,userClass)
         console.log(response.data);
+        setSubmitted(true)
         
          
       } catch (error) {
