@@ -15,7 +15,7 @@ export default function FilterClass({filter,setFilter}){
         {["Töri", "Magyar", "Matek", "Földrajz", "Informatika", "Angol"].map((subject) => (
             <div
                 key={subject}
-                onClick={() => setSelectedSubject(subject === selectedSubject ? "" : subject)}
+                onClick={() => setSelectedSubject(subject === selectedSubject ? null : subject)}
                 className={`cursor-pointer rounded-full px-3 py-1 text-md font-medium border transition-all duration-200 ${
                     (subject === "Összes" && selectedSubject === "") || selectedSubject === subject
                         ? "bg-amber-500/20 text-amber-400 border-amber-500/30"
