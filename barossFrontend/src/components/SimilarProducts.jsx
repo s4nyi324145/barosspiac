@@ -1,0 +1,41 @@
+import { useState,useEffect } from "react"
+import api from "../config/api"
+import ProductCard from "./ProductCard"
+import { useParams } from "react-router-dom"
+
+export default function SimilarProducts({productDetail}){
+
+    if (!productDetail) return null
+
+    const {product_id} = useParams()
+
+    const [similarProducts, setSimilarProducts] = useState([])
+
+    const getSimilarProducts = async () =>{
+
+        try {
+            const result = await api.get(`/product/similar/${productDetail.sub_category_id}/${product_id}`)
+            setSimilarProducts(result.data)
+
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {getSimilarProducts()}, [product_id])
+    useEffect(() => console.log(similarProducts));
+
+    return(<>
+        <div className="flex flex-col flex-1">
+            <h1 className="p-5 text-xl">Hasonló hírdetések</h1>
+
+           <div className="grid grid-cols-4   p-4 gap-4">
+            {similarProducts.map((p,index) => (
+                    <ProductCard key={index} p={p}/>
+
+                ))}
+           </div>
+        </div>
+    
+    </>)
+}
