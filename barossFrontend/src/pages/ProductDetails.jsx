@@ -7,10 +7,12 @@ import ProductDesc from "../components/ProductDesc";
 import SimilarProducts from "../components/SimilarProducts";
 import ProductDescButton from "../components/ProductDescButtons";
 import ProductUserInfo from "../components/ProductUserInfo";
+import ReportModal from "../components/reportModal";
 export default function ProductDetails(){
 
     const {product_id} = useParams()
     const [productDetail, setProductDetail] = useState([])
+    const [openReportModal, setOpenReportModal] = useState(false)
     
     const getProductDetails = async() => {
         try {
@@ -28,18 +30,24 @@ export default function ProductDetails(){
     useEffect(() => console.log(productDetail));
 
     return(<>
-        <div className="bg-slate-950 text-white">
+        <div className="bg-slate-950 relative text-white">
+
+            {openReportModal && <ReportModal reported_id={productDetail[0].user_id} product_id={product_id} openReportModal={openReportModal} setOpenReportModal={setOpenReportModal}/>}
+
             <Navbar/>
             <div className="flex  p-5  bg-slate-950 flex-1">
                 <ProductImages/>
-                <ProductDesc productDetail={productDetail[0]}/>
+                <ProductDesc product_id={product_id} productDetail={productDetail[0]}/>
             </div>
             <div className="p-5 flex justify-between">
                 <ProductUserInfo productDetail={productDetail[0]}/>
-                <ProductDescButton/>
+                <ProductDescButton openReportModal={openReportModal} setOpenReportModal={setOpenReportModal}/>
             </div>
             
             <SimilarProducts  productDetail={productDetail[0]}/>
+
+            
+
         </div>
     
     </>)

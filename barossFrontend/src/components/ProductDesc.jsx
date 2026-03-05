@@ -1,10 +1,43 @@
 
 import { MapPin, Heart, Clock } from "lucide-react"
 import ProductUserInfo from "./ProductUserInfo"
+import { useEffect, useState } from "react"
+import api from "../config/api"
+import { useToast } from "../context/toastContext"
 
-export default function ProductDesc({ productDetail }) {
+export default function ProductDesc({ productDetail, product_id }) {
 
     if (!productDetail) return null
+    const { showSuccess } = useToast()
+    const [liked, setLiked] = useState(null)
+
+    const getLiked = async () => {
+        try {
+
+            const result = await api.get(`/likes/liked/${productDetail.product_id}`)
+            setLiked(result.data.liked)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    useEffect(() => {
+        getLiked()
+        console.log(liked)
+    }, [productDetail])
+
+    useEffect(() => { console.log(liked) }, [liked])
+
+    const sendLike = async () => {
+        try {
+            const result = await api.post('/likes/like', { product_id: productDetail.product_id })
+            showSuccess(result.data.message)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+
 
     return (<>
         <div className="flex flex-col flex-[0.4] gap-5 ml-3">
@@ -26,7 +59,7 @@ export default function ProductDesc({ productDetail }) {
                     <h1 className="text-2xl font-bold text-white">{productDetail.product_title}</h1>
 
                     {/* Ár */}
-                    <p className="text-3xl font-bold text-blue-400">{productDetail.product_price.toLocaleString('hu-HU')} Ft</p>
+                    <p className="text-3xl font-bold text-blue-400">{productDetail.product_price.toLocaleString('en')} Ft</p>
 
                 </div>
 
@@ -80,16 +113,21 @@ export default function ProductDesc({ productDetail }) {
                     <button className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/25 hover:-translate-y-0.5">
                         Érdekel →
                     </button>
-                    <button className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
-                        <Heart className="w-4 h-4" />
-                        Kedvencekhez
-                    </button>
+                    {liked ? 
+                        <button  className="w-full py-3.5 bg-red-800 hover:bg-red-700 border border-slate-700/60  text-slate-300 hover:text-white font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                            <Heart  className="w-5 h-5" />                           
+                        </button> 
+                    :
+                        <button onClick={() => sendLike()} className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                            <Heart className="w-4 h-4" />
+                            Kedvencekhez
+                        </button>}
                 </div>
 
             </div>
-                
-            
-            
+
+
+
 
         </div>
     </>)

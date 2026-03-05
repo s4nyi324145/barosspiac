@@ -1,6 +1,9 @@
+import { useAuth } from "../context/authContext"
+import { useNavigate } from "react-router-dom"
+export default function ProductDescButton({openReportModal, setOpenReportModal}){
 
-
-export default function ProductDescButton(){
+    const {user} = useAuth()
+    const navigate = useNavigate()
 
     return(<>
 
@@ -8,7 +11,7 @@ export default function ProductDescButton(){
             <button className="bg-blue-600 p-2 hover:bg-blue-500  text-white font-semibold rounded-xl transition-all duration-200 shadow-lg">
                 Hírdetés Megosztás
             </button>
-            <button className="bg-red-600/60 p-2 hover:bg-red-600  text-white font-semibold rounded-xl transition-all duration-200 shadow-lg">
+            <button onClick={() => user ? setOpenReportModal(!openReportModal)  :  navigate("/login") } className="bg-red-600/60 p-2 hover:bg-red-600  text-white font-semibold rounded-xl transition-all duration-200 shadow-lg">
                 Hírdetés Jelentése
             </button>
         </div>
