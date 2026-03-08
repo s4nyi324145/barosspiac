@@ -26,7 +26,7 @@ export default function ReportModal({ openReportModal, reported_id, product_id, 
                 text: reasonDesc,
                 product_id: product_id,
                 reported_id: reported_id,
-                reason: reportReasons[selectedReason].label
+                reason: reportReasons[selectedReason-1].label
 
             })
             setTimeout(() => { 

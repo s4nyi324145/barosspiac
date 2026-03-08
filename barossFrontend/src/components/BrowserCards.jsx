@@ -2,21 +2,27 @@ import { useEffect, useState } from "react"
 import api from "../config/api"
 import ProductCard from "./ProductCard"
 import { SearchX } from "lucide-react"
+import ProductCardSkeleton from "./ProductCardSkeleton"
 export default function BrowserCards({ filter, setFilter }) {
 
     const [product, setProducts] = useState([])
     const [filteredProduct, setFilteredProduct] = useState(product)
+    const [loading, setLoading] = useState(true)
 
     const getProducts = async () => {
         try {
-
+          
             const result = await api.get("/product/getProduct")
             console.log(result)
             setProducts(result.data)
+            setLoading(false)
+         
 
         } catch (error) {
             console.log(error)
+            setLoading(false)
         }
+ 
     }
 
 
@@ -34,6 +40,22 @@ export default function BrowserCards({ filter, setFilter }) {
         if (filter.subject) result = result.filter(p => p.product_subject == filter.subject);
         if (filter.priceMin) result = result.filter(p => p.product_price >= Number(filter.priceMin));
         if (filter.priceMax) result = result.filter(p => p.product_price <= Number(filter.priceMax));
+        if (filter.sort) {
+            switch (filter.sort) {
+                case "ar_csokkeno":
+                    result = result.sort((a, b) => b.product_price - a.product_price);
+                    break;
+                case "ar_novekvo":
+                    result = result.sort((a, b) => a.product_price - b.product_price);
+                    break;
+                case "legujabb":
+                    result = result.sort((a, b) => b.product_id - a.product_id);
+                    break;
+                case "legregebbi":
+                    result = result.sort((a, b) => a.product_id - b.product_id);
+                    break;
+            }
+        }
 
         setFilteredProduct(result);
     }, [product, filter]);
@@ -41,7 +63,15 @@ export default function BrowserCards({ filter, setFilter }) {
 
     return (<>
 
-{filteredProduct.length === 0 && (
+      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-auto scrollbar-hide  min-h-screen max-h-screen auto-rows-min  xl:grid-cols-5 gap-3 p-4 ">
+            {loading
+            ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
+            : filteredProduct.map(p => <ProductCard key={p.product_id} p={p} />)
+}
+        </div>
+
+
+{filteredProduct.length === 0  && loading === false && (
             <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
                 <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700/60 flex items-center justify-center">
                     <SearchX className="w-8 h-8 text-slate-600" />
@@ -61,12 +91,7 @@ export default function BrowserCards({ filter, setFilter }) {
             </div>
         )}
 
-        <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-auto scrollbar-hide  min-h-screen max-h-screen auto-rows-min  xl:grid-cols-5 gap-3 p-4 ">
-            {filteredProduct.map((p, index) => (
-                <ProductCard key={index} p={p} />
-            ))}
-        </div>
-
+      
         
 
 

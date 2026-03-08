@@ -16,6 +16,9 @@ export default function Browser(){
         size: []
     })
 
+    
+    
+
     return(<>
           
                 <Navbar/>

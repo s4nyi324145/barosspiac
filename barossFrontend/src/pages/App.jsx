@@ -6,6 +6,7 @@ import { AuthProvider } from "../context/authContext";
 import Browser from "./Browser";
 import ProductDetails from "./ProductDetails";
 import Toast from '../components/toastComponents/Toast'
+import Favorites from "./Favorites";
 import Home from "./Home";
 
 export default function App() {
@@ -20,6 +21,7 @@ export default function App() {
           <Route path="/" element={<Home />} />
           <Route path="/browser" element={<Browser />} />
           <Route path="/product/:product_id" element={<ProductDetails />} />
+          <Route path="/likes" element={<Favorites />} />
         </Routes>
       </BrowserRouter>
     </ToastProvider>

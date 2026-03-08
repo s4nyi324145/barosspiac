@@ -4,18 +4,44 @@ import ProductUserInfo from "./ProductUserInfo"
 import { useEffect, useState } from "react"
 import api from "../config/api"
 import { useToast } from "../context/toastContext"
+import { useAuth } from "../context/authContext"
+import { useNavigate } from "react-router-dom"
 
 export default function ProductDesc({ productDetail, product_id }) {
 
     if (!productDetail) return null
     const { showSuccess } = useToast()
     const [liked, setLiked] = useState(null)
+    const { user } = useAuth()
+    const navigate = useNavigate()
 
     const getLiked = async () => {
+        setLiked(null)
         try {
 
             const result = await api.get(`/likes/liked/${productDetail.product_id}`)
             setLiked(result.data.liked)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const sendLike = async () => {
+        try {
+            const result = await api.post('/likes/like', { product_id: productDetail.product_id })
+            showSuccess(result.data.message)
+            setLiked(true)
+        } catch (error) {
+            console.log(error)
+            error.response?.status === 401 && navigate('/login')
+        }
+    }
+
+    const removeLike = async () => {
+        try {
+            const result = await api.delete(`/likes/unlike/${productDetail.product_id}`)
+            showSuccess(result.data.message)
+            setLiked(false)
         } catch (error) {
             console.log(error)
         }
@@ -28,15 +54,7 @@ export default function ProductDesc({ productDetail, product_id }) {
 
     useEffect(() => { console.log(liked) }, [liked])
 
-    const sendLike = async () => {
-        try {
-            const result = await api.post('/likes/like', { product_id: productDetail.product_id })
-            showSuccess(result.data.message)
-        } catch (error) {
-            console.log(error)
-        }
-    }
-
+    
 
 
     return (<>
@@ -114,11 +132,11 @@ export default function ProductDesc({ productDetail, product_id }) {
                         Érdekel →
                     </button>
                     {liked ? 
-                        <button  className="w-full py-3.5 bg-red-800 hover:bg-red-700 border border-slate-700/60  text-slate-300 hover:text-white font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                        <button onClick={() => removeLike() }  className="w-full py-3.5 bg-red-800 hover:bg-red-700 border border-slate-700/60  text-slate-300 hover:text-white font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
                             <Heart  className="w-5 h-5" />                           
                         </button> 
                     :
-                        <button onClick={() => sendLike()} className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                        <button onClick={() => user ? sendLike() : navigate('/login')} className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
                             <Heart className="w-4 h-4" />
                             Kedvencekhez
                         </button>}

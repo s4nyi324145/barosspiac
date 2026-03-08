@@ -1,7 +1,9 @@
 
 import { Shirt, BookOpen, Laptop, Gamepad2, Package, User, Users } from "lucide-react";
+import { useNavigate } from "react-router-dom";
 
 export default function Categories() {
+  const navigate = useNavigate();
 
 const categories = [
   { name: "Női",                 icon: User },
@@ -19,6 +21,7 @@ const categories = [
         {categories.map((cat, i) => (
           <button
             key={i}
+            onClick={() => navigate('/browser', { state: { category: cat.name } })}
             className="flex items-center gap-2 px-4 py-2.5 rounded-xl text-sm font-medium text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200 whitespace-nowrap group"
           >
             <cat.icon className="w-4 h-4 text-slate-500 group-hover:text-blue-400 transition-colors duration-200" />
