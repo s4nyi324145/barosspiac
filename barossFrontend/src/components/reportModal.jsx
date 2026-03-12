@@ -2,9 +2,9 @@ import { useState } from "react";
 import { X } from "lucide-react";
 import api from "../config/api";
 import { useToast } from "../context/toastContext";
-export default function ReportModal({ openReportModal, reported_id, product_id, setOpenReportModal }) {
+export default function ReportModal({ type,reported_id, product_id, setOpenReportModal }) {
 
-    const reportReasons = [
+    const productReportReasons = [
         { id: 1, label: "Hamis vagy félrevezető hirdetés" },
         { id: 2, label: "Nem iskolai emailes felhasználó" },
         { id: 3, label: "Nem létező termék" },
@@ -13,6 +13,18 @@ export default function ReportModal({ openReportModal, reported_id, product_id, 
         { id: 6, label: "Túlárazott / irreális ár" },
         { id: 7, label: "Egyéb" },
     ]
+
+    const userReportReasons = [
+        { id: 1, label: "Hamis vagy félrevezető profil" },
+        { id: 2, label: "Sértő vagy nem megfelelő viselkedés" },
+        { id: 3, label: "Spam vagy zaklatás" },
+        { id: 4, label: "Nem iskolai emailes felhasználó" },
+        { id: 5, label: "Átverés vagy csalás" },
+        { id: 6, label: "Egyéb" },
+    ]
+
+    const reasons = type === "user" ? userReportReasons : productReportReasons
+
     const [selectedReason, setSelectedReason] = useState(null);
     const [reasonDesc, setReasonDesc] = useState("")
     const [loading, setLoading] = useState(false)
@@ -26,7 +38,7 @@ export default function ReportModal({ openReportModal, reported_id, product_id, 
                 text: reasonDesc,
                 product_id: product_id,
                 reported_id: reported_id,
-                reason: reportReasons[selectedReason-1].label
+                reason: reasons[selectedReason-1].label
 
             })
             setTimeout(() => { 
@@ -50,8 +62,8 @@ export default function ReportModal({ openReportModal, reported_id, product_id, 
                 {/* Fejléc */}
                 <div className="flex items-center justify-between">
                     <div className="flex flex-col gap-1">
-                        <h1 className="text-lg font-bold text-white">Hirdetés jelentése</h1>
-                        <p className="text-slate-500 text-xs">Miért akarod jelenteni ezt a hirdetést?</p>
+                        <h1 className="text-lg font-bold text-white">{type == "user" ? "Felhasználó jelentése" : "Hirdetés jelentése"}</h1>
+                        <p className="text-slate-500 text-xs">{type == "user" ? "Miért akarod jelenteni ezt a felhasználót?" : "Miért akarod jelenteni ezt a hirdetést?"}</p>
                     </div>
                     <button onClick={() => setOpenReportModal(false)} className="text-slate-500 hover:text-white transition-colors duration-200">
                         <X className="w-5 h-5" />
@@ -60,7 +72,7 @@ export default function ReportModal({ openReportModal, reported_id, product_id, 
 
                 {/* Okok */}
                 <div className="flex flex-col gap-2">
-                    {reportReasons.map(report => (
+                    {reasons.map(report => (
                         <label
                             key={report.id}
                             htmlFor={report.id}

@@ -4,12 +4,13 @@ import { Heart, Bell, Search, Mail, Plus } from "lucide-react";
 import { useAuth } from "../context/authContext"
 import { User, Tag, Settings, LogOut } from "lucide-react"
 import { useState, useEffect } from "react";
+import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
   const { user } = useAuth();
 
   const [showDropdown, setShowDropdown] = useState(false);
-
+  const navigate = useNavigate()
 
   useEffect(() => {
     const handleClick = (e) => {
@@ -25,7 +26,7 @@ export default function Navbar() {
       <div className="container min-w-full  px-4 py-4 flex items-center justify-around gap-6">
 
         <div>
-          <p className="text-white font-bold">Baross piac</p>
+          <p onClick={() => navigate('/')} className="text-white cursor-pointer font-bold">Baross piac</p>
         </div>
 
         {/* Kereső fül */}
@@ -77,7 +78,7 @@ export default function Navbar() {
 
                   {/* Menüpontok */}
                   <div className="p-1.5 flex flex-col gap-0.5">
-                    <a href="/profile" className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
+                    <a href={`/profile/${user.user_id}`} className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
                       <User className="w-4 h-4" /> Profilom
                     </a>
                     <a href="/my-products" className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">

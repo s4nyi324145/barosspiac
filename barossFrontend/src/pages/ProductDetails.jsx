@@ -32,7 +32,7 @@ export default function ProductDetails(){
     return(<>
         <div className="bg-slate-950 relative text-white">
 
-            {openReportModal && <ReportModal reported_id={productDetail[0].user_id} product_id={product_id} openReportModal={openReportModal} setOpenReportModal={setOpenReportModal}/>}
+            {openReportModal && <ReportModal type={"product"} reported_id={productDetail[0].user_id} product_id={product_id} openReportModal={openReportModal} setOpenReportModal={setOpenReportModal}/>}
 
             <Navbar/>
             <div className="flex  p-5  bg-slate-950 flex-1">

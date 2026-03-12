@@ -2,10 +2,12 @@
 import { useEffect, useState } from "react"
 import { Star } from 'lucide-react'
 import api from "../config/api"
+import { useNavigate } from "react-router-dom"
 
 export default function ProductUserInfo({ productDetail }) {
 
     if(!productDetail) return null
+    const navigate = useNavigate()
 
     const [ratings, setRatings] = useState(0)
     const getRatingsById = async () => {
@@ -37,7 +39,7 @@ export default function ProductUserInfo({ productDetail }) {
 
             {/* Info */}
             <div className="flex flex-col gap-0.5 flex-1">
-                <p className="text-white text-sm font-semibold">{productDetail.fullname}</p>
+                <p onClick={() => navigate(`/profile/${productDetail.user_id}`)} className="text-white text-sm font-semibold cursor-pointer">{productDetail.fullname}</p>
                 <p className="text-slate-500 text-xs">{productDetail.userClass}</p>
             </div>
 

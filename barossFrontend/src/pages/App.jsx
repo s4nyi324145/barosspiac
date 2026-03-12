@@ -8,6 +8,7 @@ import ProductDetails from "./ProductDetails";
 import Toast from '../components/toastComponents/Toast'
 import Favorites from "./Favorites";
 import Home from "./Home";
+import Profile from "./Profile";
 
 export default function App() {
   return (
@@ -22,6 +23,7 @@ export default function App() {
           <Route path="/browser" element={<Browser />} />
           <Route path="/product/:product_id" element={<ProductDetails />} />
           <Route path="/likes" element={<Favorites />} />
+          <Route path="/profile/:user_id" element={<Profile/>}/>
         </Routes>
       </BrowserRouter>
     </ToastProvider>
