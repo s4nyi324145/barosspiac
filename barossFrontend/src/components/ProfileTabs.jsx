@@ -83,7 +83,7 @@ export default function ProfileTabs({ getUserData,user, owner }) {
                 ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
                 : selectedCards?.map(p => (
                     activeTab === "ertekelesek"
-                        ? <CommentCard key={p.rating_id} p={p} />
+                        ? <CommentCard getUserData={getUserData} getProductCards={getProductCards} key={p.rating_id} p={p} />
                         : <ProductCard key={p.product_id} p={p} />
                 ))
             }

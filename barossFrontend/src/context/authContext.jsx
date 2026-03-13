@@ -22,6 +22,7 @@ export const AuthProvider = ({ children }) => {
             }
         }
         else {console.log("nincs token")
+            setUser(null)
           
         }
         setLoading(false);
