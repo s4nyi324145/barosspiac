@@ -2,6 +2,7 @@ import { useState } from "react"
 import { Eye, EyeOff, Save, Lock } from "lucide-react"
 import api from "../config/api"
 import { useToast } from "../context/toastContext"
+import {useNavigate} from "react-router-dom"
 export default function SecuritySetting() {
 
     const [showCurrent, setShowCurrent] = useState(false)
@@ -12,6 +13,7 @@ export default function SecuritySetting() {
     const [currentPsw, setCurrentPsw] = useState("")
     const [passwordStrength, setPasswordStrength] = useState(0)
     const {showSuccess, showError} = useToast()
+    const navigate = useNavigate()
 
     const passwordValidation = (password) => {
         let passwordStrength = 0
@@ -37,11 +39,12 @@ export default function SecuritySetting() {
     
       const handlePswChange = async() => {
         try {
-            const result = await api.post('/user/password',{
+            const result = await api.put('/user/password',{
                 password: currentPsw,
                 newPsw: newPassword
             })
             showSuccess(result.data?.message)
+            setTimeout(() => {navigate('/login')}, 1000)
         } catch (error) {
             showError(error.response.data.message)
         }

@@ -2,18 +2,20 @@ import { useEffect, useState } from "react";
 import { ChevronDown } from "lucide-react"
 import api from '../config/api.js'
 import { useLocation } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 export default function FilterCategories({ filter, setFilter }) {
 
     const [categories, setCategories] = useState([])
     const [openCategory, setOpenCategory] = useState(null);
     const [openSubcategory, setOpenSubcategory] = useState(null);
     const [selectedItem, setSelectedItem] = useState("")
+    const navigate = useNavigate()
 
     const location = useLocation()
     
         useEffect(()=>{
-            if(location.state?.category) setFilter(prev => ({...prev, category: location.state?.category}))
-                
+            if(location.state?.category) setFilter(prev => ({...prev, category: location.state.category}))
+            
                 
         },[])
     
@@ -45,7 +47,7 @@ export default function FilterCategories({ filter, setFilter }) {
     useEffect(() => {
         setFilter((filter) => ({
             ...filter,
-            category: location.state?.category || openCategory,
+            category:   openCategory || location.state?.category,
             subcategory: openSubcategory,
             item: selectedItem
         }));

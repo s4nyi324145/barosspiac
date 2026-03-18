@@ -44,7 +44,7 @@ export default function Navbar() {
           <div className="flex items-center gap-2">
 
             {/* Hirdetés feladása */}
-            <a href="/sell" className="flex items-center gap-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/20">
+            <a href="/upload" className="flex items-center gap-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/20">
               <Plus className="w-4 h-4" />
               Hirdetés feladása
             </a>

@@ -9,6 +9,8 @@ import Toast from '../components/toastComponents/Toast'
 import Favorites from "./Favorites";
 import Home from "./Home";
 import Settings from "./Settings";
+import Upload from "./Upload";
+import Messages from "./Messages";
 import Profile from "./Profile";
 
 export default function App() {
@@ -26,6 +28,8 @@ export default function App() {
           <Route path="/likes" element={<Favorites />} />
           <Route path="/profile/:user_id" element={<Profile/>}/>
           <Route path="/settings" element={<Settings/>}/>
+          <Route path="/upload" element={<Upload/>}/>
+          <Route path="/messages" element={<Messages/>}/>
         </Routes>
       </BrowserRouter>
     </ToastProvider>
