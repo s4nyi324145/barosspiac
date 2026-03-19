@@ -1,10 +1,86 @@
+import { Search,MessageCircle  } from "lucide-react"
+import { useEffect, useState } from "react"
+import api from "../config/api"
+export default function Conversations({selectedConversation, setSelectedConversation}) {
 
-export default function Conversations(){
+    const [conversations, setConversations] = useState([])
 
-    return(<>
-        <div className="flex flex-[0.3] bg-red-500">
-        
-        </div>  
+    const getConversations = async () => {
+
+        try {
+
+            const result = await api.get('/conversations/conversations')
+            setConversations(result.data)
+        } catch (error) {
+            console.log(error);
+        }
+    }
+
+    useEffect(() => { getConversations() }, [])
+    useEffect(() => { console.log(conversations) }, [conversations])
+
+
+
+
+    return (
+        <div className="flex flex-col flex-[0.2]  h-screen min-w-[260px] border-r border-slate-800 bg-slate-950">
     
-    </>)
+            {/* Fejléc */}
+            <div className="p-4 border-b border-slate-800">
+                <h2 className="text-white font-bold text-lg mb-3">Üzenetek</h2>
+                <div className="flex items-center gap-3 bg-slate-800/60 border border-slate-700/60 rounded-xl px-3 py-2 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200 group">
+                    <Search className="w-4 h-4 text-slate-500 group-focus-within:text-blue-400 transition-colors duration-200 shrink-0" />
+                    <input
+                        type="text"
+                        className="bg-transparent w-full outline-none text-sm text-slate-200 placeholder-slate-600"
+                        placeholder="Keresés..."
+                    />
+                </div>
+            </div>
+    
+            {/* Lista */}
+            <div className="flex flex-col overflow-y-auto flex-1">
+                {conversations.length === 0 ? (
+                    <div className="flex flex-col items-center justify-center flex-1 gap-3 p-6 text-center">
+                        <div className="w-12 h-12 rounded-2xl bg-slate-800 border border-slate-700/60 flex items-center justify-center">
+                            <MessageCircle className="w-6 h-6 text-slate-600" />
+                        </div>
+                        <p className="text-slate-500 text-sm">Még nincs egy beszélgetésed sem</p>
+                    </div>
+                ) : (
+                    conversations.map(con => (
+                        <div
+                            key={con.conversations_id}
+                            onClick={() => setSelectedConversation(con)}
+                            className={`flex items-center gap-3 px-4 py-3.5 cursor-pointer border-b border-slate-800/60 transition-all duration-200 ${
+                                selectedConversation?.conversations_id === con.conversations_id
+                                    ? 'bg-blue-600/10 border-l-2 border-l-blue-500'
+                                    : 'hover:bg-slate-800/40 border-l-2 border-l-transparent'
+                            }`}
+                        >
+                            {/* Avatar */}
+                            <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
+                                {con.fullname?.charAt(0).toUpperCase()}
+                            </div>
+    
+                            {/* Info */}
+                            <div className="flex flex-col flex-1 min-w-0">
+                                <div className="flex items-center justify-between gap-2">
+                                    <p className="text-white text-sm font-semibold truncate">{con.fullname}</p>
+                                    <p className="text-slate-600 text-xs text-nowrap ">
+                                        {new Date(con.sent_at).toLocaleDateString('hu-HU')}
+                                    </p>
+                                </div>
+                                <p className="text-slate-500 text-xs truncate mt-0.5">
+                                    {con.message ?? 'Még nincs üzenet'}
+                                </p>
+                            </div>
+                        </div>
+                    ))
+                )}
+            </div>
+        </div>
+    )
+
+
 }
