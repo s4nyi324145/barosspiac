@@ -30,6 +30,8 @@ export default function ChatPanel({ selectedConversation }) {
             }])
         })
 
+        
+
         return () => {
             socket.off('receive_message')
         }
@@ -69,7 +71,7 @@ export default function ChatPanel({ selectedConversation }) {
             </div>
 
             {/* Üzenetek */}
-            <div className="flex flex-col flex-1 overflow-y-auto p-4 gap-3">
+            <div className="flex  flex-col flex-1 overflow-y-auto p-4 gap-3">
                 {messages.map(msg => {
                     const isMine = msg.sender_id === user.user_id
                     return (

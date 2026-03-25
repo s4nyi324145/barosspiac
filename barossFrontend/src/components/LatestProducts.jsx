@@ -2,9 +2,11 @@ import { useEffect, useState } from "react"
 import api from "../config/api"
 import { ArrowRight } from "lucide-react"
 import ProductCard from "./ProductCard"
+import { useNavigate } from "react-router-dom"
 export default function LatestProducts() {
 
     const [products, setProducts] = useState([])
+    const navigate = useNavigate()
 
     const getLatestProducts = async () => {
         try {
@@ -40,8 +42,8 @@ export default function LatestProducts() {
             </div>
 
             <div className="flex justify-center mt-4 items-center">
-                <div className="flex gap-2 items-center p-3 rounded-xl text-white bg-blue-600" >
-                    <button>Összes felfedezése </button>
+                <div onClick={() => navigate("/browser")} className="flex gap-2 items-center p-3 rounded-xl text-white bg-blue-600" >
+                    <button >Összes felfedezése </button>
                     <ArrowRight />
                 </div>
             </div>

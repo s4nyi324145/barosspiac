@@ -1,13 +1,13 @@
 
 import RegisterButton from "./RegisterButton"
-import { Heart, Bell, Search, Mail, Plus } from "lucide-react";
+import { Heart, Bell, Search, Mail, Plus, MessageCircle } from "lucide-react";
 import { useAuth } from "../context/authContext"
 import { User, Tag, Settings, LogOut } from "lucide-react"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 
 export default function Navbar() {
-  const { user } = useAuth();
+  const { user, logout } = useAuth();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const navigate = useNavigate()
@@ -56,7 +56,7 @@ export default function Navbar() {
 
             {/* Üzenetek */}
             <a href="/messages" className="relative p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
-              <Mail className="w-5 h-5" />
+              <MessageCircle className="w-5 h-5" />
             </a>
 
             {/* Avatar */}
@@ -81,8 +81,8 @@ export default function Navbar() {
                     <a href={`/profile/${user.user_id}`} className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
                       <User className="w-4 h-4" /> Profilom
                     </a>
-                    <a href="/my-products" className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
-                      <Tag className="w-4 h-4" /> Hirdetéseim
+                    <a href="/notifications" className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
+                      <Mail className="w-4 h-4" /> Értesítéseim
                     </a>
                     <a href="/settings" className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
                       <Settings className="w-4 h-4" /> Beállítások

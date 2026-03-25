@@ -29,7 +29,7 @@ function Register() {
   const {showSuccess, showError, toasts} = useToast()
 
 
-  useEffect(() => {console.log(toasts)}, [toasts])
+  //useEffect(() => {console.log(toasts)}, [toasts])
 
   useEffect(() => {
     if (inputFocus.current) {
@@ -50,14 +50,13 @@ function Register() {
       try {
 
         const response = await register(fullname,email,psw,userClass)
-        console.log(response.data);
+        //console.log(response.data);
         setSubmitted(true)
         
          
       } catch (error) {
          showError(error.response?.data?.message || error.response?.data?.error || "Hiba történt a regisztráció során.")
          setErrorField(error.response?.data?.errorField || "")
-         console.error(error.response)
          setTimeout(() => {
           setLoading(false);
          }, 1000);
@@ -65,6 +64,8 @@ function Register() {
 
 
   }
+
+  useEffect(() =>{console.log(errorField)}, [errorField])
 
   const passwordValidation = (password) => {
     let passwordStrength = 0
@@ -189,7 +190,7 @@ function Register() {
                         
                       }}
                       placeholder="kovacs.anna.400@dszcbaross.edu.hu"
-                      className={`w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 ${errorField === 'email' ? 'border-red-600' : ''}`}
+                      className={`w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 ${errorField === "email" ? 'border-red-500' : ''}`}
                     />
                   </div>
                 </div>

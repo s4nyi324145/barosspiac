@@ -1,12 +1,15 @@
-import { useState, useRef, useEffect } from "react";
-import { useNavigate } from "react-router-dom";
+import { useState, useRef, useEffect, useEffectEvent } from "react";
+import { useNavigate,useParams } from "react-router-dom";
 import { X, Upload, ImagePlus, ChevronRight, Tag, MapPin, Package } from "lucide-react";
 import Navbar from "../components/Navbar";
 import api from "../config/api";
+import Categories from "../components/Categories";
 
 export default function SellPage() {
     const navigate = useNavigate()
     const fileInputRef = useRef(null)
+    const { product_id } = useParams()
+    const isEditing = !!product_id
 
     const conditions = [
         { id: "uj", label: "Új", desc: "Soha nem volt használva", color: "green" },
@@ -41,17 +44,45 @@ export default function SellPage() {
             setCategories(response.data)
 
 
-
         } catch (error) {
             console.log(error)
         }
 
     }
 
-    useEffect(() => { getCategories() }, [])
-    useEffect(() => { console.log(form) }, [form])
+
+    useEffect(() =>{getCategories()}, [])
     useEffect(() => { console.log(images) }, [images])
+    useEffect(() => { console.log(form) }, [form])
     //useEffect(() => { console.log(categories) }, [categories])
+    useEffect(() => {
+        
+            const getProduct = async () =>{
+                if (isEditing && categories.length > 0) {
+                    const result = await api.get(`/product/${product_id}`)
+                    const p =  result.data[0]
+                    console.log(p);
+                    setForm({
+                        title: p.product_title ,
+                        desc: p.product_desc || '',
+                        price: p.product_price || '',
+                        condition: p.product_condition || '',
+                        size: p.product_size || '',
+                        subject: p.product_subject || '',
+                        collpoint: p.product_collpoint || '',
+                        category_id: p.category_id || '',
+                        sub_category_id: p.sub_category_id || '',
+                        sub_sub_category_id: p.sub_sub_category_id || '',
+                    })
+                }
+            }
+
+            getProduct()
+        
+    
+    }, [product_id, categories])
+
+    
 
     const handleImageUpload = (files) => {
         const newImages = Array.from(files)
@@ -79,12 +110,13 @@ export default function SellPage() {
     return (
         <>
             <Navbar />
+            <Categories/>
             <div className="min-h-screen bg-slate-950 text-white">
 
                 {/* Fejléc */}
                 <div className="border-b border-slate-800 px-8 py-6">
-                    <h1 className="text-2xl font-bold text-white">Hirdetés feladása</h1>
-                    <p className="text-slate-500 text-sm mt-1">Töltsd ki az adatokat és add fel a hirdetésed</p>
+                    <h1 className="text-2xl font-bold text-white">{isEditing ? "Hírdetés szerkesztése" : "Hirdetés feladása"}</h1>
+                    <p className="text-slate-500 text-sm mt-1">{isEditing ? "Módosítsd a hírdetésed adatait" : "Töltsd ki az adatokat és add fel a hirdetésed"}</p>
                 </div>
 
                 <div className="flex gap-8 p-8 max-w-6xl mx-auto">
@@ -352,7 +384,7 @@ export default function SellPage() {
                                         : 'bg-slate-800 text-slate-600 cursor-not-allowed'
                                 }`}
                             >
-                                Hirdetés feladása
+                                {isEditing ? "Hírdetés módosítása" : "Hírdetés feladása"}
             
                             </button>
                             <button

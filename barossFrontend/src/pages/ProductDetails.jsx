@@ -41,7 +41,7 @@ export default function ProductDetails(){
             </div>
             <div className="p-5 flex justify-between">
                 <ProductUserInfo productDetail={productDetail[0]}/>
-                <ProductDescButton openReportModal={openReportModal} setOpenReportModal={setOpenReportModal}/>
+                <ProductDescButton productDetail={productDetail[0]} openReportModal={openReportModal} setOpenReportModal={setOpenReportModal}/>
             </div>
             
             <SimilarProducts  productDetail={productDetail[0]}/>

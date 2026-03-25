@@ -5,6 +5,7 @@ import PersonalSetting from "../components/PersonalSetting"
 import SecuritySetting from "../components/SecuritySetting"
 import NotificationSetting from "../components/NotificationSetting"
 import ProfileSetting from "../components/ProfileSetting"
+import Categories from "../components/Categories"
 export default function Settings(){
 
     const [activeSection, setActiveSection] = useState('személyes')
@@ -13,6 +14,7 @@ export default function Settings(){
     return(<>
             <div className="bg-slate-950">
                     <Navbar/>
+                    <Categories/>
                     <div className="flex">
                         <SettingsNavBar activeSection={activeSection} setActiveSection={setActiveSection}/>
                         {activeSection === 'személyes' && <PersonalSetting/> }

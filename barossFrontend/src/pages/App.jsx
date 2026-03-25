@@ -12,7 +12,7 @@ import Settings from "./Settings";
 import Upload from "./Upload";
 import Messages from "./Messages";
 import Profile from "./Profile";
-
+import Notifications from "./Notifications";
 export default function App() {
   return (
     <AuthProvider>
@@ -29,7 +29,9 @@ export default function App() {
           <Route path="/profile/:user_id" element={<Profile/>}/>
           <Route path="/settings" element={<Settings/>}/>
           <Route path="/upload" element={<Upload/>}/>
+          <Route path="/upload/:product_id" element={<Upload/>}/>
           <Route path="/messages" element={<Messages/>}/>
+          <Route path="/notifications" element={<Notifications/>}/>
         </Routes>
       </BrowserRouter>
     </ToastProvider>

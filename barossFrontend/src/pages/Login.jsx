@@ -91,7 +91,7 @@ export default function Login(){
                         if(errorField.includes("email")) setErrorField("");
                       }}
                       placeholder="kovacs.anna.400@dszcbaross.edu.hu"
-                      className={`w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 ${errorField.includes("email") ? 'border-red-600' : ''}`}
+                      className={`w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 ${errorField.includes("email") ? 'border-red-500' : ''}`}
                     />
                   </div>
                 </div>
@@ -101,7 +101,7 @@ export default function Login(){
                   <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                     Jelszó
                   </label>
-                  <div className={`flex items-center group ${errorField.includes("psw") ? 'border-red-600' : ''} bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200`}>
+                  <div className={`flex items-center group ${errorField.includes("psw") ? 'border-red-500' : ''} bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200`}>
                     <Lock className="w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors duration-200 shrink-0" />
                     {hidePassword ? <input
                       type='password'

@@ -6,6 +6,7 @@ import api from "../config/api"
 import { useToast } from "../context/toastContext"
 import { useAuth } from "../context/authContext"
 import { useNavigate } from "react-router-dom"
+import Conversations from "./Conversations"
 
 export default function ProductDesc({ productDetail, product_id }) {
 
@@ -42,6 +43,20 @@ export default function ProductDesc({ productDetail, product_id }) {
             const result = await api.delete(`/likes/unlike/${productDetail.product_id}`)
             showSuccess(result.data.message)
             setLiked(false)
+        } catch (error) {
+            console.log(error)
+        }
+    }
+
+    const startConversation = async () =>{
+        try {
+            const result = await api.post("/conversations/conversation", {
+                user2_id : productDetail.user_id
+            })
+            console.log(result.data);
+            navigate('/messages', { state: { selectedConversation: result.data } })
+
+
         } catch (error) {
             console.log(error)
         }
@@ -128,7 +143,7 @@ export default function ProductDesc({ productDetail, product_id }) {
 
                 {/* Gombok */}
                 <div className="flex flex-col gap-2 mt-2">
-                    <button className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/25 hover:-translate-y-0.5">
+                    <button onClick={() => startConversation()} className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/25 hover:-translate-y-0.5">
                         Érdekel →
                     </button>
                     {liked ? 

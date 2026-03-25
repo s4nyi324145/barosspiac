@@ -11,18 +11,18 @@ export default function BrowserCards({ filter, setFilter }) {
 
     const getProducts = async () => {
         try {
-          
+
             const result = await api.get("/product/getProduct")
             console.log(result)
             setProducts(result.data)
             setLoading(false)
-         
+
 
         } catch (error) {
             console.log(error)
             setLoading(false)
         }
- 
+
     }
 
 
@@ -63,36 +63,39 @@ export default function BrowserCards({ filter, setFilter }) {
 
     return (<>
 
-      <div className="grid grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-auto scrollbar-hide  min-h-screen max-h-screen auto-rows-min  xl:grid-cols-5 gap-3 p-4 ">
+        <div className={` ${filteredProduct.length == 0 && loading === false ? "flex flex-1" :  "grid"}  grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-auto scrollbar-hide  min-h-screen max-h-screen auto-rows-min  xl:grid-cols-5 gap-3 p-4 `}>
             {loading
-            ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
-            : filteredProduct.map(p => <ProductCard key={p.product_id} p={p} />)
-}
+                ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
+                : filteredProduct.map(p => <ProductCard key={p.product_id} p={p} />)
+            }
+
+            {filteredProduct.length == 0 && loading === false && (
+                <div className="flex flex-1  flex-col items-center justify-center h-96 gap-4 text-center">
+                    <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700/60 flex items-center justify-center">
+                        <SearchX className="w-8 h-8 text-slate-600" />
+                    </div>
+                    <div className="flex flex-col gap-1">
+                        <p className="text-white font-semibold text-lg">Nincs találat</p>
+                        <p className="text-slate-500 text-sm max-w-xs">
+                            Próbálj más szűrőkkel keresni, vagy töröld a jelenlegi szűrőket.
+                        </p>
+                    </div>
+                    <button
+                        onClick={() => setFilter({ category: null, subcategory: null, item: null, condition: [], size: [], subject: null, priceMin: null, priceMax: null })}
+                        className="text-sm text-blue-400 hover:text-blue-300 border border-blue-500/30 hover:border-blue-400/50 bg-blue-500/10 px-4 py-2 rounded-xl transition-all duration-200"
+                    >
+                        Szűrők törlése
+                    </button>
+                </div>
+            )}
+
         </div>
 
 
-{filteredProduct.length === 0  && loading === false && (
-            <div className="flex flex-col items-center justify-center h-96 gap-4 text-center">
-                <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700/60 flex items-center justify-center">
-                    <SearchX className="w-8 h-8 text-slate-600" />
-                </div>
-                <div className="flex flex-col gap-1">
-                    <p className="text-white font-semibold text-lg">Nincs találat</p>
-                    <p className="text-slate-500 text-sm max-w-xs">
-                        Próbálj más szűrőkkel keresni, vagy töröld a jelenlegi szűrőket.
-                    </p>
-                </div>
-                <button
-                    onClick={() => setFilter({ category: null, subcategory: null, item: null, condition: [], size: [], subject: null, priceMin: null, priceMax: null })}
-                    className="text-sm text-blue-400 hover:text-blue-300 border border-blue-500/30 hover:border-blue-400/50 bg-blue-500/10 px-4 py-2 rounded-xl transition-all duration-200"
-                >
-                    Szűrők törlése
-                </button>
-            </div>
-        )}
 
-      
-        
+
+
+
 
 
     </>)

@@ -6,6 +6,7 @@ import ProfileTabs from "../components/ProfileTabs"
 import ProfileHeader from "../components/ProfileHeader"
 import { useParams } from "react-router-dom"
 import ReportModal from "../components/reportModal"
+import Categories from "../components/Categories"
 export default function Profile() {
     const { user } = useAuth()
     const { user_id } = useParams()
@@ -39,6 +40,7 @@ export default function Profile() {
             <div className="flex flex-col min-h-screen bg-slate-950">
             {openReportModal && <ReportModal type={"user"} reported_id={user_id} product_id={null} openReportModal={openReportModal} setOpenReportModal={setOpenReportModal}/>}
                 <Navbar />
+                <Categories/>
                 <ProfileHeader openReportModal={openReportModal} setOpenReportModal={setOpenReportModal} owner={owner} user={userData} />
                 <ProfileTabs getUserData={getUserData} owner={owner} user={userData} />
             </div>
