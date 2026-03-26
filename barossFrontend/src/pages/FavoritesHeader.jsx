@@ -3,7 +3,7 @@ import { Trash2 } from "lucide-react";
 import api from "../config/api";
 
 
-export default function FavoritesHeader({ favoritesCount, deleteAllLikes }) {
+export default function FavoritesHeader({ favoritesCount, showWarningModal, setShowWarningModal }) {
     //console.log(favoritesCount);
 
     
@@ -26,7 +26,7 @@ export default function FavoritesHeader({ favoritesCount, deleteAllLikes }) {
             {/* Jobb oldal */}
             {favoritesCount > 0 && (
                 <button
-                    onClick={() => {deleteAllLikes()}}
+                    onClick={() => {setShowWarningModal(!showWarningModal)}}
                     className="flex items-center gap-2 text-sm font-medium text-red-400 hover:text-white border border-red-500/30 hover:bg-red-500/20 px-4 py-2 rounded-xl transition-all duration-200"
                 >
                     <Trash2 className="w-4 h-4" />

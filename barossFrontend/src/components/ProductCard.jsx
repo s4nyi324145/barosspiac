@@ -4,11 +4,13 @@ import { Heart } from "lucide-react"
 import api from "../config/api"
 import { useState } from "react"
 import { useToast } from "../context/toastContext"
+import { useAuth } from "../context/authContext"
 
 export default function ProductCard({ p }) {
 
     const [isLiked, setIsLiked] = useState(p.is_liked == 1);
-    const {showSuccess} = useToast()
+    const { showSuccess } = useToast()
+    const { user } = useAuth()
 
     const navigate = useNavigate()
     const sendLike = async () => {
@@ -34,7 +36,7 @@ export default function ProductCard({ p }) {
 
     const handleLike = (e) => {
         e.stopPropagation();
-        
+
         if (isLiked) {
             removeLike();
             setIsLiked(false);
@@ -69,15 +71,17 @@ export default function ProductCard({ p }) {
                     </span>
                 )}
 
-                <span className="absolute top-2 right-2 cursor-pointer">
-                    <Heart
-                        onClick={(e) => { handleLike(e) }}
-                        className={`w-5 h-5 transition-all duration-200 hover:scale-110 ${isLiked
+                {user.user_id != p.user_id &&
+                    <span className="absolute top-2 right-2 cursor-pointer">
+                        <Heart
+                            onClick={(e) => { handleLike(e) }}
+                            className={`w-5 h-5 transition-all duration-200 hover:scale-110 ${isLiked
                                 ? "fill-red-500 text-red-500"
                                 : "fill-transparent opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-400"
-                            }`}
-                    />
-                </span>
+                                }`}
+                        />
+                    </span>
+                }
 
             </div>
 

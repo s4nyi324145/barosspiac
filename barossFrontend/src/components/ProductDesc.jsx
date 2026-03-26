@@ -6,6 +6,7 @@ import api from "../config/api"
 import { useToast } from "../context/toastContext"
 import { useAuth } from "../context/authContext"
 import { useNavigate } from "react-router-dom"
+import { Pencil, Trash2 } from "lucide-react"
 import Conversations from "./Conversations"
 
 export default function ProductDesc({ productDetail, product_id }) {
@@ -48,10 +49,10 @@ export default function ProductDesc({ productDetail, product_id }) {
         }
     }
 
-    const startConversation = async () =>{
+    const startConversation = async () => {
         try {
             const result = await api.post("/conversations/conversation", {
-                user2_id : productDetail.user_id
+                user2_id: productDetail.user_id
             })
             console.log(result.data);
             navigate('/messages', { state: { selectedConversation: result.data } })
@@ -69,7 +70,7 @@ export default function ProductDesc({ productDetail, product_id }) {
 
     useEffect(() => { console.log(liked) }, [liked])
 
-    
+
 
 
     return (<>
@@ -142,20 +143,40 @@ export default function ProductDesc({ productDetail, product_id }) {
                 </div>
 
                 {/* Gombok */}
-                <div className="flex flex-col gap-2 mt-2">
+                {user.user_id != productDetail.user_id ? <div className="flex flex-col gap-2 mt-2">
                     <button onClick={() => startConversation()} className="w-full py-3.5 bg-blue-600 hover:bg-blue-500 text-white font-semibold rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/25 hover:-translate-y-0.5">
                         Érdekel →
                     </button>
-                    {liked ? 
-                        <button onClick={() => removeLike() }  className="w-full py-3.5 bg-red-800 hover:bg-red-700 border border-slate-700/60  text-slate-300 hover:text-white font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
-                            <Heart  className="w-5 h-5" />                           
-                        </button> 
-                    :
+                    {liked ?
+                        <button onClick={() => removeLike()} className="w-full py-3.5 bg-red-800 hover:bg-red-700 border border-slate-700/60  text-slate-300 hover:text-white font-bold rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
+                            <Heart className="w-5 h-5" />
+                        </button>
+                        :
                         <button onClick={() => user ? sendLike() : navigate('/login')} className="w-full py-3.5 bg-slate-800 hover:bg-slate-700 border border-slate-700/60 text-slate-300 hover:text-white font-medium rounded-xl transition-all duration-200 flex items-center justify-center gap-2">
                             <Heart className="w-4 h-4" />
                             Kedvencekhez
                         </button>}
-                </div>
+                </div> :
+                    <div className="flex flex-col gap-2  mt-2">
+                        <button
+                            onClick={() => navigate(`/upload/${productDetail.product_id}`)}
+                            className="flex  items-center gap-2 text-sm font-medium text-slate-300 hover:text-white border border-slate-700/60 hover:bg-slate-800 px-3 py-2 rounded-xl transition-all duration-200"
+                        >
+                            <p className="flex flex-1 items-center justify-center gap-2">
+                            <Pencil className="w-4 h-4" />
+                            Szerkesztés
+                            </p>
+                        </button>
+                        <button
+                            onClick={() => setOpenDeleteModal(true)}
+                            className="flex items-center gap-2 text-sm font-medium text-red-400 hover:text-white border border-red-500/30 hover:bg-red-600 px-3 py-2 rounded-xl transition-all duration-200"
+                        >
+                            <p className="flex flex-1 items-center justify-center gap-2">
+                            <Trash2 className="w-4 h-4" />
+                            Törlés
+                            </p>
+                        </button>
+                    </div>}
 
             </div>
 

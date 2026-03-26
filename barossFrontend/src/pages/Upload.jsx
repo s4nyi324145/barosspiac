@@ -53,7 +53,7 @@ export default function SellPage() {
 
     useEffect(() =>{getCategories()}, [])
     useEffect(() => { console.log(images) }, [images])
-    useEffect(() => { console.log(form) }, [form])
+    //useEffect(() => { console.log(form) }, [form])
     //useEffect(() => { console.log(categories) }, [categories])
     useEffect(() => {
         
@@ -96,8 +96,14 @@ export default function SellPage() {
     }
 
     const handleProductUpload = async () =>{
+        console.log(form);
         try {
-            const result = await api.post('')
+            const result = await api.post('/product/postProduct', {
+                form: form,
+                images: images[0].file
+            })
+            console.log(result.data);
+            
         } catch (error) {
             console.log(error)
         }
@@ -377,7 +383,7 @@ export default function SellPage() {
                             {/* Submit gomb */}
                             <button
                                 disabled={!isValid}
-                                onClick={() => handleProductUpload}
+                                onClick={() => handleProductUpload()}
                                 className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 mt-2 ${
                                     isValid
                                         ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20 hover:-translate-y-0.5'
