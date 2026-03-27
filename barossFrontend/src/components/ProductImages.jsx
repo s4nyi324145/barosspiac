@@ -1,6 +1,6 @@
 
 
-export default function ProductImages(){
+export default function ProductImages({product_img}){
 
 
     return(<>

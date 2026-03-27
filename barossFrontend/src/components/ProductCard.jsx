@@ -1,6 +1,6 @@
 import { MapPin } from "lucide-react"
 import { useNavigate } from "react-router-dom"
-import { Heart } from "lucide-react"
+import { Heart, ImageOff } from "lucide-react"
 import api from "../config/api"
 import { useState } from "react"
 import { useToast } from "../context/toastContext"
@@ -53,8 +53,19 @@ export default function ProductCard({ p }) {
         >
 
             {/* Kép */}
-            <div className="w-full h-36 bg-slate-800 flex items-center justify-center text-slate-600 text-sm relative">
-                kép
+
+        <div className="w-full h-40 bg-slate-800 relative overflow-hidden">
+                {p.product_img ? (
+                    <img
+                        src={p.product_img}
+                        alt={p.product_title}
+                        className="w-full h-full  transition-transform duration-300 group-hover:scale-105"
+                    />
+                ) : (
+                    <div className="w-full h-full flex items-center justify-center">
+                        <ImageOff className="w-8 h-8 text-slate-600" />
+                    </div>
+                )}
                 {/* Állapot badge */}
                 <span className={`absolute top-2 left-2 text-xs font-medium px-2 py-0.5 rounded-full ${p.product_condition === 'Új' ? 'bg-green-500/20 text-green-400 border border-green-500/30' :
                     p.product_condition === 'Kiváló' ? 'bg-blue-500/20 text-blue-400 border border-blue-500/30' :

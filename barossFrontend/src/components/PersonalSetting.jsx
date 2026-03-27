@@ -5,8 +5,10 @@ import { useToast } from "../context/toastContext"
 import { Upload, Trash2, User, GraduationCap, Mail, Save } from "lucide-react"
 export default function PersonalSetting() {
 
-    const { user } = useAuth()
-    const [newFullname, setNewFullName] = useState("")
+    const { user, loading } = useAuth()
+    if(loading) return null
+    console.log(user?.fullname);
+    const [newFullname, setNewFullName] = useState(!(user?.fullname) ? "" : user.fullname)
     const [newClass, setNewClass] = useState("")
     const {showSuccess, showError} = useToast()
 
@@ -65,8 +67,7 @@ export default function PersonalSetting() {
                         <User className="w-4 h-4 text-slate-500 shrink-0" />
                         <input
                             type="text"
-
-                            value={newFullname == "" ? user.fullname : newFullname}
+                            value={newFullname}
                             onChange={(e) => setNewFullName(e.target.value)}
                             className="bg-transparent flex-1 outline-none text-sm text-slate-200 placeholder-slate-600"
                         />

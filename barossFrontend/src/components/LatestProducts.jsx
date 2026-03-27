@@ -34,7 +34,7 @@ export default function LatestProducts() {
             <div className="overflow-hidden">
                 <div className="flex items-center flex-nowrap card-flow p-5 gap-6">
                     {[...products,...products ,...products].map((p, i) => (
-                        <div key={i} className="min-w-56 w-56">
+                        <div key={i} className="min-w-60 w-60">
                             <ProductCard p={p} />
                         </div>
                     ))}

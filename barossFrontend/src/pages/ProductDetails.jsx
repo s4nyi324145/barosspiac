@@ -36,7 +36,7 @@ export default function ProductDetails(){
 
             <Navbar/>
             <div className="flex  p-5  bg-slate-950 flex-1">
-                <ProductImages/>
+                <ProductImages product_img={productDetail.product_img} />
                 <ProductDesc product_id={product_id} productDetail={productDetail[0]}/>
             </div>
             <div className="p-5 flex justify-between">
