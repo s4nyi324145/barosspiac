@@ -8,6 +8,7 @@ import SimilarProducts from "../components/SimilarProducts";
 import ProductDescButton from "../components/ProductDescButtons";
 import ProductUserInfo from "../components/ProductUserInfo";
 import ReportModal from "../components/reportModal";
+import Footer from "../components/Footer";
 export default function ProductDetails(){
 
     const {product_id} = useParams()
@@ -45,7 +46,7 @@ export default function ProductDetails(){
             </div>
             
             <SimilarProducts  productDetail={productDetail[0]}/>
-
+            <Footer/>
             
 
         </div>

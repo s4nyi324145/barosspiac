@@ -12,6 +12,7 @@ import {
 import Navbar from "../components/Navbar";
 import api from "../config/api";
 import Categories from "../components/Categories";
+import Footer from "../components/Footer";
 
 export default function SellPage() {
   const navigate = useNavigate();
@@ -507,6 +508,7 @@ export default function SellPage() {
           </div>
         </div>
       </div>
+      <Footer/>
     </>
   );
 }

@@ -6,6 +6,7 @@ import { useEffect, useState } from "react"
 import FavoritesContainer from "../components/FavoritesContainer"
 import { useToast } from "../context/toastContext"
 import { Trash2 } from "lucide-react"
+import Footer from "../components/Footer"
 export default function Favorites() {
 
 
@@ -85,6 +86,7 @@ export default function Favorites() {
             <Categories />
             <FavoritesHeader deleteAllLikes={deleteAllLikes} setShowWarningModal={setShowWarningModal} showWarningModal={showWarningModal} favoritesCount={likedProducts.length} />
             <FavoritesContainer loading={loading} likedProducts={likedProducts} />
+            <Footer/>
         </div>
     </>)
 }

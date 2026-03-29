@@ -7,6 +7,7 @@ import ProfileHeader from "../components/ProfileHeader"
 import { useParams } from "react-router-dom"
 import ReportModal from "../components/reportModal"
 import Categories from "../components/Categories"
+import Footer from "../components/Footer"
 export default function Profile() {
     const { user } = useAuth()
     const { user_id } = useParams()
@@ -43,6 +44,7 @@ export default function Profile() {
                 <Categories/>
                 <ProfileHeader openReportModal={openReportModal} setOpenReportModal={setOpenReportModal} owner={owner} user={userData} />
                 <ProfileTabs getUserData={getUserData} owner={owner} user={userData} />
+                <Footer/>
             </div>
         </>
     );

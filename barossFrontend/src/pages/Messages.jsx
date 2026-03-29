@@ -5,6 +5,7 @@ import { SearchX } from "lucide-react";
 import ChatPanel from "../components/ChatPanel";
 import Categories from "../components/Categories";
 import { useLocation } from "react-router-dom";
+import Footer from "../components/Footer";
 export default function Messages() {
 
     const location = useLocation()
@@ -34,6 +35,7 @@ export default function Messages() {
                     <ChatPanel selectedConversation={selectedConversation} setSelectedConversation={setSelectedConversation} />
                 }
             </div>
+            <Footer/>
         </div>
 
     </>)

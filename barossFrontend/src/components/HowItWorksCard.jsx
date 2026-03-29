@@ -1,17 +1,24 @@
 
-export default function HowItWorksCard({image,number,title,desc}){
+export default function HowItWorksCard({ image, number, title, desc }) {
 
-    return(<>
-            
-            <div className=' relative max-w-60 bg-white border-2 shadow-lg hover:-translate-y-5 cursor-pointer transition-transform  border-gray-200 mt-[-120px]  rounded-md p-5 text-center flex flex-col gap-2 items-center'>
-                    <div className='absolute bg-white border-2 border-gray-200   rounded-full text-xl w-12 h-12 flex items-center justify-center   top-[-25px] backdrop-blur-sm '>
-                        <p className='border-2 border-slate-950 rounded-full px-2.5 py-0.5'>{number}</p>
-                    </div>
-                    <img className='max-w-xs ' src={image} alt="Regisztráció illusztráció" />
-                    <h1 className='text-xl font-semibold text-blue-800'>{title}</h1>
-                    <p className='text-sm'>{desc}</p>
-                </div>
+    return (<>
 
-    
+        <div className="relative bg-slate-900 border border-slate-700/60 rounded-2xl p-6 pt-10 text-center flex flex-col gap-3 items-center hover:-translate-y-2 transition-transform duration-200 cursor-pointer shadow-xl">
+
+            {/* Szám badge */}
+            <div className="absolute top-[-18px] w-10 h-10 rounded-xl bg-blue-600 flex items-center justify-center shadow-lg shadow-blue-600/30">
+                <p className="text-white font-bold text-sm">{number}</p>
+            </div>
+
+            {/* Illusztráció */}
+            <img className="w-40 h-40 object-contain" src={image} alt={title} />
+
+            {/* Szöveg */}
+            <h2 className="text-lg font-semibold text-white">{title}</h2>
+            <p className="text-slate-400 text-sm leading-relaxed">{desc}</p>
+
+        </div>
+
+
     </>)
 }

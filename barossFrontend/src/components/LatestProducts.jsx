@@ -3,33 +3,21 @@ import api from "../config/api"
 import { ArrowRight } from "lucide-react"
 import ProductCard from "./ProductCard"
 import { useNavigate } from "react-router-dom"
-export default function LatestProducts() {
+export default function LatestProducts({products}) {
 
-    const [products, setProducts] = useState([])
+
     const navigate = useNavigate()
 
-    const getLatestProducts = async () => {
-        try {
-            const result = await api.get('/product/latestProduct')
-            setProducts(result.data)
-        } catch (error) {
-            console.log(error.response)
-        }
-
-    }
+    
 
     useEffect(() => {
-        getLatestProducts()
-    }, [])
-
-    useEffect(() => {
-        console.log(products);
+        //console.log(products);
     }, [products])
 
 
     return (<>
-        <div className=" pb-7 bg-slate-950 flex flex-col gap-6 flex-1">
-            <h1 className="text-3xl font-medium pl-7 text-blue-500">Legújabb termékek</h1>
+        <div className=" pb-7 mt-4   bg-slate-950 flex flex-col gap-6 flex-1">
+            <h1 className="text-3xl font-medium lg:pl-7 pl-0 text-center lg:text-left text-blue-500">Legújabb termékek</h1>
 
             <div className="overflow-hidden">
                 <div className="flex items-center flex-nowrap card-flow p-5 gap-6">
