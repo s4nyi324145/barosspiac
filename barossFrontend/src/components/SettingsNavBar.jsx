@@ -10,9 +10,9 @@ export default function SettingsNavBar({activeSection, setActiveSection}){
     ]
     
     return (
-        <div className="bg-slate-900 border-r border-slate-800 w-52 min-w-52 min-h-screen p-3">
-            <h1 className="text-white text-lg font-bold px-3 py-4">Beállítások</h1>
-            <div className="flex flex-col gap-1">
+        <div className="bg-slate-900 border-r  border-slate-800 md:w-52 md:min-w-52 md:min-h-screen p-3">
+            <h1 className="text-white text-lg text-center md:text-left font-bold px-3 py-4">Beállítások</h1>
+            <div className="flex flex-1 justify-around flex-wrap flex-row md:flex-col gap-1">
                 {navBarSections.map(s => (
                     <button
                         key={s.id}

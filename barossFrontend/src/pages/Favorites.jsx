@@ -5,7 +5,7 @@ import api from "../config/api"
 import { useEffect, useState } from "react"
 import FavoritesContainer from "../components/FavoritesContainer"
 import { useToast } from "../context/toastContext"
-import { Trash2 } from "lucide-react"
+import { Trash2, ArrowUpDown } from "lucide-react"
 import Footer from "../components/Footer"
 export default function Favorites() {
 

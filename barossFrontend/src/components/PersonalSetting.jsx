@@ -39,18 +39,18 @@ export default function PersonalSetting() {
             </div>
 
             {/* Profilkép szekció */}
-            <div className="flex items-center  gap-6 bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
+            <div className="flex items-center flex-col sm:flex-row gap-6 bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-3xl shrink-0 shadow-lg shadow-blue-500/20">
                     {user.fullname?.charAt(0).toUpperCase()}
                 </div>
                 <div className="flex flex-col gap-2">
-                    <p className="font-semibold text-white">Profilkép</p>
-                    <p className="text-slate-500 text-xs">JPG vagy PNG, maximum 2MB</p>
-                    <div className="flex gap-2 mt-1">
-                        <button className="flex items-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-xl transition-all duration-200">
+                    <p className="font-semibold text-center sm:text-left text-white">Profilkép</p>
+                    <p className="text-slate-500 text-center sm:text-left text-xs">JPG vagy PNG, maximum 2MB</p>
+                    <div className="flex flex-col  sm:flex-row gap-2 mt-1">
+                        <button className="flex items-center justify-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 px-3 py-1.5 rounded-xl transition-all duration-200">
                             <Upload className="w-3.5 h-3.5" /> Feltöltés
                         </button>
-                        <button className="flex items-center gap-2 text-sm font-medium text-red-400 hover:text-white border border-red-500/30 hover:bg-red-500/20 px-3 py-1.5 rounded-xl transition-all duration-200">
+                        <button className="flex items-center justify-center gap-2 text-sm font-medium text-red-400 hover:text-white border border-red-500/30 hover:bg-red-500/20 px-3 py-1.5 rounded-xl transition-all duration-200">
                             <Trash2 className="w-3.5 h-3.5" /> Törlés
                         </button>
                     </div>
@@ -105,7 +105,7 @@ export default function PersonalSetting() {
             </div>
 
             {/* Mentés */}
-            <div className="flex justify-end">
+            <div className="flex justify-center md:justify-end">
                 <button onClick={() => handleSubmit()} className="flex items-center gap-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 px-6 py-2.5 rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/20">
                     <Save className="w-4 h-4" />
                     Változtatások mentése

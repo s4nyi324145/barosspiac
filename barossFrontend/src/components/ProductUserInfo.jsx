@@ -30,7 +30,7 @@ export default function ProductUserInfo({ productDetail }) {
 
     return (<>
         {/* Eladó szekció */}
-        <div className="flex items-center gap-5 w-fit bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
+        <div className="flex items-center justify-center gap-5 w-fit bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
 
             {/* Avatar */}
             <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-semibold text-sm shrink-0">

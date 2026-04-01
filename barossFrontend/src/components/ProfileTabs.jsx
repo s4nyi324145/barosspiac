@@ -44,7 +44,7 @@ export default function ProfileTabs({ getUserData,user, owner }) {
     return (<>
 
         {openCommentModal && <CommentModal getUserData={getUserData} getProductCards={getProductCards} setOpenCommentModal={setOpenCommentModal} />}
-        <div className="flex gap-4 pl-6">
+        <div className="flex  flex-1 justify-around md:pl-6 md:justify-start md:gap-6 ">
             {[
                 { id: 'aktiv', label: 'Aktív hirdetések' },
                 { id: 'eladott', label: 'Eladott hirdetések' },

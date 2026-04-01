@@ -36,6 +36,7 @@ export default function Navbar() {
                     <Search className="w-4 h-4 text-slate-500 group-focus-within:text-blue-400 shrink-0" />
                     <input
                         type="text"
+                        
                         className="bg-transparent w-full outline-none text-sm text-slate-200 placeholder-slate-600"
                         placeholder="Keresés..."
                     />

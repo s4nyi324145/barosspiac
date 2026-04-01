@@ -22,7 +22,7 @@ export default function Profile() {
     const getUserData = async () => {
         try {
             const result = await api.get(`user/statistic/${user_id}`)
-            
+            console.log();
             setUserData(result.data)
         } catch (error) {
             console.log(error)

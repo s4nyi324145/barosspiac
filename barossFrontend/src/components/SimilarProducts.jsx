@@ -26,10 +26,10 @@ export default function SimilarProducts({productDetail}){
     useEffect(() => console.log(similarProducts));
 
     return(<>
-        <div className="flex flex-col flex-1">
-            <h1 className="p-5 text-xl">Hasonló hírdetések</h1>
+        <div className="flex flex-col  flex-1">
+            <h1 className="p-5 text-xl text-center md:text-left">Hasonló hírdetések</h1>
 
-           <div className="grid grid-cols-4   p-4 gap-4">
+           <div className="grid grid-cols-2  lg:grid-cols-4   p-4 gap-4">
             {similarProducts.map((p,index) => (
                     <ProductCard key={index} p={p}/>
 

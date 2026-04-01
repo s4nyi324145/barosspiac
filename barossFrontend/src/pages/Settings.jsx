@@ -5,6 +5,7 @@ import PersonalSetting from "../components/PersonalSetting"
 import SecuritySetting from "../components/SecuritySetting"
 import NotificationSetting from "../components/NotificationSetting"
 import ProfileSetting from "../components/ProfileSetting"
+import Footer from "../components/Footer"
 import Categories from "../components/Categories"
 export default function Settings(){
 
@@ -15,13 +16,14 @@ export default function Settings(){
             <div className="bg-slate-950">
                     <Navbar/>
                     <Categories/>
-                    <div className="flex">
+                    <div className="flex flex-col md:flex-row">
                         <SettingsNavBar activeSection={activeSection} setActiveSection={setActiveSection}/>
                         {activeSection === 'személyes' && <PersonalSetting/> }
                         {activeSection === 'biztonsag' && <SecuritySetting/> }
                         {activeSection === 'ertesitesek' && <NotificationSetting/> }
                         {activeSection === 'fiok' && <ProfileSetting/> }
                     </div>
+                    <Footer/>
             </div>
     
     </>)

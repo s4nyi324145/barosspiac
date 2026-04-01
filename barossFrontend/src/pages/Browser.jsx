@@ -32,7 +32,7 @@ return (
             />
         )}
 
-        {/* Mobil filter panel — slide-in */}
+        {/* Mobil filter panel */}
         <div className={`fixed top-0 left-0 h-full w-72 bg-slate-900 border-r border-slate-800 z-50 md:hidden overflow-y-auto transition-transform duration-300 ${
             showFilters ? 'translate-x-0' : '-translate-x-full'
         }`}>

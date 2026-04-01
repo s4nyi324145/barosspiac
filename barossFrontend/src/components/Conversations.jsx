@@ -23,7 +23,7 @@ export default function Conversations({selectedConversation, setSelectedConversa
 
 
     return (
-        <div className="flex flex-col flex-[0.2]  h-screen min-w-[260px] border-r border-slate-800 bg-slate-950">
+        <div className="sm:flex flex-col flex-[0.2]  hidden h-screen min-w-[260px] border-r border-slate-800 bg-slate-950">
     
             {/* Fejléc */}
             <div className="p-4 border-b border-slate-800">

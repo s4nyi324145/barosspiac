@@ -13,12 +13,15 @@ import Navbar from "../components/Navbar";
 import api from "../config/api";
 import Categories from "../components/Categories";
 import Footer from "../components/Footer";
+import { useToast } from "../context/toastContext";
 
 export default function SellPage() {
   const navigate = useNavigate();
   const fileInputRef = useRef(null);
   const { product_id } = useParams();
   const isEditing = !!product_id;
+
+  const { showSuccess, showError } = useToast()
 
   const conditions = [
     { id: "uj", label: "Új", desc: "Soha nem volt használva", color: "green" },
@@ -42,7 +45,9 @@ export default function SellPage() {
     "Angol",
   ];
 
-  const [form, setForm] = useState({
+  let savedForm = JSON.parse(localStorage.getItem("form"))
+
+  const [form, setForm] = useState(savedForm || {
     title: "",
     desc: "",
     price: "",
@@ -57,6 +62,8 @@ export default function SellPage() {
   const [images, setImages] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const [categories, setCategories] = useState([]);
+  const [errorField, setErrorField] = useState("")
+  const [loading, setLoading] = useState(false)
 
   const getCategories = async () => {
     try {
@@ -70,19 +77,18 @@ export default function SellPage() {
   useEffect(() => {
     getCategories();
   }, []);
-  useEffect(() => {
-    console.log(images);
-  }, [images]);
+  //useEffect(() => {console.log(images);}, [images]);
   //useEffect(() => { console.log(form) }, [form])
   //useEffect(() => { console.log(categories) }, [categories])
   useEffect(() => {
     const getProduct = async () => {
       if (isEditing && categories.length > 0) {
         const result = await api.get(`/product/${product_id}`);
-        const p = result.data[0];
+        console.log(result.data);
+        const p = result.data.product_details[0];
         console.log(p);
         setForm({
-          title: p.product_title,
+          title: p.product_title ||"",
           desc: p.product_desc || "",
           price: p.product_price || "",
           condition: p.product_condition || "",
@@ -93,6 +99,7 @@ export default function SellPage() {
           sub_category_id: p.sub_category_id || "",
           sub_sub_category_id: p.sub_sub_category_id || "",
         });
+        setImages(result.data.image)
       }
     };
 
@@ -110,7 +117,10 @@ export default function SellPage() {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
+  useEffect(() => { console.log(errorField) }, [errorField])
+
   const handleProductUpload = async () => {
+    setLoading(true)
     try {
       const formData = new FormData();
 
@@ -120,14 +130,40 @@ export default function SellPage() {
 
       images.forEach((img) => formData.append("images", img.file));
 
-     
+
       const result = await api.post("/product/postProduct", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
+      setLoading(false)
+      showSuccess(result.data.message)
+      navigate(`/product/${result.data.product_id}`)
+      localStorage.removeItem("form")
     } catch (error) {
-      console.log(error);
+      showError(error.response?.data?.message || "Hiba történt a bejelentkezés során.")
+      console.error(error.response)
+      setErrorField(error.response?.data?.errorField || "")
+      setLoading(false)
     }
   };
+
+
+
+
+
+  //Save not half-written upload form to localstorage when the form state is changed
+  useEffect(() => {
+
+    const saveToLocalStorage = async () => {
+      try {
+        localStorage.setItem("form", JSON.stringify(form))
+      } catch (error) {
+        console.log(error)
+      }
+    }
+
+    saveToLocalStorage()
+
+  }, [form])
 
   const isValid =
     form.title &&
@@ -156,9 +192,9 @@ export default function SellPage() {
           </p>
         </div>
 
-        <div className="flex gap-8 p-8 max-w-6xl mx-auto">
+        <div className="flex gap-8 p-8 flex-1 flex-col-reverse md:flex-row mx-auto">
           {/* BAL OLDAL — Form */}
-          <div className="flex-[0.6] flex flex-col gap-6">
+          <div className=" flex flex-col flex-[0.6] gap-6">
             {/* Alapadatok */}
             <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 flex flex-col gap-5">
               <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
@@ -175,8 +211,12 @@ export default function SellPage() {
                   type="text"
                   placeholder="pl. Fehér póló, Matek könyv..."
                   value={form.title}
-                  onChange={(e) => setForm({ ...form, title: e.target.value })}
-                  className="bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                  onChange={(e) => {
+                    setForm({ ...form, title: e.target.value });
+                    if (errorField.includes("title")) setErrorField("");
+
+                  }}
+                  className={`bg-slate-800/60 border border-slate-700/60 ${errorField.includes("title") ? 'border-red-600' : ''} rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200`}
                 />
               </div>
 
@@ -198,14 +238,16 @@ export default function SellPage() {
                 <label className="text-sm font-medium text-slate-300">
                   Ár <span className="text-red-400">*</span>
                 </label>
-                <div className="flex items-center gap-3 bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
+                <div className={`flex items-center gap-3 ${errorField.includes("price") ? 'border-red-600' : ''} bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200`}>
                   <input
                     type="number"
                     placeholder="0"
+                    min={0}
                     value={form.price}
-                    onChange={(e) =>
-                      setForm({ ...form, price: e.target.value })
-                    }
+                    onChange={(e) => {
+                      setForm({ ...form, price: e.target.value });
+                      if (errorField.includes("price")) setErrorField("");
+                    }}
                     className="bg-transparent flex-1 outline-none text-sm text-slate-200 placeholder-slate-600 [appearance:textfield] [&::-webkit-outer-spin-button]:appearance-none [&::-webkit-inner-spin-button]:appearance-none"
                   />
                   <span className="text-slate-500 text-sm shrink-0">Ft</span>
@@ -222,7 +264,7 @@ export default function SellPage() {
                 </p>
               </div>
 
-              <div className="flex items-center gap-2 text-sm text-slate-400">
+              <div className="flex flex-col sm:flex-row items-center gap-2 text-sm text-slate-400">
                 <select
                   value={form.category_id}
                   onChange={(e) =>
@@ -312,11 +354,10 @@ export default function SellPage() {
                     <button
                       key={c.id}
                       onClick={() => setForm({ ...form, condition: c.id })}
-                      className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all duration-200 ${
-                        form.condition === c.id
+                      className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all duration-200 ${form.condition === c.id
                           ? `bg-${c.color}-500/20 border-${c.color}-500/50 text-white`
                           : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-500 hover:text-white"
-                      }`}
+                        }`}
                     >
                       <p className="text-sm font-medium">{c.label}</p>
                       <p className="text-xs opacity-60">{c.desc}</p>
@@ -338,11 +379,10 @@ export default function SellPage() {
                         onClick={() =>
                           setForm({ ...form, size: form.size === s ? "" : s })
                         }
-                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${
-                          form.size === s
+                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${form.size === s
                             ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
                             : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
-                        }`}
+                          }`}
                       >
                         {s}
                       </button>
@@ -367,11 +407,10 @@ export default function SellPage() {
                             subject: form.subject === s ? "" : s,
                           })
                         }
-                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${
-                          form.subject === s
+                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${form.subject === s
                             ? "bg-amber-500/20 border-amber-500/50 text-amber-300"
                             : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
-                        }`}
+                          }`}
                       >
                         {s}
                       </button>
@@ -402,7 +441,7 @@ export default function SellPage() {
           </div>
 
           {/* JOBB OLDAL — Képek */}
-          <div className="flex-[0.4] flex flex-col gap-4">
+          <div className=" flex flex-col flex-[0.4] gap-4">
             <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 flex flex-col gap-5 sticky top-6">
               <div className="flex items-center justify-between pb-3 border-b border-slate-800">
                 <div className="flex items-center gap-2">
@@ -430,11 +469,10 @@ export default function SellPage() {
                     handleImageUpload(e.dataTransfer.files);
                   }}
                   onClick={() => fileInputRef.current.click()}
-                  className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${
-                    dragOver
+                  className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${dragOver
                       ? "border-blue-500 bg-blue-500/10"
                       : "border-slate-700 hover:border-blue-500/50 hover:bg-slate-800/30"
-                  }`}
+                    }`}
                 >
                   <Upload
                     className={`w-8 h-8 ${dragOver ? "text-blue-400" : "text-slate-600"}`}
@@ -466,7 +504,7 @@ export default function SellPage() {
                       className="relative  rounded-xl overflow-hidden group"
                     >
                       <img
-                        src={img.preview}
+                        src={img.preview || img.product_img}
                         alt="Termék a fótóról"
                         className="w-full h-full object-cover"
                       />
@@ -488,15 +526,23 @@ export default function SellPage() {
 
               {/* Submit gomb */}
               <button
-                disabled={!isValid}
+                disabled={!isValid || loading}
                 onClick={() => handleProductUpload()}
-                className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 mt-2 ${
-                  isValid
+                className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 mt-2 ${isValid
                     ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20 hover:-translate-y-0.5"
                     : "bg-slate-800 text-slate-600 cursor-not-allowed"
-                }`}
+                  }`}
               >
-                {isEditing ? "Hírdetés módosítása" : "Hírdetés feladása"}
+                {isEditing ? (
+                  "Hírdetés módosítása"
+                ) : loading ? (
+                  <div className="flex  justify-center items-center">
+                    <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                    <p>Betöltés...</p>
+                  </div>
+                ) : (
+                  "Hirdetés feladása"
+                )}
               </button>
               <button
                 onClick={() => navigate("/browser")}
@@ -508,7 +554,7 @@ export default function SellPage() {
           </div>
         </div>
       </div>
-      <Footer/>
+      <Footer />
     </>
   );
 }

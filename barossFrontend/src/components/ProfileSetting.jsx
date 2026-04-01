@@ -85,7 +85,7 @@ export default function ProfileSetting() {
             <div className="bg-red-500/5 border border-red-500/30 rounded-2xl p-6 flex flex-col gap-4">
                 <p className="text-xs text-red-400 uppercase tracking-wider">Veszélyes zóna</p>
 
-                <div className="flex items-center justify-between">
+                <div className="flex flex-wrap items-center gap-2 justify-between">
                     <div className="flex items-center gap-4">
                         <div className="w-9 h-9 rounded-xl bg-red-500/20 border border-red-500/30 flex items-center justify-center shrink-0">
                             <Trash2 className="w-4 h-4 text-red-400" />
@@ -97,7 +97,7 @@ export default function ProfileSetting() {
                     </div>
                     <button
                         onClick={() => setShowDeleteModal(true)}
-                        className="shrink-0 flex items-center gap-2 text-sm font-medium text-red-400 hover:text-white border border-red-500/30 hover:bg-red-600 px-4 py-2 rounded-xl transition-all duration-200"
+                        className="shrink-0 mt-3 flex items-center gap-2 text-sm font-medium text-red-400 hover:text-white border border-red-500/30 hover:bg-red-600 px-4 py-2 rounded-xl transition-all duration-200"
                     >
                         <Trash2 className="w-4 h-4" />
                         Törlés
