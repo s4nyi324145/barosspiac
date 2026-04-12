@@ -39,6 +39,7 @@ export default function ProfileTabs({ getUserData,user, owner }) {
     useEffect(() => {
         getProductCards()
     }, [activeTab, user.user_id])
+
     useEffect(() => { console.log(selectedCards) }, [selectedCards])
 
     return (<>

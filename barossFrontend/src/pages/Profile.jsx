@@ -30,8 +30,7 @@ export default function Profile() {
     }
 
     useEffect(() => {
-        if (user.user_id == user_id) setUserData(user)
-        else { getUserData() }
+        getUserData()
     }, [user_id])
 
     //useEffect(() =>{console.log(` userData: ${userData}`)}, [userData])

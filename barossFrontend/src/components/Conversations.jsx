@@ -1,9 +1,11 @@
-import { Search,MessageCircle  } from "lucide-react"
-import { useEffect, useState } from "react"
+import { Search, MessageCircle } from "lucide-react"
+import { use, useEffect, useState } from "react"
 import api from "../config/api"
-export default function Conversations({selectedConversation, setSelectedConversation}) {
+export default function Conversations({ getUnredMessages, unReadMessages, setUnreadMessages, selectedConversation, setSelectedConversation }) {
 
     const [conversations, setConversations] = useState([])
+    const [searchTerm, setSearchTerm] = useState('')
+    const [filteredConversations, setFilteredConversations] = useState(conversations)
 
     const getConversations = async () => {
 
@@ -11,20 +13,32 @@ export default function Conversations({selectedConversation, setSelectedConversa
 
             const result = await api.get('/conversations/conversations')
             setConversations(result.data)
+            setFilteredConversations(result.data)
         } catch (error) {
             console.log(error);
         }
     }
 
-    useEffect(() => { getConversations() }, [])
+    useEffect(() => {
+        setFilteredConversations(conversations.filter(con => con.fullname.toLowerCase().includes(searchTerm.toLowerCase())))
+
+    },[searchTerm])
+
+   
+
+    useEffect(() => {
+        getConversations()
+        getUnredMessages()
+    }, [])
     useEffect(() => { console.log(conversations) }, [conversations])
+    //useEffect(() => { console.log(unReadMessages) }, [unReadMessages])
 
 
 
 
     return (
-        <div className="sm:flex flex-col flex-[0.2]  hidden h-screen min-w-[260px] border-r border-slate-800 bg-slate-950">
-    
+        <div className={` flex-col   h-screen  border-r border-slate-800 bg-slate-950 ${selectedConversation ? ' hidden sm:flex sm:flex-[0.2] ' : 'flex flex-1 sm:flex sm:flex-[0.2]'}`}>
+
             {/* Fejléc */}
             <div className="p-4 border-b border-slate-800">
                 <h2 className="text-white font-bold text-lg mb-3">Üzenetek</h2>
@@ -34,10 +48,12 @@ export default function Conversations({selectedConversation, setSelectedConversa
                         type="text"
                         className="bg-transparent w-full outline-none text-sm text-slate-200 placeholder-slate-600"
                         placeholder="Keresés..."
+                        value={searchTerm}
+                        onChange={e => setSearchTerm(e.target.value)}
                     />
                 </div>
             </div>
-    
+
             {/* Lista */}
             <div className="flex flex-col overflow-y-auto flex-1">
                 {conversations.length === 0 ? (
@@ -48,21 +64,20 @@ export default function Conversations({selectedConversation, setSelectedConversa
                         <p className="text-slate-500 text-sm">Még nincs egy beszélgetésed sem</p>
                     </div>
                 ) : (
-                    conversations.map(con => (
+                    filteredConversations.map(con => (
                         <div
                             key={con.conversations_id}
                             onClick={() => setSelectedConversation(con)}
-                            className={`flex items-center gap-3 px-4 py-3.5 cursor-pointer border-b border-slate-800/60 transition-all duration-200 ${
-                                selectedConversation?.conversations_id === con.conversations_id
-                                    ? 'bg-blue-600/10 border-l-2 border-l-blue-500'
-                                    : 'hover:bg-slate-800/40 border-l-2 border-l-transparent'
-                            }`}
+                            className={`flex items-center gap-3 px-4 py-3.5 cursor-pointer border-b border-slate-800/60 transition-all duration-200 ${selectedConversation?.conversations_id === con.conversations_id
+                                ? 'bg-blue-600/10 border-l-2 border-l-blue-500'
+                                : 'hover:bg-slate-800/40 border-l-2 border-l-transparent'
+                                }`}
                         >
                             {/* Avatar */}
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
                                 {con.fullname?.charAt(0).toUpperCase()}
                             </div>
-    
+
                             {/* Info */}
                             <div className="flex flex-col flex-1 min-w-0">
                                 <div className="flex items-center justify-between gap-2">
@@ -71,10 +86,25 @@ export default function Conversations({selectedConversation, setSelectedConversa
                                         {new Date(con.sent_at).toLocaleDateString('hu-HU')}
                                     </p>
                                 </div>
-                                <p className="text-slate-500 text-xs truncate mt-0.5">
+
+                                <div className="flex flex-1 justify-between  items-center gap-2">
+                                    <p className="text-slate-500 text-xs truncate mt-0.5">
                                     {con.message ?? 'Még nincs üzenet'}
                                 </p>
+                                 {/* Olvasatlan jelölés */}
+                                {unReadMessages.some(msg => msg.conversations_id === con.conversations_id) && (
+                                    <div className="min-w-5 min-h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center px-1.5">
+                                        {unReadMessages.find(msg => msg.conversations_id === con.conversations_id).unread_count}
+                                    </div>
+                                )}
+                                </div>
                             </div>
+
+                           
+
+
+
+
                         </div>
                     ))
                 )}

@@ -5,12 +5,14 @@ import { useAuth } from "../context/authContext"
 import { User, Tag, Settings, LogOut,Menu, X, Home, LogIn, UserPlus } from "lucide-react"
 import { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
+import { useNotification } from "../context/notificationContext";
 
 export default function Navbar() {
   const { user, logout } = useAuth();
 
   const [showDropdown, setShowDropdown] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false)
+  const { unreadCount } = useNotification()
   const navigate = useNavigate()
 
   useEffect(() => {
@@ -67,10 +69,12 @@ export default function Navbar() {
                         {/* Avatar — mindig látható, desktopon dropdown */}
                         <div
                             id="avatar"
-                            onClick={() => setShowDropdown(!showDropdown)}
+                            onClick={(e) => {
+                                e.stopPropagation();
+                                setShowDropdown(!showDropdown)}}
                             className="hidden md:flex w-9 h-9 rounded-xl relative bg-gradient-to-br from-blue-500 to-blue-700 items-center justify-center text-white font-bold text-sm cursor-pointer shadow-lg shadow-blue-500/20 hover:shadow-blue-500/40 transition-all duration-200"
                         >
-                            {user.fullname?.charAt(0).toUpperCase()}
+                            {user.pfp ? <img  src={user.pfp} alt="Profilkép" className="w-full h-full object-cover rounded-xl" /> : user.fullname?.[0].toUpperCase()}
 
                             {showDropdown && (
                                 <div className="absolute top-11 right-[-20px] w-48 bg-slate-900 border border-slate-700/60 rounded-2xl shadow-2xl shadow-black/40 overflow-hidden z-50">
@@ -84,6 +88,11 @@ export default function Navbar() {
                                         </a>
                                         <a href="/notifications" className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
                                             <Mail className="w-4 h-4" /> Értesítéseim
+                                            {unreadCount > 0 && (
+                                                <span className="text-xs font-semibold bg-blue-500/20 text-blue-400 border border-blue-500/30 px-2.5 py-1 rounded-full">
+                                                    {unreadCount}
+                                                </span>
+                                            )}
                                         </a>
                                         <a href="/settings" className="flex items-center gap-2.5 px-3 py-2 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">
                                             <Settings className="w-4 h-4" /> Beállítások

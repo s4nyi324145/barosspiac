@@ -13,27 +13,32 @@ import Upload from "./Upload";
 import Messages from "./Messages";
 import Profile from "./Profile";
 import Notifications from "./Notifications";
+import PageNotFounnd from "./PageNotFound";
+import { NotificationProvider } from "../context/notificationContext";
 export default function App() {
   return (
     <AuthProvider>
       <ToastProvider>
-      <Toast />
-      <BrowserRouter>
-        <Routes>
-          <Route path="/register" element={<Register />} />
-          <Route path="/login" element={<Login />} />
-          <Route path="/" element={<Home />} />
-          <Route path="/browser" element={<Browser />} />
-          <Route path="/product/:product_id" element={<ProductDetails />} />
-          <Route path="/likes" element={<Favorites />} />
-          <Route path="/profile/:user_id" element={<Profile/>}/>
-          <Route path="/settings" element={<Settings/>}/>
-          <Route path="/upload" element={<Upload/>}/>
-          <Route path="/upload/:product_id" element={<Upload/>}/>
-          <Route path="/messages" element={<Messages/>}/>
-          <Route path="/notifications" element={<Notifications/>}/>
-        </Routes>
-      </BrowserRouter>
+      <NotificationProvider>
+        <Toast />
+        <BrowserRouter>
+          <Routes>
+            <Route path="/register" element={<Register />} />
+            <Route path="/login" element={<Login />} />
+            <Route path="/" element={<Home />} />
+            <Route path="/browser" element={<Browser />} />
+            <Route path="/product/:product_id" element={<ProductDetails />} />
+            <Route path="/likes" element={<Favorites />} />
+            <Route path="/profile/:user_id" element={<Profile/>}/>
+            <Route path="/settings" element={<Settings/>}/>
+            <Route path="/upload" element={<Upload/>}/>
+            <Route path="/upload/:product_id" element={<Upload/>}/>
+            <Route path="/messages" element={<Messages/>}/>
+            <Route path="/notifications" element={<Notifications/>}/>
+            <Route path="*" element={<PageNotFounnd/>}     />
+          </Routes>
+        </BrowserRouter>
+      </NotificationProvider>
     </ToastProvider>
     </AuthProvider>
   )}

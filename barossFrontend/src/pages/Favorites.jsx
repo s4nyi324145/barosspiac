@@ -38,7 +38,7 @@ export default function Favorites() {
     }
 
     useEffect(() => { getLikedProducts() }, [])
-    useEffect(() => { console.log(likedProducts) }, [likedProducts])
+   // useEffect(() => { console.log(likedProducts) }, [likedProducts])
 
 
     return (<>
@@ -85,7 +85,7 @@ export default function Favorites() {
             <Navbar />
             <Categories />
             <FavoritesHeader deleteAllLikes={deleteAllLikes} setShowWarningModal={setShowWarningModal} showWarningModal={showWarningModal} favoritesCount={likedProducts.length} />
-            <FavoritesContainer loading={loading} likedProducts={likedProducts} />
+            <FavoritesContainer getLikedProducts={getLikedProducts} loading={loading} likedProducts={likedProducts} />
             <Footer/>
         </div>
     </>)

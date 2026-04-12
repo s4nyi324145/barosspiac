@@ -87,8 +87,8 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
             <div className="bg-slate-900 border justify-center border-slate-700/60 rounded-2xl p-8 flex flex-wrap gap-8">
 
                 {/* Avatar */}
-                <div className="w-24 h-24 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-4xl shrink-0 shadow-lg shadow-blue-500/20">
-                    {user.fullname?.charAt(0).toUpperCase()}
+                <div className="w-24 h-24 rounded-2xl  bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-4xl shrink-0 shadow-lg shadow-blue-500/20">
+                    {user.pfp ? <img src={user.pfp} alt="Profilkép" className="w-full h-full object-cover rounded-2xl" /> : user.fullname?.[0].toUpperCase()}
                 </div>
 
                 {/* Info */}

@@ -1,11 +1,12 @@
 import { useAuth } from "../context/authContext"
-import { useState, useEffect, useRef } from "react"
+import { useState, useEffect, useRef, use } from "react"
 import { Send, ArrowBigLeft } from "lucide-react"
 import api from "../config/api"
 import socket from '../config/socket'
-export default function ChatPanel({ selectedConversation,setSelectedConversation }) {
+export default function ChatPanel({ getUnredMessages, unReadMessages, setUnreadMessages, selectedConversation, setSelectedConversation }) {
     const { user } = useAuth()
     const [messages, setMessages] = useState([])
+
     const [input, setInput] = useState('')
     const bottomRef = useRef(null)
 
@@ -18,16 +19,24 @@ export default function ChatPanel({ selectedConversation,setSelectedConversation
         }
     }
 
+
+
+
+
     useEffect(() => {
         // Belép a szobába
         socket.emit('join_conversation', selectedConversation.conversations_id)
 
+
         // Új üzenet fogadása
         socket.on('receive_message', (msg) => {
-            setMessages(prev => [...prev, {
-                ...msg,
-                sender: msg.sender_id === selectedConversation.user1_id ? 'user1' : 'user2'
-            }])
+
+            if (msg.conversation_id === selectedConversation.conversations_id) {
+                setMessages(prev => [...prev, msg])
+
+            }
+
+
         })
 
 
@@ -35,15 +44,20 @@ export default function ChatPanel({ selectedConversation,setSelectedConversation
         return () => {
             socket.off('receive_message')
         }
-    }, [selectedConversation])
+    }, [selectedConversation, messages])
+
+
 
     const sendMessage = () => {
         if (!input.trim()) return
-
+        console.log(selectedConversation);
+        
         socket.emit('send_message', {
             conversation_id: selectedConversation.conversations_id,
             sender_id: user.user_id,
-            message: input
+            message: input,
+            message_state: 'Elküldve',
+            sended_id: selectedConversation.user1_id === user.user_id ? selectedConversation.user2_id : selectedConversation.user1_id
         })
 
         setInput('')
@@ -57,12 +71,12 @@ export default function ChatPanel({ selectedConversation,setSelectedConversation
     }, [messages])
 
     return (
-        <div className="flex flex-col sm:flex-[0.8] flex-1 bg-slate-950">
+        <div className={` flex-col   bg-slate-950 ${selectedConversation ? 'flex flex-1  sm:flex-[0.8]' : ' hidden sm:flex-[0.8]'}`}>
 
             {/* Fejléc */}
             <div className="flex gap-12 items-center  px-5 py-4 border-b border-slate-800 bg-slate-900/50">
                 <div className="flex sm:hidden ">
-                    <ArrowBigLeft onClick={() => setSelectedConversation(null)}/>
+                    <ArrowBigLeft onClick={() => setSelectedConversation(null)} />
                 </div>
                 <div className="flex items-center gap-3">
                     <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
@@ -80,7 +94,17 @@ export default function ChatPanel({ selectedConversation,setSelectedConversation
                 {messages.map(msg => {
                     const isMine = msg.sender_id === user.user_id
                     return (
-                        <div key={msg.message_id} className={`flex items-end gap-2 ${isMine ? 'justify-end' : 'justify-start'}`}>
+                        <div onContextMenu={(e) => {
+                                e.preventDefault(); 
+                                if (isMine) {
+                                    if (window.confirm('Biztosan törölni szeretnéd az üzenetet?')) {
+                                        socket.emit('delete_message', { message_id: msg.message_id, conversation_id: selectedConversation.conversations_id })
+                                        setMessages(prev => prev.filter(m => m.message_id !== msg.message_id))
+                                    } 
+                                }
+                            }}  key={msg.message_id} className={`flex items-end gap-2 ${isMine ? 'justify-end' : 'justify-start'}`}>
+
+
 
                             {/* Másik user avatarja */}
                             {!isMine && (
@@ -104,10 +128,19 @@ export default function ChatPanel({ selectedConversation,setSelectedConversation
                                     {msg.message}
                                 </div>
 
-                                {/* Idő */}
-                                <p className="text-slate-600 text-xs px-1">
-                                    {new Date(msg.sent_at).toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })}
-                                </p>
+                               
+                                <div className="flex items-center gap-1">
+                                     {/* Idő */}
+                                    <p className="text-slate-600 text-xs px-1">
+                                        {new Date(msg.sent_at).toLocaleTimeString('hu-HU', { hour: '2-digit', minute: '2-digit' })}
+                                    </p>
+                                     {/* Állapot */}
+                                    {isMine && (
+                                        <p className={`text-slate-600 text-xs px-1 ${msg.message_state === 'Elküldve' ? 'italic' : ''}`}>
+                                            {msg.message_state}
+                                        </p>
+                                    )}
+                                </div>
 
                             </div>
 

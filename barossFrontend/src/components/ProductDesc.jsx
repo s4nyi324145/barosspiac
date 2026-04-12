@@ -194,7 +194,7 @@ export default function ProductDesc({ getProductDetails, productDetail, is_sold 
                         {/* Gombok */}
                         <div className="flex gap-2">
                             <button
-                                onClick={() => setOpenMarkDeleteModal(false)}
+                                onClick={() => setOpenDeleteModal(false)}
                                 className="flex-1 py-2.5 rounded-xl border border-slate-700/60 text-slate-400 hover:text-white hover:bg-slate-800 text-sm font-medium transition-all duration-200"
                             >
                                 Mégse

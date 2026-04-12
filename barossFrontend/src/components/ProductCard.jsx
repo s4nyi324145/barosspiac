@@ -6,7 +6,7 @@ import { useState } from "react"
 import { useToast } from "../context/toastContext"
 import { useAuth } from "../context/authContext"
 
-export default function ProductCard({ p }) {
+export default function ProductCard({ getLikedProducts, p }) {
 
     const [isLiked, setIsLiked] = useState(p.is_liked == 1);
     const { showSuccess } = useToast()
@@ -28,6 +28,7 @@ export default function ProductCard({ p }) {
         try {
             const result = await api.delete(`/likes/unlike/${p.product_id}`)
             showSuccess(result.data.message)
+            getLikedProducts()
 
         } catch (error) {
             console.log(error)

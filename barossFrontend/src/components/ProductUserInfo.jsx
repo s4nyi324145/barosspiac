@@ -33,8 +33,8 @@ export default function ProductUserInfo({ productDetail }) {
         <div className="flex items-center justify-center gap-5 w-fit bg-slate-800/50 border border-slate-700/50 rounded-xl p-4">
 
             {/* Avatar */}
-            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center text-white font-semibold text-sm shrink-0">
-                {productDetail.fullname?.charAt(0).toUpperCase()}
+            <div className="w-10 h-10 rounded-full bg-slate-700 flex items-center justify-center border text-white font-semibold text-sm shrink-0">
+                {productDetail.pfp ? <img src={productDetail.pfp} alt="Profilkép" className="w-full h-full object-cover rounded-full" /> : productDetail.fullname?.[0].toUpperCase()}
             </div>
 
             {/* Info */}

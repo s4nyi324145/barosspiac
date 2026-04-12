@@ -3,7 +3,7 @@ import ProductCard from "../components/ProductCard"
 import { Heart, ArrowRight,ArrowUpDown } from "lucide-react"
 import { Link } from "react-router-dom"
 import { useState, useEffect } from "react"
-export default function FavoritesContainer({ loading, likedProducts }) {
+export default function FavoritesContainer({ getLikedProducts, loading, likedProducts }) {
 
     const [filter, setFilter] = useState({sort: ""})
     const [filteredProduct, setFilteredProduct] = useState([])
@@ -32,6 +32,8 @@ export default function FavoritesContainer({ loading, likedProducts }) {
     }, [likedProducts, filter]);
 
 
+
+
     return (<>
 
         
@@ -55,7 +57,7 @@ export default function FavoritesContainer({ loading, likedProducts }) {
             <div className="grid bg-slate-950 grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 overflow-auto scrollbar-hide  min-h-screen max-h-screen auto-rows-min  xl:grid-cols-5 gap-3 p-4 ">
                 {loading
                     ? Array.from({ length: 12 }).map((_, i) => <ProductCardSkeleton key={i} />)
-                    : filteredProduct.map(p => <ProductCard key={p.product_id} p={p} />)
+                    : filteredProduct.map(p => <ProductCard getLikedProducts={getLikedProducts} key={p.product_id} p={p} />)
                 }
             </div>
             :
