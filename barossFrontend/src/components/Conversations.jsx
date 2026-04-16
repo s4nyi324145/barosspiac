@@ -30,7 +30,7 @@ export default function Conversations({ getUnredMessages, unReadMessages, setUnr
         getConversations()
         getUnredMessages()
     }, [])
-    useEffect(() => { console.log(conversations) }, [conversations])
+    //useEffect(() => { console.log(conversations) }, [conversations])
     //useEffect(() => { console.log(unReadMessages) }, [unReadMessages])
 
 

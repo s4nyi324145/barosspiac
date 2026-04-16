@@ -14,6 +14,7 @@ import Messages from "./Messages";
 import Profile from "./Profile";
 import Notifications from "./Notifications";
 import PageNotFounnd from "./PageNotFound";
+import Admin from "./Admin";
 import { NotificationProvider } from "../context/notificationContext";
 export default function App() {
   return (
@@ -35,6 +36,7 @@ export default function App() {
             <Route path="/upload/:product_id" element={<Upload/>}/>
             <Route path="/messages" element={<Messages/>}/>
             <Route path="/notifications" element={<Notifications/>}/>
+            <Route path="/admin" element={<Admin/>}/>
             <Route path="*" element={<PageNotFounnd/>}     />
           </Routes>
         </BrowserRouter>

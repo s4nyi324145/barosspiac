@@ -24,7 +24,7 @@ export default function ChatPanel({ getUnredMessages, unReadMessages, setUnreadM
 
 
     useEffect(() => {
-        // Belép a szobába
+        // Belép a szobába a felhasználó
         socket.emit('join_conversation', selectedConversation.conversations_id)
 
 
@@ -90,7 +90,7 @@ export default function ChatPanel({ getUnredMessages, unReadMessages, setUnreadM
             </div>
 
             {/* Üzenetek */}
-            <div className="flex  flex-col flex-1 overflow-y-auto p-4 gap-3">
+            <div className="flex  flex-col flex-1 overflow-y-auto  p-4 gap-3">
                 {messages.map(msg => {
                     const isMine = msg.sender_id === user.user_id
                     return (
@@ -154,7 +154,7 @@ export default function ChatPanel({ getUnredMessages, unReadMessages, setUnreadM
                         </div>
                     )
                 })}
-                <div ref={bottomRef} />
+                {/*<div ref={bottomRef} /> */}
             </div>
 
             {/* Input */}
