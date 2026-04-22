@@ -6,7 +6,7 @@ import AdminDashboard from "../components/AdminDashboard"
 import AdminUsers from "../components/AdminUsers"
 import { useEffect, useState } from "react"
 import api from "../config/api"
-export default function Admin(params) {
+export default function Admin(params) { 
 
     const { user } = useAuth()
     const [adminUsers, setAdminUsers] = useState([])
