@@ -1,6 +1,6 @@
 import { useState } from "react"
 import Navbar from "../components/Navbar"
-import FilterContainer from "../components/filterContainer"
+import FilterContainer from "../components/FilterContainer"
 import BrowserSite from "../components/BrowserSite"
 import Footer from "../components/Footer"
 import { X } from "lucide-react"
