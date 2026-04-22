@@ -1,6 +1,7 @@
 import { Search, MessageCircle } from "lucide-react"
 import { use, useEffect, useState } from "react"
 import api from "../config/api"
+import socket from "../config/socket"
 export default function Conversations({ getUnredMessages, unReadMessages, setUnreadMessages, selectedConversation, setSelectedConversation }) {
 
     const [conversations, setConversations] = useState([])
@@ -22,15 +23,22 @@ export default function Conversations({ getUnredMessages, unReadMessages, setUnr
     useEffect(() => {
         setFilteredConversations(conversations.filter(con => con.fullname.toLowerCase().includes(searchTerm.toLowerCase())))
 
-    },[searchTerm])
+    }, [searchTerm])
 
-   
+
+
 
     useEffect(() => {
         getConversations()
         getUnredMessages()
+
+        socket.on('receive_message', () => {
+            getUnredMessages()
+        })
+
+        return () => socket.off('receive_message')
     }, [])
-    //useEffect(() => { console.log(conversations) }, [conversations])
+    useEffect(() => { console.log(conversations) }, [conversations])
     //useEffect(() => { console.log(unReadMessages) }, [unReadMessages])
 
 
@@ -75,7 +83,7 @@ export default function Conversations({ getUnredMessages, unReadMessages, setUnr
                         >
                             {/* Avatar */}
                             <div className="w-10 h-10 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                                {con.fullname?.charAt(0).toUpperCase()}
+                            {con.pfp ? <img  src={con.pfp} alt="Profilkép" className="w-full h-full object-cover rounded-xl" /> : con.fullname?.[0].toUpperCase()}
                             </div>
 
                             {/* Info */}
@@ -83,24 +91,24 @@ export default function Conversations({ getUnredMessages, unReadMessages, setUnr
                                 <div className="flex items-center justify-between gap-2">
                                     <p className="text-white text-sm font-semibold truncate">{con.fullname}</p>
                                     <p className="text-slate-600 text-xs text-nowrap ">
-                                        {new Date(con.sent_at).toLocaleDateString('hu-HU')}
+                                        {(con.sent_at ? new Date(con.sent_at).toLocaleDateString('hu-HU') : new Date(con.created_at).toLocaleDateString('hu-HU'))}
                                     </p>
                                 </div>
 
                                 <div className="flex flex-1 justify-between  items-center gap-2">
                                     <p className="text-slate-500 text-xs truncate mt-0.5">
-                                    {con.message ?? 'Még nincs üzenet'}
-                                </p>
-                                 {/* Olvasatlan jelölés */}
-                                {unReadMessages.some(msg => msg.conversations_id === con.conversations_id) && (
-                                    <div className="min-w-5 min-h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center px-1.5">
-                                        {unReadMessages.find(msg => msg.conversations_id === con.conversations_id).unread_count}
-                                    </div>
-                                )}
+                                        {con.message ?? 'Még nincs üzenet'}
+                                    </p>
+                                    {/* Olvasatlan jelölés */}
+                                    {unReadMessages.some(msg => msg.conversations_id === con.conversations_id) && (
+                                        <div className="min-w-5 min-h-5 rounded-full bg-blue-500 text-white text-xs flex items-center justify-center px-1.5">
+                                            {unReadMessages.find(msg => msg.conversations_id === con.conversations_id).unread_count}
+                                        </div>
+                                    )}
                                 </div>
                             </div>
 
-                           
+
 
 
 

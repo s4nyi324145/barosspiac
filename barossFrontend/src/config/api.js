@@ -1,7 +1,7 @@
 import axios from 'axios'
 
 const api = axios.create({
-    baseURL: 'http://192.168.9.115:3000/api',
+    baseURL: 'http://localhost:22014/api',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',
@@ -21,16 +21,17 @@ api.interceptors.request.use(config => {
 api.interceptors.response.use(
     (response) => response,
     (error) => {
-       
         if (error.response?.status === 401) {
-            window.location.href = '/login';
-            localStorage.removeItem('token');
+            const currentPath = window.location.pathname
             
+            if (currentPath !== '/login' && currentPath !== '/register' && currentPath !== '/verify-email') {
+                localStorage.removeItem('token')
+                window.location.href = '/login'
+            }
         }
-
-        return Promise.reject(error);
+        return Promise.reject(error)
     }
-);
+)
 
 
 export default api

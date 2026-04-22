@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
 
-const socket = io('http://192.168.9.115:3000')
+const socket = io('http://localhost:22014')
 
 export default socket

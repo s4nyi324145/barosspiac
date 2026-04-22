@@ -51,7 +51,9 @@ function Register() {
 
         const response = await register(fullname,email,psw,userClass)
         //console.log(response.data);
-        setSubmitted(true)
+        setTimeout(() => {
+          navigate('/login')
+        }, 1000);
         
          
       } catch (error) {
@@ -122,7 +124,7 @@ function Register() {
                   ✓
                 </div>
                 <p className="text-white font-semibold text-xl mb-2">Sikeres regisztráció!</p>
-                <p className="text-slate-400 text-sm">Ellenőrizd az email fiókodat a visszaigazoláshoz.</p>
+                <p className="text-slate-400 text-sm">Hamarosan átírányítunk</p>
               </div>
             ) : (
               <>

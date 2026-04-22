@@ -41,7 +41,7 @@ export default function Login(){
         }
         catch (error) {
           showError(error.response?.data?.message || "Hiba történt a bejelentkezés során.")
-          console.error(error.response)
+          console.log(error)
           setErrorField(error.response?.data?.errorField || "")
         }
       }

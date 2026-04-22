@@ -59,7 +59,8 @@ export default function SellPage() {
     sub_category_id: "",
     sub_sub_category_id: "",
   });
-  const [images, setImages] = useState([]);
+  const [images, setImages] = useState([])
+  const [existingImages, setExistingImages] = useState([])
   const [dragOver, setDragOver] = useState(false);
   const [categories, setCategories] = useState([]);
   const [errorField, setErrorField] = useState("")
@@ -88,7 +89,7 @@ export default function SellPage() {
         const p = result.data.product_details[0];
         console.log(p);
         setForm({
-          title: p.product_title ||"",
+          title: p.product_title || "",
           desc: p.product_desc || "",
           price: p.product_price || "",
           condition: p.product_condition || "",
@@ -99,7 +100,7 @@ export default function SellPage() {
           sub_category_id: p.sub_category_id || "",
           sub_sub_category_id: p.sub_sub_category_id || "",
         });
-        setImages(result.data.image)
+        setExistingImages(result.data.image)
       }
     };
 
@@ -147,10 +148,37 @@ export default function SellPage() {
   };
 
 
+  const handleProductEdit = async () => {
+    setLoading(true)
+    try {
+      const formData = new FormData()
+      Object.entries(form).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== '') {
+          formData.append(key, value)
+        }
+      })
+      formData.append('product_id', product_id)
+
+
+      images.forEach(img => formData.append('images', img.file))
+
+      const result = await api.put('/product/update', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' }
+      })
+
+      setLoading(false)
+      showSuccess("Termék sikeresen módosítva")
+      navigate(`/product/${product_id}`)
+    } catch (error) {
+      showError(error.response?.data?.message || "Hiba történt")
+      setLoading(false)
+    }
+  }
 
 
 
-  //Save not half-written upload form to localstorage when the form state is changed
+
+
   useEffect(() => {
 
     const saveToLocalStorage = async () => {
@@ -161,19 +189,17 @@ export default function SellPage() {
       }
     }
 
-    saveToLocalStorage()
+    if (!isEditing) {
+      saveToLocalStorage()
+    }
 
   }, [form])
 
   const isValid =
-    form.title &&
-    form.price &&
-    form.condition &&
-    form.category_id &&
-    form.sub_category_id &&
-    form.sub_sub_category_id &&
-    form.collpoint &&
-    images.length > 0;
+  form.title && form.price && form.condition &&
+  form.category_id && form.sub_category_id && form.sub_sub_category_id &&
+  form.collpoint &&
+  (images.length > 0 || existingImages.length > 0)  
 
   return (
     <>
@@ -355,8 +381,8 @@ export default function SellPage() {
                       key={c.id}
                       onClick={() => setForm({ ...form, condition: c.id })}
                       className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all duration-200 ${form.condition === c.id
-                          ? `bg-${c.color}-500/20 border-${c.color}-500/50 text-white`
-                          : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-500 hover:text-white"
+                        ? `bg-${c.color}-500/20 border-${c.color}-500/50 text-white`
+                        : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-500 hover:text-white"
                         }`}
                     >
                       <p className="text-sm font-medium">{c.label}</p>
@@ -380,8 +406,8 @@ export default function SellPage() {
                           setForm({ ...form, size: form.size === s ? "" : s })
                         }
                         className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${form.size === s
-                            ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                            : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
+                          ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
+                          : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
                           }`}
                       >
                         {s}
@@ -408,8 +434,8 @@ export default function SellPage() {
                           })
                         }
                         className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${form.subject === s
-                            ? "bg-amber-500/20 border-amber-500/50 text-amber-300"
-                            : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
+                          ? "bg-amber-500/20 border-amber-500/50 text-amber-300"
+                          : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
                           }`}
                       >
                         {s}
@@ -470,8 +496,8 @@ export default function SellPage() {
                   }}
                   onClick={() => fileInputRef.current.click()}
                   className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${dragOver
-                      ? "border-blue-500 bg-blue-500/10"
-                      : "border-slate-700 hover:border-blue-500/50 hover:bg-slate-800/30"
+                    ? "border-blue-500 bg-blue-500/10"
+                    : "border-slate-700 hover:border-blue-500/50 hover:bg-slate-800/30"
                     }`}
                 >
                   <Upload
@@ -496,18 +522,31 @@ export default function SellPage() {
               )}
 
               {/* Képek előnézete */}
+              {/* Meglévő képek megjelenítése */}
+              {existingImages.length > 0 && images.length === 0 && (
+                <div className="flex flex-col gap-2">
+                  <p className="text-slate-500 text-xs">Jelenlegi képek — új képek feltöltésével ezek törlődnek</p>
+                  <div className="grid grid-cols-2 gap-2">
+                    {existingImages.map((img, i) => (
+                      <div key={i} className="relative rounded-xl overflow-hidden">
+                        <img src={img.product_img} className="w-full h-full object-cover" />
+                        {i === 0 && (
+                          <span className="absolute top-1.5 left-1.5 text-xs font-semibold bg-blue-600 text-white px-2 py-0.5 rounded-full">
+                            Borítókép
+                          </span>
+                        )}
+                      </div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
+              {/* Új képek előnézete */}
               {images.length > 0 && (
                 <div className="grid grid-cols-2 gap-2">
                   {images.map((img, i) => (
-                    <div
-                      key={i}
-                      className="relative  rounded-xl overflow-hidden group"
-                    >
-                      <img
-                        src={img.preview || img.product_img}
-                        alt="Termék a fótóról"
-                        className="w-full h-full object-cover"
-                      />
+                    <div key={i} className="relative rounded-xl overflow-hidden group">
+                      <img src={img.preview} className="w-full h-full object-cover" />
                       {i === 0 && (
                         <span className="absolute top-1.5 left-1.5 text-xs font-semibold bg-blue-600 text-white px-2 py-0.5 rounded-full">
                           Borítókép
@@ -527,10 +566,10 @@ export default function SellPage() {
               {/* Submit gomb */}
               <button
                 disabled={!isValid || loading}
-                onClick={() => handleProductUpload()}
+                onClick={() => isEditing ? handleProductEdit() : handleProductUpload()}
                 className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 mt-2 ${isValid
-                    ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20 hover:-translate-y-0.5"
-                    : "bg-slate-800 text-slate-600 cursor-not-allowed"
+                  ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20 hover:-translate-y-0.5"
+                  : "bg-slate-800 text-slate-600 cursor-not-allowed"
                   }`}
               >
                 {isEditing ? (
