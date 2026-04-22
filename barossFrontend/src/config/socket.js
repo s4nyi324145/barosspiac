@@ -1,5 +1,5 @@
 import { io } from 'socket.io-client'
 
-const socket = io('http://localhost:22014')
+const socket = io('https://nodejs214.dszcbaross.edu.hu')
 
 export default socket
