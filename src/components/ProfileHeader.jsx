@@ -70,10 +70,15 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
             const result = await api.post("/conversations/conversation", {
                 user2_id: user.user_id
             })
-            console.log(result.data);
-            navigate('/messages', { state: { selectedConversation: result.data } })
-
-
+            
+            // Teljes conversation objektum kell — add hozzá a hiányzó mezőket
+            const conversation = {
+                ...result.data,
+                fullname: user.fullname,
+                pfp: user.pfp,
+            }
+            
+            navigate('/messages', { state: { selectedConversation: conversation } })
         } catch (error) {
             console.log(error)
         }

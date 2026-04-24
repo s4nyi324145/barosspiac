@@ -1,57 +1,71 @@
+// Messages.jsx
 import Navbar from "../components/Navbar";
 import Conversations from "../components/Conversations";
-import { use, useEffect, useState } from "react";
-import { SearchX } from "lucide-react";
+import { useState } from "react";
+import { MessageCircle } from "lucide-react";
 import ChatPanel from "../components/ChatPanel";
-import Categories from "../components/Categories";
 import { useLocation } from "react-router-dom";
-import Footer from "../components/Footer";
 import api from "../config/api";
-import socket from "../config/socket";
-export default function Messages() {
 
+export default function Messages() {
     const location = useLocation()
     const [selectedConversation, setSelectedConversation] = useState(location.state?.selectedConversation || null)
     const [unReadMessages, setUnreadMessages] = useState([])
-    //console.log(location.state?.conversations_id);
-    //useEffect(() => console.log(selectedConversation), [selectedConversation])
+
     const getUnredMessages = async () => {
         try {
             const result = await api.get('/messages/unreaded')
-
             setUnreadMessages(result.data)
         } catch (error) {
-            console.log(error);
+            console.log(error)
         }
     }
 
-    //useEffect(() => { console.log("asdasd") }, [])
-
-
-
-    return (<>
-        <div className="min-h-screen bg-slate-950 text-white">
+    return (
+        <div className="h-screen flex flex-col bg-slate-950 text-white overflow-hidden">
             <Navbar />
-            <Categories />
-            <div className="flex flex-1">
-                <Conversations getUnredMessages={getUnredMessages} unReadMessages={unReadMessages} setUnreadMessages={setUnreadMessages} selectedConversation={selectedConversation} setSelectedConversation={setSelectedConversation} />
-                {!selectedConversation ?
-                    <div className={`items-center flex-col gap-4 justify-center ${selectedConversation ? 'hidden' : ' hidden sm:flex sm:flex-[0.8]'}`}>
-                        <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700/60 flex items-center justify-center">
-                            <SearchX className="w-8 h-8 text-slate-600" />
-                        </div>
-                        <div className="flex flex-col gap-1">
-                            <p className="text-slate-400 font-semibold text-lg"> Válassz egy beszélgetést</p>
-                        </div>
-                    </div>
+            <div className="flex flex-1 overflow-hidden">
 
-                    :
+                {/* Conversations — mobilon csak ha nincs selected, desktopon mindig */}
+                <div className={`
+                    w-full sm:w-72 sm:shrink-0 
+                    border-r border-slate-800 
+                    flex flex-col overflow-hidden
+                    ${selectedConversation ? 'hidden sm:flex' : 'flex'}
+                `}>
+                    <Conversations
+                        getUnredMessages={getUnredMessages}
+                        unReadMessages={unReadMessages}
+                        selectedConversation={selectedConversation}
+                        setSelectedConversation={setSelectedConversation}
+                    />
+                </div>
 
-                    <ChatPanel getUnredMessages={getUnredMessages} setUnreadMessages={setUnreadMessages} unReadMessages={unReadMessages} selectedConversation={selectedConversation} setSelectedConversation={setSelectedConversation} />
-                }
+                {/* ChatPanel — mobilon csak ha van selected, desktopon mindig */}
+                <div className={`
+                    flex-1 flex flex-col overflow-hidden
+                    ${selectedConversation ? 'flex' : 'hidden sm:flex'}
+                `}>
+                    {selectedConversation ? (
+                        <ChatPanel
+                            getUnredMessages={getUnredMessages}
+                            selectedConversation={selectedConversation}
+                            setSelectedConversation={setSelectedConversation}
+                        />
+                    ) : (
+                        <div className="flex-1 flex items-center justify-center flex-col gap-4">
+                            <div className="w-16 h-16 rounded-2xl bg-slate-800 border border-slate-700/60 flex items-center justify-center">
+                                <MessageCircle className="w-8 h-8 text-slate-600" />
+                            </div>
+                            <div className="flex flex-col gap-1 text-center">
+                                <p className="text-white font-semibold">Válassz egy beszélgetést</p>
+                                <p className="text-slate-500 text-sm">A bal oldali listából válassz egyet</p>
+                            </div>
+                        </div>
+                    )}
+                </div>
+
             </div>
-            <Footer />
         </div>
-
-    </>)
+    )
 }

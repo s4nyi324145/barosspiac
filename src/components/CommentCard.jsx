@@ -80,7 +80,7 @@ export default function CommentCard({ getUserData, getProductCards, p }) {
                 <div className="flex items-center gap-3">
                     {/* Avatar */}
                     <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-sm shrink-0">
-                        {p.fullname?.charAt(0).toUpperCase()}
+                    {p.pfp ? <img src={p.pfp} alt="Profilkép" className="w-full h-full object-cover rounded-2xl" /> : p.fullname?.[0].toUpperCase()}
                     </div>
                     <div className="flex flex-col">
                         <p onClick={() => navigate(`/profile/${p.rater_id}`)} className="text-white cursor-pointer text-sm font-semibold">{p.fullname}</p>

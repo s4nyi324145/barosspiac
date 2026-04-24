@@ -11,11 +11,15 @@ export default function Admin(params) {
     const { user } = useAuth()
     const [adminUsers, setAdminUsers] = useState([])
     const [adminProducts, setAdminProducts] = useState([])
+    const [usersPage, setUsersPage] = useState(1)
+    const [totalPages, setTotalPages] = useState(1)
 
-    const getAllUsers = async () => {
+    const getAllUsers = async (page = 1) => {
         try {
-            const result = await api.get("/user/alluser")
-            setAdminUsers(result.data)
+            const result = await api.get(`/user/alluser?page=${page}`)
+            setAdminUsers(result.data.users)
+            setTotalPages(result.data.totalPages)
+            setUsersPage(page)
         } catch (error) {
             console.log(error)
         }
@@ -32,8 +36,9 @@ export default function Admin(params) {
 
     useEffect(() => {
         getAllProducts()
-        getAllUsers()
     }, [])
+
+    useEffect(() => { getAllUsers(usersPage) }, [usersPage])
 
 
 
@@ -45,7 +50,7 @@ export default function Admin(params) {
             <AdminNavbar />
             <div className="flex flex-1 flex-col">
                 <AdminDashboard adminUsers={adminUsers.slice(0,5)} adminProducts={adminProducts.slice(0,5)}/>
-                <AdminUsers adminUsers={adminUsers} />
+                <AdminUsers totalPages={totalPages} usersPage={usersPage} setUsersPage={setUsersPage} adminUsers={adminUsers} />
             </div>
         </div>
 

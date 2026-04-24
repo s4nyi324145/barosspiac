@@ -1,11 +1,19 @@
-import { useState } from "react"
+import { useState, useEffect } from "react"
 import Navbar from "../components/Navbar"
 import FilterContainer from "../components/FilterContainer"
 import BrowserSite from "../components/BrowserSite"
 import Footer from "../components/Footer"
+import { useSearchParams } from 'react-router-dom'
 import { X } from "lucide-react"
 
 export default function Browser(){
+
+   
+
+    const [searchParams] = useSearchParams()
+    const searchFromUrl = searchParams.get('search') || ''
+
+    const [showFilters, setShowFilters] = useState(false)
 
     const [filter,setFilter] = useState({
         category: null,
@@ -15,10 +23,13 @@ export default function Browser(){
         priceMax: null,
         condition: [],
         subject: null,
-        size: []
+        size: [],
+        search: searchFromUrl,
     })
 
-    const [showFilters, setShowFilters] = useState(false)
+    useEffect(() => {
+        setFilter(prev => ({ ...prev, search: searchFromUrl }))
+    }, [searchFromUrl])
 
 return (
     <>

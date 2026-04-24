@@ -57,10 +57,15 @@ export default function ProductDesc({ getProductDetails, productDetail, is_sold 
             const result = await api.post("/conversations/conversation", {
                 user2_id: productDetail.user_id
             })
-            console.log(result.data);
-            navigate('/messages', { state: { selectedConversation: result.data } })
-
-
+            
+            // Teljes conversation objektum kell — add hozzá a hiányzó mezőket
+            const conversation = {
+                ...result.data,
+                fullname: productDetail.fullname,
+                pfp: productDetail.pfp,
+            }
+            
+            navigate('/messages', { state: { selectedConversation: conversation } })
         } catch (error) {
             console.log(error)
         }

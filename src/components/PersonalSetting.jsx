@@ -2,12 +2,12 @@ import { useEffect, useState } from "react"
 import { useAuth } from "../context/authContext"
 import api from "../config/api"
 import { useToast } from "../context/toastContext"
-import { Upload, Trash2, User, GraduationCap, Mail, Save,X } from "lucide-react"
+import { Upload, Trash2, User, GraduationCap, Mail, Save, X } from "lucide-react"
 export default function PersonalSetting() {
 
     const { user, loading, setUser } = useAuth()
     if (!user) return null
-    
+
     console.log(user?.fullname);
     const [newFullname, setNewFullName] = useState("")
     const [newClass, setNewClass] = useState("")
@@ -19,7 +19,7 @@ export default function PersonalSetting() {
     useEffect(() => {
 
         setNewFullName(user?.fullname)
-         setNewClass(user?.userClass)
+        setNewClass(user?.userClass)
 
 
     }, [user])
@@ -69,7 +69,7 @@ export default function PersonalSetting() {
         try {
             const result = await api.delete('/user/profile_pic')
             console.log(result);
-            
+
             setUser(prev => ({ ...prev, pfp: "" }))
             showSuccess("Profilkép sikeresen törölve")
             console.log(result)
@@ -134,8 +134,8 @@ export default function PersonalSetting() {
                             onClick={() => profilePicUpload()}
                             disabled={!profilePic || uploadLoading}
                             className={`w-full py-2.5 rounded-xl text-sm font-semibold transition-all duration-200 flex items-center justify-center gap-2 ${profilePic && !uploadLoading
-                                    ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20'
-                                    : 'bg-slate-800 text-slate-600 cursor-not-allowed'
+                                ? 'bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20'
+                                : 'bg-slate-800 text-slate-600 cursor-not-allowed'
                                 }`}
                         >
                             {uploadLoading ? (
@@ -176,7 +176,7 @@ export default function PersonalSetting() {
             {/* Profilkép szekció */}
             <div className="flex items-center flex-col sm:flex-row gap-6 bg-slate-800/40 border border-slate-700/60 rounded-2xl p-6">
                 <div className="w-20 h-20 rounded-2xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white font-bold text-3xl shrink-0 shadow-lg shadow-blue-500/20">
-                    {user.pfp  ? <img src={user.pfp} alt="Profilkép" className="w-full h-full object-cover rounded-2xl" /> : user.fullname?.[0].toUpperCase()}
+                    {user.pfp ? <img src={user.pfp} alt="Profilkép" className="w-full h-full object-cover rounded-2xl" /> : user.fullname?.[0].toUpperCase()}
                 </div>
                 <div className="flex flex-col gap-2">
                     <p className="font-semibold text-center sm:text-left text-white">Profilkép</p>
@@ -215,25 +215,33 @@ export default function PersonalSetting() {
                     <div className="flex items-center gap-3 bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
                         <GraduationCap className="w-4 h-4 text-slate-500 shrink-0" />
                         <select value={newClass == "" ? user.userClass : newClass} onChange={(e) => setNewClass(e.target.value)} className="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl px-2 py-2 text-sm text-slate-200 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 appearance-none cursor-pointer">
+                            <option value="13a">13/A</option>
+                            <option value="13b">13/B</option>
+                            <option value="13c">13/C</option>
                             <option value="12a">12/A</option>
                             <option value="12b">12/B</option>
+                            <option value="12c">12/C</option>
                             <option value="11a">11/A</option>
                             <option value="11b">11/B</option>
+                            <option value="11c">11/c</option>
                             <option value="10a">10/A</option>
                             <option value="10b">10/B</option>
+                            <option value="10c">10/C</option>
                             <option value="9a">9/A</option>
                             <option value="9b">9/B</option>
+                            <option value="9c">9/C</option>
+                            <option value="tanar">Tanár</option>
                         </select>
                     </div>
                 </div>
 
                 {/* Email — nem szerkeszthető */}
-                <div className="flex flex-col gap-1.5">
+                <div className="flex flex-col  gap-1.5">
                     <label className="text-sm font-medium text-slate-300">Email-cím</label>
-                    <div className="flex items-center gap-3 bg-slate-800/30 border border-slate-700/40 rounded-xl px-4 py-2.5 opacity-60 cursor-not-allowed">
+                    <div className="flex items-center text-center sm:text-left gap-3 flex-wrap  bg-slate-800/30 border border-slate-700/40 rounded-xl px-4 py-2.5 opacity-60 cursor-not-allowed">
                         <Mail className="w-4 h-4 text-slate-500 shrink-0" />
-                        <p className="text-sm text-slate-400">{user.email}</p>
-                        <span className="ml-auto text-xs text-slate-600 bg-red-700/50 px-2 py-0.5 rounded-full">Nem módosítható</span>
+                        <p className="text-sm flex-1 text-slate-400">{user.email}</p>
+                        <span className="text-center flex-1 sm:max-w-fit sm:ml-auto text-xs text-slate-600 bg-red-700/50  px-2 py-0.5 rounded-full">Nem módosítható</span>
                     </div>
                 </div>
 

@@ -15,7 +15,7 @@ function Register() {
   const [submitted, setSubmitted] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
   const [fullname, setFullname] = useState("")
-  const [userClass, setUserClass] = useState("")
+  const [userClass, setUserClass] = useState("13/a")
   const [email, setEmail] = useState("")
   const [psw, setPsw] = useState("")
   const [passwordStrength, setPasswordStrength] = useState(0)
@@ -51,6 +51,7 @@ function Register() {
 
         const response = await register(fullname,email,psw,userClass)
         //console.log(response.data);
+        showSuccess("Sikeres regisztráció")
         setTimeout(() => {
           navigate('/login')
         }, 1000);
@@ -163,14 +164,22 @@ function Register() {
                   <div className="relative group">
                     <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 text-sm select-none"><Book /></span>
                     <select  value={userClass}  onChange={(e) => setUserClass(e.target.value) } className="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-8 py-3.5 text-sm text-slate-200 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 appearance-none cursor-pointer">
+                      <option value="13a">13/A</option>
+                      <option value="13b">13/B</option>
+                      <option value="13c">13/C</option>
                       <option value="12a">12/A</option>
                       <option value="12b">12/B</option>
+                      <option value="12c">12/C</option>
                       <option value="11a">11/A</option>
                       <option value="11b">11/B</option>
+                      <option value="11c">11/c</option>
                       <option value="10a">10/A</option>
                       <option value="10b">10/B</option>
+                      <option value="10c">10/C</option>
                       <option value="9a">9/A</option>
                       <option value="9b">9/B</option>
+                      <option value="9c">9/C</option>
+                      <option value="tanar">Tanár</option>
                     </select>
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none">▾</span>
                   </div>

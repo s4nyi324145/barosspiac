@@ -33,6 +33,12 @@ export default function BrowserCards({ filter, setFilter }) {
         let result = [...product];
 
         if (filter.category) result = result.filter(p => p.category_name == filter.category);
+        if (filter.search) {
+            result = result.filter(p =>
+                p.product_title.toLowerCase().includes(filter.search.toLowerCase()) ||
+                p.product_desc?.toLowerCase().includes(filter.search.toLowerCase())
+            )
+        }
         if (filter.subcategory) result = result.filter(p => p.sub_category_name == filter.subcategory);
         if (filter.item) result = result.filter(p => p.sub_sub_name == filter.item);
         if (filter.condition?.length) result = result.filter(p => filter.condition.includes(p.product_condition));
