@@ -58,22 +58,21 @@ export default function ProductImages({ product_img, is_sold }) {
                 {/* Főkép */}
                 <div
                     onClick={() => setLightbox(true)}
-                    className="relative max-h-96 min-w-fit bg-slate-800 rounded-2xl overflow-hidden cursor-zoom-in group"
+                    className="relative w-full h-96 bg-slate-800 rounded-2xl overflow-hidden cursor-zoom-in group"
                 >
                     <img
                         src={product_img[selected].product_img}
                         alt="Termék kép"
-                        className="min-w-full  object-fill transition-transform duration-300 group-hover:scale-105"
+                        className="w-full h-full object-contain transition-transform duration-300 group-hover:scale-105"
                     />
-                    <div className="absolute inset-0 bg-black/0 group-hover:bg-black/20 transition-all duration-200 flex items-center justify-center">
-                        <ZoomIn className="w-8 h-8 text-white opacity-0 group-hover:opacity-100 transition-all duration-200" />
-                    </div>
+                
+
                     {/* Kép számlálő */}
                     {product_img.length > 1 && (
-                        <span className="absolute bottom-3 right-3 text-xs bg-black/50 text-white px-2 py-1 rounded-full">
-                            {selected + 1} / {product_img.length}
-                        </span>
-                    )}
+                            <span className="absolute bottom-3 right-3 text-xs bg-black/50 text-white px-2 py-1 rounded-full">
+                                {selected + 1} / {product_img.length}
+                            </span>
+                        )}
 
                     {/*Eladva címke */}
                     {is_sold && (
@@ -86,27 +85,28 @@ export default function ProductImages({ product_img, is_sold }) {
                             </div>
                         </div>
                     )}
-                </div>
 
-                {/* Thumbnail csík */}
-                {product_img.length > 1 && (
-                    <div className="flex gap-2 overflow-x-auto scrollbar-hide">
-                        {product_img.map((img, i) => (
-                            <div
-                                key={i}
-                                onClick={() => setSelected(i)}
-                                className={`shrink-0 w-20 h-20 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-200 ${selected === i
+                   
+
+                </div>
+                 {/* Thumbnail csík */}
+                 {product_img.length > 1 && (
+                        <div className="flex gap-2 overflow-x-auto scrollbar-hide">
+                            {product_img.map((img, i) => (
+                                <div
+                                    key={i}
+                                    onClick={() => setSelected(i)}
+                                    className={`shrink-0 w-20 h-20 rounded-xl overflow-hidden cursor-pointer border-2 transition-all duration-200 ${selected === i
                                         ? 'border-blue-500'
                                         : 'border-transparent opacity-60 hover:opacity-100'
-                                    }`}
-                            >
-                                <img src={img.product_img} alt="" className="w-full h-full object-cover" />
-                            </div>
-                        ))}
-                    </div>
-                )}
-
-            </div>
-        </>
-    )
+                                        }`}
+                                >
+                                    <img src={img.product_img} alt="" className="w-full h-full object-cover" />
+                                </div>
+                            ))}
+                        </div>
+                    )}
+                </div>
+            </>
+            )
 }

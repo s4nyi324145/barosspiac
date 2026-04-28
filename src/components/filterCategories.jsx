@@ -21,7 +21,7 @@ export default function FilterCategories({ filter, setFilter }) {
     
 
 
-
+        {/*Get categories - main_category, sub_category , items */}
     const getCategories = async () => {
         try {
 
@@ -61,7 +61,7 @@ export default function FilterCategories({ filter, setFilter }) {
             {categories.map((category) => (
                 <div key={category.name}>
 
-                    {/* Főkategória */}
+                    {/* Main category */}
                     <button
                         onClick={() => {
                             setOpenCategory(openCategory === category.name ? null : category.name);
@@ -78,7 +78,7 @@ export default function FilterCategories({ filter, setFilter }) {
                         />
                     </button>
 
-                    {/* Alkategóriák */}
+                    {/* Sub category */}
                     {openCategory === category.name && (
                         <div className={`ml-2 border-l  mt-2 ${filter.category === category.name ?  "border-blue-700/80" : " border-slate-700/60"} pl-2 flex flex-col gap-0.5  mb-1`}>
                             {category.subcategories.map((subcategory) => (
@@ -102,7 +102,7 @@ export default function FilterCategories({ filter, setFilter }) {
                                         />
                                     </button>
 
-                                    {/* Itemek */}
+                                    {/* Items */}
                                     {openSubcategory === subcategory.name && (
                                         <div className={`ml-2 border-l ${filter.subcategory === subcategory.name ?  "border-blue-700" : "border-slate-700/40"}  pl-2 flex flex-col gap-0.5 mt-2 mb-1`}>
                                             {subcategory.items.map((item) => (

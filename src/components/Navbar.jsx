@@ -42,7 +42,7 @@ export default function Navbar() {
                         <img src={logo} alt="logo" className="w-16 h-16 rounded-lg" />
                     </p>
 
-                    {/* Kereső — mobilon kisebb */}
+                    {/* Search Bar */}
                     <div className="flex-1 max-w-xs md:max-w-md flex items-center gap-3 bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200 group">
                         <Search className="w-4 h-4 text-slate-500 group-focus-within:text-blue-400 shrink-0" />
                         <input
@@ -58,7 +58,7 @@ export default function Navbar() {
                     {user ? (
                         <div className="flex items-center gap-2">
 
-                            {/* Desktopon felirattal, mobilon csak ikon */}
+                            {/* Product upload */}
                             <a href="/upload" className="hidden md:flex items-center gap-2 text-sm font-semibold text-white bg-blue-600 hover:bg-blue-500 px-4 py-2 rounded-xl transition-all duration-200 shadow-lg shadow-blue-600/20">
                                 <Plus className="w-4 h-4" />
                                 Hirdetés feladása
@@ -67,17 +67,17 @@ export default function Navbar() {
                                 <Plus className="w-5 h-5" />
                             </a>
 
-                            {/* Kedvencek — mobilon elrejtve */}
+                            {/*Favourites  */}
                             <a href="/likes" className="hidden md:block p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
                                 <Heart className="w-5 h-5" />
                             </a>
 
-                            {/* Üzenetek — mobilon elrejtve */}
+                            {/* Messages*/}
                             <a href="/messages" className="hidden md:block p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200">
                                 <MessageCircle className="w-5 h-5" />
                             </a>
 
-                            {/* Avatar — mindig látható, desktopon dropdown */}
+                            {/* Avatar */}
                             <div
                                 id="avatar"
                                 onClick={(e) => {
@@ -122,7 +122,7 @@ export default function Navbar() {
                                 )}
                             </div>
 
-                            {/* Hamburger — csak mobilon */}
+                            {/* Hamburger menu - only mobile */}
                             <button
                                 onClick={() => setMenuOpen(!menuOpen)}
                                 className="md:hidden p-2.5 rounded-xl text-slate-400 hover:text-white hover:bg-slate-800 transition-all duration-200"
@@ -150,7 +150,7 @@ export default function Navbar() {
 
                 </div>
 
-                {/* Mobil menü */}
+                {/* Mobile menu */}
                 {menuOpen && (
                     <div className="md:hidden bg-slate-900 border-t border-slate-800 px-4 py-3 flex flex-col gap-1">
                         <a href="/" className="flex items-center gap-3 px-3 py-2.5 rounded-xl text-sm text-slate-300 hover:text-white hover:bg-slate-800 transition-all duration-200">

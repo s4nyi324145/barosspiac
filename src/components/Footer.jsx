@@ -9,10 +9,10 @@ export default function Footer(){
    return (
     <footer className="bg-slate-900 border-t border-slate-800">
 
-    {/* Fő tartalom */}
+    {/* Container*/}
     <div className="md:max-w-7xl mx-auto px-8 py-10 flex flex-col md:flex-row justify-between items-start gap-10">
 
-        {/* Bal — Logo + leírás */}
+        {/* Footer - Left Side */}
         <div className="flex flex-col gap-4">
             <div className="flex items-center gap-3">
                 <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/20">
@@ -32,7 +32,7 @@ export default function Footer(){
             </span>
         </div>
 
-        {/* Közép — Navigáció */}
+        {/* Footer - Center */}
         <div className="flex flex-col gap-3">
             <p className="text-white text-sm font-semibold mb-1">Navigáció</p>
             <a href="/" className="text-slate-500 hover:text-white transition-colors text-sm">Főoldal</a>
@@ -50,7 +50,7 @@ export default function Footer(){
             )}
         </div>
 
-        {/* Jobb — Kapcsolat */}
+        {/* Footer - Right Side */}
         <div className="flex flex-col gap-3">
             <p className="text-white text-sm font-semibold mb-1">Az iskola</p>
             <div className="flex items-start gap-2 text-slate-500 text-xs">
@@ -72,7 +72,7 @@ export default function Footer(){
 
     </div>
 
-    {/* Alsó sáv */}
+    {/* Footer - Copyright */}
     <div className="border-t border-slate-800 px-8 py-4">
         <div className="max-w-6xl mx-auto flex flex-col md:flex-row items-center justify-between gap-2">
             <p className="text-slate-600 text-xs">© {new Date().getFullYear()} BarossPiac. Minden jog fenntartva.</p>

@@ -5,6 +5,7 @@ import { useNavigate } from "react-router-dom";
 export default function Categories() {
   const navigate = useNavigate();
 
+
 const categories = [
   { name: "Női",                 icon: User },
   { name: "Férfi",               icon: Users },

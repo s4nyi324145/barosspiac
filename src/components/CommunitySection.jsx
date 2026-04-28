@@ -8,7 +8,7 @@ export default function CommunitySection() {
     <div className="bg-slate-900 border-y border-slate-800 px-8 py-12">
         <div className="max-w-5xl mx-auto flex md:flex-row flex-col items-center justify-between gap-8">
 
-            {/* Bal oldal */}
+            {/* CommunitySection - Left Side */}
             <div className="flex items-center gap-5">
                 <div className="w-14 h-14 rounded-2xl bg-blue-500/20 border border-blue-500/30 flex items-center justify-center shrink-0">
                     <ShieldCheck className="w-7 h-7 text-blue-400" />
@@ -19,7 +19,7 @@ export default function CommunitySection() {
                 </div>
             </div>
 
-            {/* Középső — pipák */}
+            {/* CommunitySection - Right Side */}
             <div className="flex flex-col gap-2 shrink-0">
                 {[
                     "Ismered az eladót — ugyanabba az iskolába jártok",

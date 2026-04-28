@@ -37,6 +37,9 @@ export default function Favorites() {
         }
     }
 
+
+
+
     useEffect(() => { getLikedProducts() }, [])
    // useEffect(() => { console.log(likedProducts) }, [likedProducts])
 

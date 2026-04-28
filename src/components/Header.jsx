@@ -21,6 +21,8 @@ export default function Header({ products }) {
 
     const [statistics, setStatistics] = useState(null)
 
+
+    {/*Get the webpage statistics, - users number, products number */}
     const getStatistics = async () => {
         try {
             const result = await api.get('/statistics/statistics')
@@ -44,7 +46,7 @@ export default function Header({ products }) {
         <>
             <div className="flex flex-col lg:flex-row flex-1 p-4 lg:p-8 items-center gap-8 bg-slate-950">
 
-                {/* Bal oldal */}
+                {/* Header - Left Side */}
                 <div className="flex-1 flex flex-col gap-6 text-center lg:text-left items-center lg:items-start">
 
                     {/* Badge */}
@@ -53,7 +55,7 @@ export default function Header({ products }) {
                         <p className="text-sm font-medium text-blue-400 tracking-wide">Csak DSZC Baross Gábor diákok számára</p>
                     </div>
 
-                    {/* Cím — mobilon kisebb */}
+                    {/* Title */}
                     <h1 className="text-3xl md:text-4xl font-bold text-white">
                         Adj új esélyt a cuccaidnak – építsük együtt a{' '}
                         <span className="text-transparent bg-clip-text bg-gradient-to-r from-blue-400 to-blue-600">Baross</span>
@@ -64,7 +66,7 @@ export default function Header({ products }) {
                         Vásárolj tudatosan, adj el egyszerűen! Egy hely, ahol a régi kedvencedből más új kincse válhat.
                     </p>
 
-                    {/* Gombok */}
+                    {/* Buttons */}
                     <div className="flex gap-4">
                         <Link
                             to="/browser"
@@ -75,7 +77,7 @@ export default function Header({ products }) {
                         <RegisterButton />
                     </div>
 
-                    {/* Statisztikák — mobilon kisebb padding */}
+                    {/* Statistics */}
                     <div className="flex flex-wrap justify-center lg:justify-start gap-4 mt-2">
                         {[
                             { value: statistics?.total_users || 0, label: 'Diák' },
@@ -90,7 +92,7 @@ export default function Header({ products }) {
                     </div>
                 </div>
 
-                {/* Jobb oldal — csak lg-től látható */}
+                {/* Header - Right side */}
                 <div className="flex-1 hidden lg:flex relative min-h-96">
                     <div className="absolute top-0 right-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full blur-3xl pointer-events-none" />
                     <div className="absolute top-48 left-0 w-80 h-80 bg-blue-600/50 rounded-full blur-3xl pointer-events-none" />

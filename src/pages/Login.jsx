@@ -4,6 +4,7 @@ import { useNavigate } from 'react-router-dom'
 import api from '../config/api'
 import { useToast } from '../context/toastContext'
 import { useAuth } from '../context/authContext'
+import logo from "../assets/logo.png"
 export default function Login(){
 
      const [email, setEmail] = useState("")
@@ -27,7 +28,7 @@ export default function Login(){
     useEffect(() => {console.log(errorField);
     },[errorField])
 
-
+    {/*Handle the login form data submit */}
      const handleSubmit = async (e) => {
         e.preventDefault();
         try {
@@ -60,21 +61,16 @@ export default function Login(){
     
          
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-blue-500/30">
-                B
-              </div>
-              <span className="text-xs font-semibold text-blue-400 tracking-widest uppercase">
-                Baross Piac
-              </span>
+            <img src={logo} alt="logo" className="w-16 h-16 rounded-lg" />
             </div>
     
-            
+              {/*Login input form */}
                 <h1 className="text-2xl font-bold text-white mb-1">Bejelentkezés</h1>
                 <p className="text-slate-400 text-sm mb-8">Jelentkezz be a fiókodba</p>
     
                 <form onSubmit={(e) => handleSubmit(e)}>
                 
-                {/*Email cím */}
+                {/*Email address*/}
                 <div className="mb-5">
                   <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                     Iskolai email cím
@@ -96,7 +92,7 @@ export default function Login(){
                   </div>
                 </div>
     
-                {/*Jelszó*/}
+                {/*Password*/}
                 <div className="mb-6">
                   <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                     Jelszó

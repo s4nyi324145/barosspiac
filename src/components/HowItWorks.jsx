@@ -7,14 +7,14 @@ export default function HowItWorks() {
     return (
     <div className="flex flex-col items-center bg-slate-950 py-16 px-4">
 
-        {/* Fejléc */}
+        {/* Header */}
         <div className="flex flex-col items-center gap-3 mb-16">
             <div className="bg-blue-500 w-16 h-1.5 rounded-full" />
             <h1 className="text-3xl font-bold text-white">Hogy működik?</h1>
             <p className="text-slate-500 text-sm">Három egyszerű lépés és már adhatod-veheted a cuccokat</p>
         </div>
 
-        {/* Kártyák */}
+        {/* Cards */}
         <div className="grid grid-cols-1 sm:grid-cols-3 gap-8 max-w-5xl w-full">
             <HowItWorksCard
                 image={Sign_up_rafiki}
@@ -36,7 +36,7 @@ export default function HowItWorks() {
             />
         </div>
 
-        {/* Attributions — rejtve de bent */}
+        {/* Attributions — hidden */}
         <div className="hidden">
             <a href="https://storyset.com/user">User illustrations by Storyset</a>
             <a href="https://storyset.com/business">Business illustrations by Storyset</a>

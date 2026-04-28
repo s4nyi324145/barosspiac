@@ -13,7 +13,7 @@ export default function Home() {
 
     const [products, setProducts] = useState([])
 
-    
+        {/*Get the latest products - limit 10 */}
         const getLatestProducts = async () => {
             try {
                 const result = await api.get('/product/latestProduct')

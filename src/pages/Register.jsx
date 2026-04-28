@@ -6,6 +6,7 @@ import {User, Book, Mail,Lock, Eye, EyeClosed} from 'lucide-react'
 import AszfModal from '../components/registerComponents/aszfModal.jsx'
 import DataProtModal from '../components/registerComponents/dataProtModal.jsx'
 import { useToast } from '../context/toastContext.jsx'
+import logo from "../assets/logo.png"
 import { useAuth } from '../context/authContext.jsx'
 
 
@@ -44,6 +45,9 @@ function Register() {
     console.log(psw);
   }, [psw,email,fullname,userClass])*/
 
+
+
+  {/* Handle the register page data submit */}
   const handleSubmit = async (e) =>{
       e.preventDefault();
       setLoading(true);
@@ -52,6 +56,7 @@ function Register() {
         const response = await register(fullname,email,psw,userClass)
         //console.log(response.data);
         showSuccess("Sikeres regisztráció")
+        setSubmitted(true)
         setTimeout(() => {
           navigate('/login')
         }, 1000);
@@ -70,6 +75,8 @@ function Register() {
 
   useEffect(() =>{console.log(errorField)}, [errorField])
 
+
+  {/*Validate the password, min 8 character,UpperCase,LowerCase,Number,SpecialCharacter */}
   const passwordValidation = (password) => {
     let passwordStrength = 0
     const minLength = 8;
@@ -111,12 +118,7 @@ function Register() {
     
          
             <div className="flex items-center gap-3 mb-8">
-              <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center text-white text-sm font-bold shadow-lg shadow-blue-500/30">
-                B
-              </div>
-              <span className="text-xs font-semibold text-blue-400 tracking-widest uppercase">
-                Baross Piac
-              </span>
+              <img src={logo} alt="logo" className="w-16 h-16 rounded-lg" />
             </div>
     
             {submitted ? (
@@ -129,11 +131,12 @@ function Register() {
               </div>
             ) : (
               <>
+                {/*Register input form */}
                 <h1 className="text-2xl font-bold text-white mb-1">Fiók létrehozása</h1>
                 <p className="text-slate-400 text-sm mb-8">Csatlakozz az iskolai piachoz még ma</p>
     
                 <form onSubmit={(e) => handleSubmit(e)}>
-                {/*Teljes nev*/}
+                {/*Full name*/}
                 <div className="mb-5">
                   <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                     Teljes név
@@ -156,7 +159,7 @@ function Register() {
 
                 </div>
     
-               {/*Osztály*/}
+               {/*Class*/}
                 <div className="mb-5">
                   <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                     Osztály
@@ -184,7 +187,7 @@ function Register() {
                     <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none">▾</span>
                   </div>
                 </div>
-                {/*Email cím */}
+                {/*Email address */}
                 <div className="mb-5">
                   <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                     Iskolai email cím
@@ -206,7 +209,7 @@ function Register() {
                   </div>
                 </div>
     
-                {/*Jelszó*/}
+                {/*Password*/}
                 <div className="mb-6">
                   <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
                     Jelszó
@@ -242,7 +245,7 @@ function Register() {
                   </div>}
                 </div>
     
-         
+                {/*CheckBox */}
                 <div className="flex items-start gap-3 mb-7">
                   <input
                     type="checkbox"
@@ -269,7 +272,7 @@ function Register() {
                   </p>
                 </div>
     
-      
+                
                 <button
                   type='submit'
                   disabled={!checked || passwordStrength < 3 || psw.length < 8 || loading}
