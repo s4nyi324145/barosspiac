@@ -5,7 +5,7 @@ import api from "../config/api";
 import { useToast } from "../context/toastContext";
 import { Pencil, Trash2, X, Check } from "lucide-react";
 import { useEffect, useState } from "react";
-export default function CommentCard({ getUserData, getProductCards, p }) {{
+export default function CommentCard({ getUserData, getProductCards, p }) {
   const navigate = useNavigate();
   const { user } = useAuth();
   const [editingId, setEditingId] = useState(0);
@@ -28,7 +28,7 @@ export default function CommentCard({ getUserData, getProductCards, p }) {{
     }
   };
 
-  {/* Handle edit of ratings */}}
+  {/* Handle edit of ratings */}
   const handleEdit = async (rating_id) => {
     try {
       await api.post(`/ratings/updaterating/${rating_id}`, {

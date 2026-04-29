@@ -3,7 +3,7 @@ import axios from 'axios'
 
 //Create an Axios instance with default configuration
 const api = axios.create({
-    baseURL: 'http://localhost:22014/api',
+    baseURL: 'https://nodejs214.dszcbaross.edu.hu/api',
     timeout: 10000,
     headers: {
         'Content-Type': 'application/json',

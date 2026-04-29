@@ -96,20 +96,7 @@ export default function ProductCard({ getLikedProducts, p }) {
             </span>
           )}
           {/*Like indicator badge */}
-          {user.user_id != p.user_id && (
-            <span className="absolute top-2 right-2 cursor-pointer">
-              <Heart
-                onClick={(e) => {
-                  handleLike(e);
-                }}
-                className={`w-5 h-5 transition-all duration-200 hover:scale-110 ${
-                  isLiked
-                    ? "fill-red-500 text-red-500"
-                    : "fill-transparent opacity-0 group-hover:opacity-100 text-slate-400 hover:text-red-400"
-                }`}
-              />
-            </span>
-          )}
+          
         </div>
 
         {/* Container */}

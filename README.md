@@ -1,412 +1,504 @@
-# Baross Piac – Frontend Dokumentáció
+# 🛒 BarossPiac
 
-![React](https://img.shields.io/badge/React-19.2.0-61DAFB?logo=react&logoColor=white)
-![Vite](https://img.shields.io/badge/Vite-7.3.1-646CFF?logo=vite&logoColor=white)
-![Tailwind CSS](https://img.shields.io/badge/TailwindCSS-3.4.19-06B6D4?logo=tailwindcss&logoColor=white)
-![React Router](https://img.shields.io/badge/React_Router-7.13.0-CA4245?logo=reactrouter&logoColor=white)
-![Axios](https://img.shields.io/badge/Axios-1.13.5-5A29E4?logo=axios&logoColor=white)
-![Socket.IO](https://img.shields.io/badge/Socket.IO-4.8.3-010101?logo=socketdotio&logoColor=white)
-![Status](https://img.shields.io/badge/Status-K%C3%A9sz-success)
+> Iskolai második kézből való adás-vételi platform, kizárólag a **DSZC Baross Gábor Technikum** diákjainak.
 
-A **Baross Piac** egy használt termékek adásvételére készült webalkalmazás, amelyet kizárólag a **DSZC Baross Gábor Technikum tanulói** használhatnak. A projekt célja egy biztonságos, átlátható és könnyen kezelhető online piactér létrehozása volt, ahol a felhasználók termékeket böngészhetnek, feltölthetnek, kedvencekhez adhatnak, értékelhetnek, jelenthetnek, valamint egymással üzenetben is kommunikálhatnak.
+[![React](https://img.shields.io/badge/React-19.2-blue?logo=react)](https://react.dev/)
+[![Node.js](https://img.shields.io/badge/Node.js-v22.15.0-green?logo=node.js)](https://nodejs.org/)
+[![TailwindCSS](https://img.shields.io/badge/TailwindCSS-3.4-blue?logo=tailwindcss)](https://tailwindcss.com/)
+[![MariaDB](https://img.shields.io/badge/MariaDB-10.4.32-orange?logo=mariadb)](https://mariadb.org/)
 
-A frontend **React** alapokra épül, **Vite** fejlesztői környezetben készült, a teljes felület pedig **Tailwind CSS** segítségével lett kialakítva. Az alkalmazás a backenddel API-hívásokon keresztül kommunikál, a valós idejű funkciókhoz pedig **Socket.IO Client** támogatást használ.
+---
 
-<!-- Ide jön kép: images/home-hero.png -->
+## 📋 Tartalomjegyzék
+
+- [A projektről](#a-projektről)
+- [Funkciók](#funkciók)
+- [Technológiák](#technológiák)
+- [Adatbázis felépítése](#adatbázis-felépítése)
+- [Oldalak és komponensek](#oldalak-és-komponensek)
+- [Telepítés és futtatás](#telepítés-és-futtatás)
+- [Teszt felhasználók](#teszt-felhasználók)
+- [Fejlesztő](#fejlesztő)
+
+---
+
+## 📖 A projektről
+
+A **BarossPiac** egy Vinted-ihlette iskolai online piactér, ahol a DSZC Baross Gábor Technikum tanulói egymás között adhatnak-vehetnek használt termékeket. A regisztráció kizárólag `@dszcbaross.edu.hu` végű iskolai email-címmel lehetséges, így a közösség zárt és biztonságos marad.
+
+**Demo:** [https://barosspiac.netlify.app](https://barosspiac.netlify.app)  
+**GitHub:** [https://github.com/s4nyi324145/barosspiac](https://github.com/s4nyi324145/barosspiac)
+
+> 💡 A projekt vizsgaremekként készült a DSZC Baross Gábor Technikumban.
+
+---
+
+## ✨ Funkciók
+
+### Felhasználóknak
+- 🔐 Regisztráció és bejelentkezés iskolai email-címmel
+- 📦 Termékek böngészése több szűrővel (kategória, állapot, méret, tantárgy, ár)
+- 🔍 Valós idejű keresés
+- ❤️ Termékek kedvencekhez adása
+- 💬 Valós idejű chat az eladókkal (Socket.io)
+- 🔔 Értesítési rendszer (üzenet, értékelés, eladás)
+- ⭐ Felhasználók értékelése és értékelések szerkesztése
+- 📸 Termékfeltöltés képekkel (Cloudinary)
+- 🛒 Termékek eladottnak jelölése
+- 🚩 Hirdetések és felhasználók jelentése
+
+### Adminoknak
+- 📊 Admin dashboard statisztikákkal
+- 👥 Felhasználók kezelése (szerkesztés, törlés, szerepkör változtatás)
+- 🏷️ Hirdetések kezelése (szerkesztés, törlés, eladottnak jelölés)
+- 📋 Beérkező jelentések kezelése (elfogadás, elutasítás, törlés)
+
+---
+
+## 🛠️ Technológiák
+
+### Frontend
+| Technológia | Verzió | Felhasználás |
+|---|---|---|
+| React | 19.2 | UI keretrendszer |
+| Vite | 7.3 | Build tool |
+| TailwindCSS | 3.4 | Stílusok |
+| React Router DOM | 7.13 | Oldalak közötti navigáció |
+| Axios | 1.13 | HTTP kérések |
+| Socket.io Client | 4.8 | Valós idejű chat |
+| Lucide React | 0.572 | Ikonok |
+
+### Backend
+| Technológia | Verzió | Felhasználás |
+|---|---|---|
+| Node.js | v22.15.0 | Szerver futtatókörnyezet |
+| Express | — | REST API |
+| MariaDB | 10.4.32 | Adatbázis |
+| Socket.io | — | WebSocket kapcsolat |
+| JWT | — | Hitelesítés |
+| bcrypt | — | Jelszó titkosítás |
+| Multer | — | Fájlfeltöltés |
+| Cloudinary | — | Képtárolás |
+
+---
+
+## 🗄️ Adatbázis felépítése
+
+Az adatbázis neve: `s233_db`  
+Szerver: `192.168.255.103:3306` (MariaDB 10.4.32)
+
+![Adazbázis](./images/adatbazis.png)
+
+### Táblák
+
+### Táblák áttekintése
+
+| Tábla | Leírás |
+|---|---|
+| `users` | Felhasználók adatai, szerepkörök, értesítési beállítások |
+| `product` | Termékek adatai, állapot, kategóriák, átvételi pont |
+| `productimg` | Termékképek Cloudinary URL-jei |
+| `main_categories` | 6 főkategória (Női, Férfi, Iskolai felszerelés, stb.) |
+| `sub_category` | 24 alkategória |
+| `subsubcategory` | 68 részletes kategória |
+| `conversations` | Felhasználók közötti beszélgetések |
+| `messages` | Üzenetek, olvasási állapottal |
+| `likes` | Kedvelt termékek |
+| `ratings` | Felhasználók egymásra adott értékelései |
+| `reports` | Hirdetés- és felhasználójelentések |
+| `notifications` | Értesítések típus szerint |
+| `orders` | Megrendelések (vevő, eladó, termék) |
+| `email_verifications` | Email megerősítési tokenek |
+
+### Kategóriák
+
+```
+Főkategóriák (6):
+├── Női
+│   ├── Alap ruhadarabok → Pólók, Pulcsik, Farmer, Kabátok
+│   ├── Cipők → Sportcipők, Bakancsok, Tornacipők
+│   ├── Kiegészítők → Sapkák, Táskák, Övek, Ékszerek
+│   └── Alkalmi ruhák → Szalagavatóra, Ballagásra, Bulikra
+├── Férfi
+│   └── (azonos struktúra mint Női)
+├── Iskolai felszerelés
+│   ├── Könyvek & jegyzetek → Tankönyvek, Munkafüzetek, Saját jegyzetek
+│   ├── Írószerek → Tollak, Ceruzák, Markerek
+│   ├── Táskák & tolltartók → Hátizsákok, Oldaltáskák, Tolltartók
+│   └── Egyéb → Vonalzók, Körzők, Számológépek
+├── Elektronika
+│   ├── Számítástechnika → Laptopok, Egerek, Billentyűzetek, Fejhallgatók
+│   ├── Telefonok → Okostelefonok, Tokok, Töltők
+│   ├── Játék → Konzolok, Játékok, Kontrollerek
+│   └── Egyéb → Hangszórók, Kábelek
+├── Szórakozás
+│   ├── Játékok → Társasjátékok, Kártyajátékok, Puzzle
+│   ├── Sport → Labdák, Ütők, Védőfelszerelés
+│   ├── Zene → Hangszerek, Kották
+│   └── Könyvek → Regények, Képregények, Magazinok
+└── Egyéb
+    ├── Lakberendezés → Poszterek, Lámpák, Dekorációk
+    ├── Élelmiszer → Házi készítésű finomságok
+    ├── Szolgáltatások → Korrepetálás, Fotózás
+    └── Minden más → Egyéb
+```
+
+---
+
+## 📄 Oldalak és komponensek
+
+### `/` — Főoldal
+
+A látogatók számára elérhető nyitóoldal.
+
 ![Főoldal](./images/hero.png)
 
----
-
-## Tartalomjegyzek
-
-- [A projektrol](#a-projektrol)
-- [Keszitok](#keszitok)
-- [Linkek](#linkek)
-- [Fobb funkciok](#fobb-funkciok)
-- [Hasznalt technologiak](#hasznalt-technologiak)
-- [Fejlesztesi kornyezet es telepites](#fejlesztesi-kornyezet-es-telepites)
-- [Elerheto npm scriptek](#elerheto-npm-scriptek)
-- [Frontend felepitese](#frontend-felepitese)
-- [Route-ok](#route-ok)
-- [Oldalak reszletes bemutatasa](#oldalak-reszletes-bemutatasa)
-- [Szerepkorok](#szerepkorok)
-- [Reszponzivitas](#reszponzivitas)
-- [Backend kapcsolat](#backend-kapcsolat)
-- [Kodminoseg](#kodminoseg)
-- [Teszteles](#teszteles)
-- [Tovabbfejlesztesi lehetosegek](#tovabbfejlesztesi-lehetosegek)
-- [Kepek beszurasa a README-be](#kepek-beszurasa-a-readme-be)
-- [Licenc](#licenc)
+**Tartalom:**
+- **Hero szekció** — animált statisztikák (regisztrált diákok száma, hirdetések száma), CTA gombok
+- **Kategória sáv** — gyors navigáció a 6 főkategóriába
+- **Legújabb termékek** — automatikusan mozgó kártya sor a legfrissebb hirdetésekkel
+- **Közösség szekció** — az iskola zárt rendszerének bemutatása
+- **Hogyan működik?** — 3 lépéses útmutató illusztrációkkal
 
 ---
 
-## A projektrol
+### `/browser` — Böngészés / Szűrők
 
-A **Baross Piac** egy zárt közösségi piactér, amely kifejezetten a **DSZC Baross Gábor Technikum tanulói** számára készült. A weboldal lehetőséget biztosít arra, hogy a felhasználók használt tárgyaikat egyszerűen meghirdessék, mások termékeit böngésszék, kapcsolatba lépjenek egymással, valamint biztonságosabb és átláthatóbb módon adjanak-vegyenek az iskola közösségén belül.
+![Böngészés](./images/browser.png.png)
 
-A rendszer célja az volt, hogy egy modern, letisztult és jól használható felületet biztosítson a következő funkciókhoz:
+A termékek kereshetők és szűrhetők:
 
-- regisztráció és bejelentkezés
-- termékek böngészése
-- új termék feltöltése
-- meglévő termék szerkesztése
-- profilkezelés
-- profilkép feltöltés
-- kedvencek használata
-- értékelések kezelése
-- termékek vagy felhasználók jelentése
-- üzenetküldés
-- értesítések
-- adminisztráció és moderáció
+| Szűrő | Leírás |
+|---|---|
+| **Kategória** | Háromszintű kategória fa (főkategória → alkategória → típus) |
+| **Ár** | Minimum és maximum ár megadása |
+| **Állapot** | Új / Kiváló / Jó / Kielégítő |
+| **Méret** | XS / S / M / L / XL / XXL |
+| **Tantárgy** | Töri / Magyar / Matek / Földrajz / Informatika / Angol |
+| **Rendezés** | Ár szerint növekvő/csökkenő, legújabb, legrégebbi |
+| **Keresés** | Szabad szöveges keresés cím és leírás alapján |
 
-A frontend teljes egészében elkészült, és minden tervezett fő funkció működőképes.
+Mobilon a szűrők egy slide-in panelen jelennek meg. Az aktív szűrők badge-ként látszanak, egyenként törölhetők.
 
 ---
 
-## Keszitok
+### `/product/:id` — Termék részletes oldala
 
-- **Szűcs M. Sándor**
-- **Szabó Előd**
+![Termék részletes oldal](./images/productDetails.png)
 
----
-
-## Linkek
-
-- **Frontend GitHub repo:** https://github.com/s4nyi324145/barosspiac.git
-- **Demo:** https://barosspiac.netlify.app/
-
----
-
-## Fobb funkciok
-
-A Baross Piac frontendje az alábbi funkciókat valósítja meg:
-
-- felhasználói regisztráció
-- bejelentkezés
-- főoldal
-- termékek böngészése
-- termék részleteinek megtekintése
-- termékek feltöltése
-- termékek szerkesztése
-- felhasználói profilok megtekintése
-- profilkép feltöltés
-- saját beállítások módosítása
-- kedvencek kezelése
-- értékelési rendszer
-- jelentés / report rendszer
-- privát üzenetek
-- értesítések
-- admin panel
-- egyedi 404 oldal
+**Funkciók:**
+- **Képgaléria** — főkép + thumbnail csík, lightbox nagyítás, kép számláló
+- **Termék adatok** — cím, ár, kategória breadcrumb, állapot/méret/tantárgy badge-ek, leírás, feltöltés dátuma, átadás helye
+- **Eladó info** — avatar, név, osztály, átlagos értékelés
+- **Műveletek (vásárló):**
+  - „Érdekel" gomb → automatikusan megnyitja a chatetet az eladóval
+  - Kedvencekhez adás / eltávolítás
+  - Hirdetés jelentése
+- **Műveletek (saját hirdetés):**
+  - Szerkesztés
+  - Törlés (megerősítő modal-lal)
+  - Eladottnak jelölés (visszavonható)
+- **Hasonló hirdetések** — azonos alkategóriából
 
 ---
 
-## Hasznalt technologiak
+### `/upload` és `/upload/:id` — Hirdetés feladása / Szerkesztése
 
-### Frontend technológiák
+![Feltöltés oldal / Szerkesztés oldal](./images/upload.png)
+![Feltöltés oldal / Szerkesztés oldal](./images/editProduct.png)
 
-| Technológia | Verzió | Leírás |
-|------------|--------|--------|
-| **React** | `19.2.0` | Komponens alapú frontend könyvtár |
-| **React DOM** | `19.2.0` | A React komponensek megjelenítése böngészőben |
-| **React Router DOM** | `7.13.0` | Kliensoldali útvonalkezelés |
-| **Axios** | `1.13.5` | HTTP kérések küldése a backend felé |
-| **Socket.IO Client** | `4.8.3` | Valós idejű kommunikáció |
-| **Lucide React** | `0.572.0` | Ikonok használata |
-| **Tailwind CSS** | `3.4.19` | Utility-first stílusozás |
-| **Vite** | `7.3.1` | Gyors fejlesztői és build környezet |
+**Kitöltendő mezők:**
+- Termék neve, leírás, ár
+- Háromszintű kategória választó (dinamikusan töltődik)
+- Állapot (4 opció kártyákkal)
+- Méret (csak ruha kategóriáknál jelenik meg)
+- Tantárgy (csak iskolai felszerelés kategóriánál jelenik meg)
+- Átadás helye
+- Képek feltöltése — drag & drop vagy kattintással, max. 5 kép, előnézettel
 
-### Fejlesztői csomagok
-
-| Technológia | Verzió | Leírás |
-|------------|--------|--------|
-| **ESLint** | `9.39.1` | Kódellenőrzés és hibakeresés |
-| **PostCSS** | `8.5.6` | Tailwind feldolgozás támogatása |
-| **Autoprefixer** | `10.4.24` | CSS prefixek automatikus kezelése |
-| **@vitejs/plugin-react** | `5.1.1` | React támogatás Vite alatt |
+A kitöltött adatok localStorage-ben mentődnek, így oldalfrissítés után sem vesznek el. Szerkesztés módban a meglévő képek láthatók, és csak új képek feltöltésekor cserélődnek.
 
 ---
 
-## Fejlesztesi kornyezet es telepites
+### `/profile/:id` — Profil oldal
 
-### Klónozás
+![Profil oldal](./images/profile.png)
+
+**Tartalom:**
+- Profilkép, név, email, osztály, regisztráció dátuma
+- Csillagos értékelés átlag + értékelések száma
+- **Animált statisztikák** — aktív hirdetések, eladott termékek, kedvencek, kapott like-ok száma (0-tól számol fel)
+- **Tabbok:**
+  - Aktív hirdetések
+  - Eladott hirdetések
+  - Értékelések (más profiljánál értékelés írása gomb is megjelenik)
+
+Ha saját profilunkat nézzük, a kedvencek száma is megjelenik és szerkesztés gomb vezet a beállításokhoz.
+
+---
+
+### `/messages` — Üzenetek / Chat
+
+![Összes üzenet oldal](./images/messages.png)
+
+**Funkciók:**
+- Conversations lista — összes aktív beszélgetés, olvasatlan üzenet számláló badge-el
+- Keresés a conversations listában
+- **Valós idejű chat (Socket.io):**
+  - Azonnali üzenetküldés
+  - Optimistic update (az üzenet azonnal megjelenik, majd szerver válasz után frissül)
+  - Olvasási visszaigazolás (✓ = elküldve, ✓✓ kék = olvasva)
+  - Üzenet törlése jobb klikkel
+  - Automatikus görgetés az utolsó üzenethez
+- Mobilon a conversations lista és a chat panel felváltva jelenik meg
+
+---
+
+### `/likes` — Kedvencek
+
+![Kedvencek oldal](./images/favorites.png)
+
+**Funkciók:**
+- Összes kedvelt termék listázása
+- Rendezés (ár, dátum szerint)
+- Összes kedvenc törlése megerősítő modal-lal
+
+---
+
+### `/notifications` — Értesítések
+
+![Értesítések oldal](./images/notifications.png)
+
+**Értesítés típusok:**
+
+| Típus | Ikon | Szín |
+|---|---|---|
+| Új üzenet | 💬 | Kék |
+| Új értékelés | ⭐ | Sárga |
+| Termék eladva | 🏷️ | Zöld |
+| Jelentés | 🚩 | Piros |
+
+Olvasatlan értékelések bal szélén kék csík jelzi. Minden értékelés egyenként törölhető megerősítő modal-lal, vagy egyszerre az „Összes olvasottnak jelölése" gombbal.
+
+---
+
+### `/settings` — Beállítások
+
+
+![Beállítások oldal](./images/settings.png)
+
+**4 fül:**
+
+**Személyes adatok**
+- Profilkép feltöltése / törlése (Cloudinary)
+- Teljes név és osztály módosítása
+
+**Biztonság**
+- Jelszó megváltoztatása (jelenlegi jelszó ellenőrzéssel)
+- Jelszóerősség jelző (gyenge / közepes / erős)
+
+**Értesítések**
+- Toggle kapcsolók: Új üzenet / Új értékelés / Termék eladva
+
+**Fiók**
+- Regisztráció dátuma, szerepkör, email megerősítés státusz
+- Fiók törlése (jelszó megerősítéssel)
+
+---
+
+### `/admin` — Admin panel
+
+![Admin](./images/admin.png)
+
+**Áttekintés (Dashboard)**
+- Statisztika kártyák: összes felhasználó, aktív hirdetések, mai regisztrációk, aktív jelentések
+- Legújabb felhasználók táblázata
+- Legújabb hirdetések táblázata
+
+**Felhasználók kezelése**
+- Teljes táblázat lapozással (10 felhasználó/oldal)
+- Soron belüli szerkesztés (név, email, osztály, szerepkör, megerősítési státusz)
+- Felhasználó törlése
+
+**Hirdetések kezelése**
+- Teljes táblázat lapozással (10 hirdetés/oldal)
+- Soron belüli szerkesztés (cím, kategória)
+- Hirdetés törlése, eladottnak jelölése / visszaállítása
+
+**Jelentések kezelése**
+- Termék- és felhasználójelentések listája
+- Lezárás, elutasítás, törlés
+- Kattintásra kibővül a részletes leírással
+- Státusz filterek (függőben / lezárva / elutasítva)
+
+---
+
+### `/login` és `/register` — Bejelentkezés / Regisztráció
+
+![Bejelentkezés / Regisztráció](./images/register.png)
+
+**Regisztráció:**
+- Teljes név, osztály (legördülő), iskolai email, jelszó
+- Jelszóerősség jelző
+- ÁSZF és adatkezelési tájékoztató modal-ban megtekinthető, el kell fogadni
+- Csak `@dszcbaross.edu.hu` végű email fogadható el
+
+
+![Bejelentkezés / Regisztráció](./images/login.png)
+
+**Bejelentkezés:**
+- Email + jelszó
+- Hibás mezők piros kerettel jelölve
+
+---
+
+## 🚀 Telepítés és futtatás
+
+### Követelmények
+- Node.js v22.15.0+
+- MariaDB 10.4.32
+- Cloudinary fiók
+
+### Backend
 
 ```bash
+# Repo klónozása
 git clone https://github.com/s4nyi324145/barosspiac.git
-cd barosspiac
-Függőségek telepítése
-Bash
+cd barosspiac/backend
 
+# Függőségek telepítése
 npm install
-Fejlesztői szerver indítása
-Bash
 
+# .env fájl létrehozása
+cp .env.example .env
+```
+
+`.env` fájl tartalma:
+```env
+DB_HOST=192.168.255.103
+DB_PORT=3306
+DB_USER=<felhasználónév>
+DB_PASSWORD=<jelszó>
+DB_NAME=barosspiac3
+JWT_SECRET=<titkos_kulcs>
+CLOUDINARY_CLOUD_NAME=<cloud_name>
+CLOUDINARY_API_KEY=<api_key>
+CLOUDINARY_API_SECRET=<api_secret>
+PORT=22014
+```
+
+```bash
+# Adatbázis importálása
+mysql -u root -p barosspiac3 < database/barosspiac3.sql
+
+# Szerver indítása
+node server.js
+```
+
+### Frontend
+
+```bash
+cd ../frontend
+
+# Függőségek telepítése
+npm install
+
+# Fejlesztői szerver indítása
 npm run dev
+```
 
-Frontend felepitese
-A frontend React komponensekre épül, és az oldalak közötti navigációt a React Router DOM kezeli. A projekt Vite segítségével lett inicializálva, így a fejlesztési környezet gyors és hatékony.
+A frontend alapértelmezetten a `http://localhost:5173` címen érhető el,  
+a backend a `http://localhost:22014` porton fut.
 
-A stílusozás teljes egészében Tailwind CSS-sel történt, tehát a projektben nincsenek külön oldalankénti CSS fájlok. Ehelyett a komponensek megjelenése közvetlenül a JSX-ben, utility class-ek segítségével lett meghatározva.
+---
 
-Ennek előnyei:
+## 👤 Teszt felhasználók
 
-gyorsabb UI fejlesztés
-egységesebb megjelenés
-egyszerűbb reszponzív kialakítás
-könnyebb karbantarthatóság
-jól elkülönített komponens alapú struktúra
-<!-- Ide jön kép: images/responsive-showcase.png -->
-Route-ok
-A frontendben az alábbi route-ok vannak használva:
+> Minden fiók jelszava: **`Baross123!`**
 
-React
+| Név | Email | Szerepkör |
+|---|---|---|
+| Baross Admin | `admin.baross@dszcbaross.edu.hu` | Admin |
+| Kovács Anna | `kovacs.anna.101@dszcbaross.edu.hu` | Felhasználó |
+| Nagy Péter | `nagy.peter.202@dszcbaross.edu.hu` | Felhasználó |
+| Szabó Eszter | `szabo.eszter.303@dszcbaross.edu.hu` | Felhasználó |
+| Tóth Ádám | `toth.adam.404@dszcbaross.edu.hu` | Felhasználó |
+| Kiss Rebeka | `kiss.rebeka.505@dszcbaross.edu.hu` | Felhasználó |
 
-<Routes>
-  <Route path="/register" element={<Register />} /> 
-  <Route path="/login" element={<Login />} />
-  <Route path="/" element={<Home />} />
-  <Route path="/browser" element={<Browser />} />
-  <Route path="/product/:product_id" element={<ProductDetails />} />
-  <Route path="/likes" element={<Favorites />} />
-  <Route path="/profile/:user_id" element={<Profile/>}/>
-  <Route path="/settings" element={<Settings/>}/>
-  <Route path="/upload" element={<Upload/>}/>
-  <Route path="/upload/:product_id" element={<Upload/>}/>
-  <Route path="/messages" element={<Messages/>}/>
-  <Route path="/notifications" element={<Notifications/>}/>
-  <Route path="/admin" element={<Admin/>}/>
-  <Route path="*" element={<PageNotFounnd/>} />
-</Routes>
-Oldalak reszletes bemutatasa
-1. Regisztráció – /register
-A regisztrációs oldal új felhasználók számára készült. Ezen az oldalon lehet új fiókot létrehozni, hogy a felhasználó elérhesse a piactér funkcióit.
+---
 
-Fő feladatai:
+## 🔌 API végpontok áttekintése
 
-űrlapmezők kezelése
-kliensoldali validáció
-hibák megjelenítése
-sikeres regisztráció kezelése
-![Regisztráció](./images/register.png)
-2. Bejelentkezés – /login
-A bejelentkezési oldal a már regisztrált felhasználók számára biztosít belépést.
+### Felhasználók (`/api/user`)
+| Metódus | Végpont | Leírás | Auth |
+|---|---|---|---|
+| POST | `/register` | Regisztráció | — |
+| POST | `/login` | Bejelentkezés | — |
+| GET | `/me` | Bejelentkezett user adatai | ✅ |
+| POST | `/user` | Adatok módosítása | ✅ |
+| PUT | `/password` | Jelszó módosítása | ✅ |
+| POST | `/profile_pic` | Profilkép feltöltése | ✅ |
+| DELETE | `/profile_pic` | Profilkép törlése | ✅ |
+| GET | `/statistic/:id` | Profil statisztikák | — |
+| GET | `/alluser?page=N` | Összes felhasználó | 🔒 Admin |
+| PUT | `/update/:id` | Felhasználó módosítása | 🔒 Admin |
+| DELETE | `/delete/:id` | Felhasználó törlése | 🔒 Admin |
 
-Fő feladatai:
+### Termékek (`/api/product`)
+| Metódus | Végpont | Leírás | Auth |
+|---|---|---|---|
+| GET | `/getProduct` | Összes aktív termék | — |
+| GET | `/latestProduct` | Legújabb 10 termék | — |
+| GET | `/:id` | Termék részletei + képek | — |
+| GET | `/active_product/:user_id` | Felhasználó aktív hirdetései | — |
+| GET | `/sold_product/:user_id` | Felhasználó eladott hirdetései | — |
+| GET | `/similar/:sub_id/:product_id` | Hasonló hirdetések | — |
+| POST | `/postProduct` | Hirdetés feladása (multipart) | ✅ |
+| PUT | `/update` | Hirdetés szerkesztése | ✅ |
+| PUT | `/sold/:id` | Eladottnak jelölés | ✅ |
+| DELETE | `/:id` | Hirdetés törlése | ✅ |
+| GET | `/allproduct?page=N` | Összes hirdetés | 🔒 Admin |
 
-belépési adatok kezelése
-hitelesítési kérés küldése a backendnek
-hibakezelés
-sikeres belépés után átirányítás
-![Bejelentkezés](./images/login.png)
-3. Főoldal – /
-A főoldal a rendszer nyitófelülete, ahonnan a felhasználó elérheti a legfontosabb funkciókat és navigálhat a többi oldalra.
+### Üzenetek és beszélgetések
+| Metódus | Végpont | Leírás |
+|---|---|---|
+| POST | `/api/conversations/conversation` | Beszélgetés indítása |
+| GET | `/api/conversations/conversations` | Saját beszélgetések |
+| GET | `/api/messages/message/:conv_id` | Üzenetek lekérése |
+| GET | `/api/messages/unreaded` | Olvasatlan üzenetek száma |
+| PUT | `/api/messages/read/:conv_id` | Olvasottnak jelölés |
 
-Fő feladatai:
+### Socket.io események
+| Esemény | Irány | Leírás |
+|---|---|---|
+| `join_conversation` | Client → Server | Belép a szoba-ba |
+| `send_message` | Client → Server | Üzenet küldése |
+| `receive_message` | Server → Client | Üzenet fogadása |
+| `delete_message` | Client → Server | Üzenet törlése |
+| `message_deleted` | Server → Client | Üzenet törölve értesítés |
+| `mark_as_read` | Client → Server | Olvasottnak jelölés |
+| `messages_read` | Server → Client | Olvasva visszaigazolás |
 
-bemutató felület biztosítása
-navigáció a piactér fő részeire
-kiemelt tartalmak megjelenítése
-![Főoldal](./images/hero.png)
-4. Böngészés – /browser
-A böngészőoldal a termékek listázására szolgál, ahol a felhasználó több hirdetést is áttekinthet.
+---
 
-Fő feladatai:
+## 👨‍💻 Fejlesztő
 
-termékek lekérése és megjelenítése
-kártyás lista kialakítása
-navigáció a részletes termékoldalakra
-![Kereső oldal](./images/browser.png)
-5. Termék részletei – /product/:product_id
-Ez az oldal egy adott termék teljes adatlapját jeleníti meg.
+**Szűcs Márton Sándor** 
+**Szabó Előd**  
+DSZC Baross Gábor Technikum  
 
-Lehetséges funkciók ezen az oldalon:
+- GitHub: [github.com/s4nyi324145](https://github.com/s4nyi324145)
+- Projekt: [barosspiac.netlify.app](https://barosspiac.netlify.app)
 
-termékadatok megjelenítése
-képek megjelenítése
-kedvencekhez adás
-értékelés
-jelentés
-kapcsolatfelvétel az eladóval
-Frontend feladatai:
+---
 
-dinamikus route paraméter kezelése
-konkrét termék lekérése
-felhasználói interakciók kezelése
-![Termék részletes információ](./images/productDetails.png)
-6. Kedvencek – /likes
-A kedvencek oldal a felhasználó által elmentett termékeket jeleníti meg.
+## 📝 Megjegyzések
 
-Fő feladatai:
+- Az alkalmazás kizárólag oktatási célból készült vizsgaremekként
+- A regisztráció zárt, csak `@dszcbaross.edu.hu` végű email-cím fogadható el
+- Az átadások személyesen, az iskolában zajlanak — nincs szállítás, nincs online fizetés
+- A képek tárolása Cloudinary-n történik
 
-mentett termékek listázása
-kedvencekből való eltávolítás
-gyors navigáció a termékekhez
-![Kedvencek](./images/favorites.png)
-7. Profil – /profile/:user_id
-A profiloldalon a felhasználó saját vagy más felhasználó profilját nézheti meg.
+---
 
-Fő feladatai:
-
-profiladatok megjelenítése
-profilkép megjelenítése
-feltöltött termékek listázása
-értékelések megjelenítése
-![Profil](./images/profile.png)
-8. Beállítások – /settings
-A beállítások oldal a saját fiók adatainak módosítására szolgál.
-
-Fő feladatai:
-
-személyes adatok módosítása
-jelszó módosítása
-profilkép feltöltése vagy cseréje
-felhasználói beállítások kezelése
-![Beállitások](./images/settings.png)
-9. Termék feltöltése – /upload
-Az oldal új termék létrehozására szolgál.
-
-Fő feladatai:
-
-cím, leírás és egyéb mezők kitöltése
-képfeltöltés
-adatok ellenőrzése
-új termék beküldése a backend felé
-![Feltöltés](./images/upload.png)
-10. Termék szerkesztése – /upload/:product_id
-Ugyanaz a komponens meglévő termék szerkesztésére is használható.
-
-Fő feladatai:
-
-meglévő adatok lekérése
-mezők előtöltése
-módosítások mentése
-![Termék szerkesztése](./images/editProduct.png)
-11. Üzenetek – /messages
-Az üzenetküldő felület a felhasználók közötti kommunikációt biztosítja.
-
-Fő feladatai:
-
-beszélgetések megjelenítése
-üzenetek küldése és fogadása
-valós idejű frissítés Socket.IO segítségével
-![Üzenetek](./images/messages.png)
-12. Értesítések – /notifications
-Az értesítések oldal a felhasználóhoz kapcsolódó aktivitásokat és rendszereseményeket jeleníti meg.
-
-Fő feladatai:
-
-értesítések listázása
-olvasott / olvasatlan állapot kezelése
-kapcsolódó tartalmak gyors elérése
-![Értesitések](./images/notifications.png)
-13. Admin panel – /admin
-Az admin felület a rendszer moderálására és kezelésére szolgál.
-
-Lehetséges admin funkciók:
-
-felhasználók kezelése
-termékek moderálása
-jelentések kezelése
-adminisztratív műveletek
-Frontend feladatai:
-
-admin jogosultsághoz kötött felület megjelenítése
-adatok listázása
-moderációs műveletek támogatása
-![Admin](./images/admin.png)
-14. 404 oldal – *
-A hibás vagy nem létező útvonalakhoz tartozó egyedi oldal.
-
-Fő feladatai:
-
-felhasználó tájékoztatása
-visszanavigálási lehetőség biztosítása
-![404](./images/404.png)
-Szerepkorok
-Vendég felhasználó
-főoldal megtekintése
-böngészés
-regisztráció
-bejelentkezés
-Bejelentkezett felhasználó
-termékek böngészése
-termék részleteinek megtekintése
-termékek feltöltése
-saját termékek szerkesztése
-kedvencek kezelése
-értékelés
-jelentés küldése
-profil megtekintése
-profilkép kezelése
-beállítások módosítása
-üzenetküldés
-értesítések megtekintése
-Admin
-minden felhasználói jogosultság
-admin panel használata
-jelentések kezelése
-moderáció
-tartalomfelügyelet
-Reszponzivitas
-A frontend Tailwind CSS használatával készült, ezért különböző képernyőméreteken is jól használható.
-
-A kialakítás célja az volt, hogy az oldal megfelelően működjön:
-
-asztali gépen
-laptopon
-tableten
-mobiltelefonon
-A komponensek kialakítása során fontos szempont volt a rugalmas elrendezés, az átlátható navigáció és a könnyű kezelhetőség kisebb kijelzőkön is.
-
-Backend kapcsolat
-Ez a repository a projekt frontend részét tartalmazza. A frontend a backenddel API-hívásokon keresztül kommunikál.
-
-A backend kapcsolat főbb területei:
-
-hitelesítés
-felhasználói adatok kezelése
-termékek lekérése és feltöltése
-kedvencek
-értékelések
-jelentések
-admin funkciók
-üzenetek
-értesítések
-A valós idejű funkciókhoz a frontend Socket.IO Client csomagot használja.
-
-Kodminoseg
-A projektben ESLint van használva a kódminőség fenntartására.
-
-Ez segít:
-
-a gyakori hibák kiszűrésében
-az egységes kódstílus fenntartásában
-a React hook-ok helyes használatának ellenőrzésében
-az átláthatóbb fejlesztésben
-Teszteles
-A frontend funkciói manuálisan tesztelhetők az alábbi területeken:
-
-regisztráció
-bejelentkezés
-navigáció
-termékfeltöltés
-termék szerkesztés
-kedvencek
-értékelések
-jelentések
-profil és beállítások
-üzenetek
-értesítések
-admin panel
-hibakezelés
-reszponzív megjelenítés
-Tovabbfejlesztesi lehetosegek
-Bár a projekt jelenleg is teljes funkcionalitással rendelkezik, a későbbiekben tovább bővíthető például az alábbiakkal:
-
-fejlettebb keresési és szűrési lehetőségek
-többnyelvű támogatás
-részletesebb admin statisztikák
-automatizált frontend tesztek
-fejlettebb felhasználói értékelési rendszer
-még részletesebb moderációs eszközök
-
+*© 2026 BarossPiac — DSZC Baross Gábor Technikum*

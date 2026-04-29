@@ -1,6 +1,7 @@
 import { useAuth } from "../context/authContext";
 import { Link } from "react-router-dom";
 import { MapPin, ExternalLink } from "lucide-react";
+import logo from "../assets/logo.png";
 
 export default function Footer() {
   const { user } = useAuth();
@@ -12,10 +13,8 @@ export default function Footer() {
         {/* Footer - Left Side */}
         <div className="flex flex-col gap-4">
           <div className="flex items-center gap-3">
-            <div className="w-9 h-9 rounded-xl bg-gradient-to-br from-blue-500 to-blue-700 flex items-center justify-center shadow-lg shadow-blue-500/20">
-              <span className="text-white font-bold text-sm">B</span>
-            </div>
-            <span className="text-white font-bold">BarossPiac</span>
+            <img src={logo} alt="BarossPiac Logo" className="w-8 h-8 rounded-full" />
+            <span className="text-white text-lg font-bold">BarossPiac</span>
           </div>
           <p className="text-slate-500 text-xs leading-relaxed">
             Iskolai piactér kizárólag a{" "}
