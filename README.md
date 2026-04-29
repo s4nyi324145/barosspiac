@@ -164,7 +164,7 @@ A látogatók számára elérhető nyitóoldal.
 
 ### `/browser` — Böngészés / Szűrők
 
-![Böngészés](./images/browser.png.png)
+![Böngészés](./images/browser.png)
 
 A termékek kereshetők és szűrhetők:
 
@@ -483,11 +483,13 @@ a backend a `http://localhost:22014` porton fut.
 
 ## 👨‍💻 Fejlesztő
 
-**Szűcs Márton Sándor** 
-**Szabó Előd**  
+**Szűcs M Sándor és Szabó Előd**  
 DSZC Baross Gábor Technikum  
 
+  
+
 - GitHub: [github.com/s4nyi324145](https://github.com/s4nyi324145)
+- GitHub: [github.com/Programmer892](https://github.com/Programmer892)
 - Projekt: [barosspiac.netlify.app](https://barosspiac.netlify.app)
 
 ---
