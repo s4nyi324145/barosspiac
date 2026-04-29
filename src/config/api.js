@@ -1,5 +1,7 @@
 import axios from 'axios'
 
+
+//Create an Axios instance with default configuration
 const api = axios.create({
     baseURL: 'http://localhost:22014/api',
     timeout: 10000,
@@ -9,7 +11,7 @@ const api = axios.create({
 })
 
 
-
+// Add a request interceptor to include the JWT token in the Authorization header for all requests
 api.interceptors.request.use(config => {
     const token = localStorage.getItem('token')
     if(token){
@@ -17,6 +19,8 @@ api.interceptors.request.use(config => {
     }
     return config
 })
+
+// Add a response interceptor to handle authentication errors
 
 api.interceptors.response.use(
     (response) => response,

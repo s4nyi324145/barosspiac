@@ -1,6 +1,7 @@
 import { useToast } from "../../context/toastContext"
 import { CheckCircle2, XCircle, Info } from "lucide-react";
 
+{/* Toast component displays toast notifications based on the toasts state from the ToastContext. It styles the notifications according to their type (success, error, info) and includes icons for visual feedback. The toasts automatically disappear after a certain duration as managed by the ToastContext. */}
 export default function Toast() {
     const { toasts } = useToast()
 

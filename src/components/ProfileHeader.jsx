@@ -19,6 +19,7 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
 
     }, [user])
 
+    {/* Animation for the user stats indicator */ }
     useEffect(() => {
        
         
@@ -65,13 +66,14 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
 
     } ,[userLikedP, user?.favorites])
 
+    {/* Start conversation with the user */ }
     const startConversation = async () => {
         try {
             const result = await api.post("/conversations/conversation", {
                 user2_id: user.user_id
             })
             
-            // Teljes conversation objektum kell — add hozzá a hiányzó mezőket
+           
             const conversation = {
                 ...result.data,
                 fullname: user.fullname,
@@ -88,7 +90,7 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
 
         <div className="bg-slate-950  p-6 flex flex-col gap-6">
 
-            {/* Fejléc kártya */}
+            {/* Header card */}
             <div className="bg-slate-900 border justify-center border-slate-700/60 rounded-2xl p-8 flex flex-wrap gap-8">
 
                 {/* Avatar */}
@@ -102,7 +104,7 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
                     <p className="text-slate-400 text-sm">{user.email}</p>
                     <p className="text-slate-500 text-xs truncate">{user.userClass} · Regisztráció dátuma:  {new Date(user.created_at).toLocaleDateString('hu-HU')}</p>
 
-                    {/* Értékelés */}
+                    {/* Rating */}
                     <div className="flex items-center gap-1.5 mt-1">
                         {[1, 2, 3, 4, 5].map(star => (
                             <Star key={star} className={`w-4 h-4 ${star <= Math.round(Number(user.avg_ratings)) ? 'fill-yellow-400 text-yellow-400' : 'fill-slate-700 text-slate-700'}`} />
@@ -111,7 +113,7 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
                     </div>
                 </div>
 
-                {/* Gombok */}
+                {/* Buttons */}
                 {!owner ?
                     <div className="flex flex-col gap-2">
                         <button onClick={() => startConversation()} className="flex items-center gap-2 text-sm font-medium text-white bg-blue-600 hover:bg-blue-500 px-4 py-2.5 rounded-xl transition-all duration-200">
@@ -135,7 +137,7 @@ export default function ProfileHeader({ owner, user, openReportModal, setOpenRep
 
             </div>
 
-            {/* Statisztikák */}
+            {/* Stats */}
             <div className="grid grid-cols-2 md:text-left text-center md:grid-cols-4 gap-3">
                 {[
                     { label: "Aktív hirdetés", value: userActive, color: "text-blue-400" },

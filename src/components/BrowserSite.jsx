@@ -4,7 +4,7 @@ import { SlidersHorizontal } from "lucide-react"
 export default function BrowserSite({ showFilters, setShowFilters, filter, setFilter }) {
 
     return (<>
-
+        
         <div className="flex-1 bg-slate-950 p-4">
             <div className="mb-5">
                 <h1 className="text-3xl font-medium pl-3 text-blue-400">Felfedezés</h1>

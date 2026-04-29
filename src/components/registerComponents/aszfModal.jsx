@@ -1,5 +1,3 @@
-
-
 export default function AszfModal({ isOpen, onClose }) {
   if (!isOpen) return null;
   return (

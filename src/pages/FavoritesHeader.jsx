@@ -12,7 +12,7 @@ export default function FavoritesHeader({ favoritesCount, showWarningModal, setS
     return (
         <div className="flex flex-wrap gap-4 justify-center sm:justify-between items-center bg-slate-950 px-6 py-6 border-b border-slate-800">
 
-            {/* Bal oldal */}
+            {/* Left side */}
             <div className="flex flex-col gap-1">
                 <div className="flex items-center gap-3">
                     <h1 className="text-2xl font-bold text-white">Kedvenceim</h1>
@@ -23,7 +23,7 @@ export default function FavoritesHeader({ favoritesCount, showWarningModal, setS
                 <p className="text-slate-500 text-sm">Böngéssz a kedvelt termékeid között</p>
             </div>
 
-            {/* Jobb oldal */}
+            {/* Right side */}
             {favoritesCount > 0 && (
                 <button
                     onClick={() => {setShowWarningModal(!showWarningModal)}}

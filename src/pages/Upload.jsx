@@ -21,7 +21,7 @@ export default function SellPage() {
   const { product_id } = useParams();
   const isEditing = !!product_id;
 
-  const { showSuccess, showError } = useToast()
+  const { showSuccess, showError } = useToast();
 
   const conditions = [
     { id: "uj", label: "Új", desc: "Soha nem volt használva", color: "green" },
@@ -45,27 +45,30 @@ export default function SellPage() {
     "Angol",
   ];
 
-  let savedForm = JSON.parse(localStorage.getItem("form"))
+  let savedForm = JSON.parse(localStorage.getItem("form"));
 
-  const [form, setForm] = useState(savedForm || {
-    title: "",
-    desc: "",
-    price: "",
-    condition: "",
-    size: "",
-    subject: "",
-    collpoint: "",
-    category_id: "",
-    sub_category_id: "",
-    sub_sub_category_id: "",
-  });
-  const [images, setImages] = useState([])
-  const [existingImages, setExistingImages] = useState([])
+  const [form, setForm] = useState(
+    savedForm || {
+      title: "",
+      desc: "",
+      price: "",
+      condition: "",
+      size: "",
+      subject: "",
+      collpoint: "",
+      category_id: "",
+      sub_category_id: "",
+      sub_sub_category_id: "",
+    },
+  );
+  const [images, setImages] = useState([]);
+  const [existingImages, setExistingImages] = useState([]);
   const [dragOver, setDragOver] = useState(false);
   const [categories, setCategories] = useState([]);
-  const [errorField, setErrorField] = useState("")
-  const [loading, setLoading] = useState(false)
+  const [errorField, setErrorField] = useState("");
+  const [loading, setLoading] = useState(false);
 
+  {/* Get categories for dropdowns */}
   const getCategories = async () => {
     try {
       const response = await api.get("/category/getCategory");
@@ -81,6 +84,8 @@ export default function SellPage() {
   //useEffect(() => {console.log(images);}, [images]);
   //useEffect(() => { console.log(form) }, [form])
   //useEffect(() => { console.log(categories) }, [categories])
+
+  {/* If editing, get product details and populate form */}
   useEffect(() => {
     const getProduct = async () => {
       if (isEditing && categories.length > 0) {
@@ -100,13 +105,14 @@ export default function SellPage() {
           sub_category_id: p.sub_category_id || "",
           sub_sub_category_id: p.sub_sub_category_id || "",
         });
-        setExistingImages(result.data.image)
+        setExistingImages(result.data.image);
       }
     };
 
     getProduct();
   }, [product_id, categories]);
 
+  {/* Handle image upload */}
   const handleImageUpload = (files) => {
     const newImages = Array.from(files)
       .slice(0, 5 - images.length)
@@ -118,10 +124,13 @@ export default function SellPage() {
     setImages((prev) => prev.filter((_, i) => i !== index));
   };
 
-  useEffect(() => { console.log(errorField) }, [errorField])
+  useEffect(() => {
+    console.log(errorField);
+  }, [errorField]);
 
+  {/* Handle product upload */}
   const handleProductUpload = async () => {
-    setLoading(true)
+    setLoading(true);
     try {
       const formData = new FormData();
 
@@ -131,82 +140,79 @@ export default function SellPage() {
 
       images.forEach((img) => formData.append("images", img.file));
 
-
       const result = await api.post("/product/postProduct", formData, {
         headers: { "Content-Type": "multipart/form-data" },
       });
-      setLoading(false)
-      showSuccess(result.data.message)
-      navigate(`/product/${result.data.product_id}`)
-      localStorage.removeItem("form")
+      setLoading(false);
+      showSuccess(result.data.message);
+      navigate(`/product/${result.data.product_id}`);
+      localStorage.removeItem("form");
     } catch (error) {
-      showError(error.response?.data?.message || "Hiba történt a bejelentkezés során.")
-      console.error(error.response)
-      setErrorField(error.response?.data?.errorField || "")
-      setLoading(false)
+      showError(
+        error.response?.data?.message || "Hiba történt a bejelentkezés során.",
+      );
+      console.error(error.response);
+      setErrorField(error.response?.data?.errorField || "");
+      setLoading(false);
+    }
+  };
+  {/* Handle product edit */}
+  const handleProductEdit = async () => {
+    setLoading(true);
+    try {
+      const formData = new FormData();
+      Object.entries(form).forEach(([key, value]) => {
+        if (value !== null && value !== undefined && value !== "") {
+          formData.append(key, value);
+        }
+      });
+      formData.append("product_id", product_id);
+
+      images.forEach((img) => formData.append("images", img.file));
+
+      const result = await api.put("/product/update", formData, {
+        headers: { "Content-Type": "multipart/form-data" },
+      });
+
+      setLoading(false);
+      showSuccess("Termék sikeresen módosítva");
+      navigate(`/product/${product_id}`);
+    } catch (error) {
+      showError(error.response?.data?.message || "Hiba történt");
+      setLoading(false);
     }
   };
 
-
-  const handleProductEdit = async () => {
-    setLoading(true)
-    try {
-      const formData = new FormData()
-      Object.entries(form).forEach(([key, value]) => {
-        if (value !== null && value !== undefined && value !== '') {
-          formData.append(key, value)
-        }
-      })
-      formData.append('product_id', product_id)
-
-
-      images.forEach(img => formData.append('images', img.file))
-
-      const result = await api.put('/product/update', formData, {
-        headers: { 'Content-Type': 'multipart/form-data' }
-      })
-
-      setLoading(false)
-      showSuccess("Termék sikeresen módosítva")
-      navigate(`/product/${product_id}`)
-    } catch (error) {
-      showError(error.response?.data?.message || "Hiba történt")
-      setLoading(false)
-    }
-  }
-
-
-
-
-
   useEffect(() => {
-
     const saveToLocalStorage = async () => {
       try {
-        localStorage.setItem("form", JSON.stringify(form))
+        localStorage.setItem("form", JSON.stringify(form));
       } catch (error) {
-        console.log(error)
+        console.log(error);
       }
-    }
+    };
 
     if (!isEditing) {
-      saveToLocalStorage()
+      saveToLocalStorage();
     }
-
-  }, [form])
+  }, [form]);
 
   const isValid =
-  form.title && form.price && form.condition &&
-  form.category_id && form.sub_category_id && form.sub_sub_category_id &&
-  form.collpoint &&
-  (images.length > 0 || existingImages.length > 0)  
+    form.title &&
+    form.price &&
+    form.condition &&
+    form.category_id &&
+    form.sub_category_id &&
+    form.sub_sub_category_id &&
+    form.collpoint &&
+    (images.length > 0 || existingImages.length > 0);
 
   return (
     <>
       <Navbar />
       <Categories />
       <div className="min-h-screen bg-slate-950 text-white">
-        {/* Fejléc */}
+        {/* Header */}
         <div className="border-b border-slate-800 px-8 py-6">
           <h1 className="text-2xl font-bold text-white">
             {isEditing ? "Hírdetés szerkesztése" : "Hirdetés feladása"}
@@ -219,16 +225,16 @@ export default function SellPage() {
         </div>
 
         <div className="flex gap-8 p-8 flex-1 flex-col-reverse md:flex-row mx-auto">
-          {/* BAL OLDAL — Form */}
+          {/* Left Sidebar */}
           <div className=" flex flex-col flex-[0.6] gap-6">
-            {/* Alapadatok */}
+            {/* Form fields */}
             <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 flex flex-col gap-5">
               <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
                 <Tag className="w-4 h-4 text-blue-400" />
                 <p className="text-white font-semibold">Alapadatok</p>
               </div>
 
-              {/* Cím */}
+              {/* Title */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-slate-300">
                   Termék neve <span className="text-red-400">*</span>
@@ -240,13 +246,12 @@ export default function SellPage() {
                   onChange={(e) => {
                     setForm({ ...form, title: e.target.value });
                     if (errorField.includes("title")) setErrorField("");
-
                   }}
-                  className={`bg-slate-800/60 border border-slate-700/60 ${errorField.includes("title") ? 'border-red-600' : ''} rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200`}
+                  className={`bg-slate-800/60 border border-slate-700/60 ${errorField.includes("title") ? "border-red-600" : ""} rounded-xl px-4 py-2.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200`}
                 />
               </div>
 
-              {/* Leírás */}
+              {/* Description */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-slate-300">
                   Leírás
@@ -259,12 +264,14 @@ export default function SellPage() {
                 />
               </div>
 
-              {/* Ár */}
+              {/* Price */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-slate-300">
                   Ár <span className="text-red-400">*</span>
                 </label>
-                <div className={`flex items-center gap-3 ${errorField.includes("price") ? 'border-red-600' : ''} bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200`}>
+                <div
+                  className={`flex items-center gap-3 ${errorField.includes("price") ? "border-red-600" : ""} bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 py-2.5 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200`}
+                >
                   <input
                     type="number"
                     placeholder="0"
@@ -281,7 +288,7 @@ export default function SellPage() {
               </div>
             </div>
 
-            {/* Kategória */}
+            {/* Category */}
             <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 flex flex-col gap-5">
               <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
                 <Package className="w-4 h-4 text-blue-400" />
@@ -363,14 +370,14 @@ export default function SellPage() {
               </div>
             </div>
 
-            {/* Részletek */}
+            {/* Details */}
             <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 flex flex-col gap-5">
               <div className="flex items-center gap-2 pb-3 border-b border-slate-800">
                 <Package className="w-4 h-4 text-blue-400" />
                 <p className="text-white font-semibold">Részletek</p>
               </div>
 
-              {/* Állapot */}
+              {/* Condition */}
               <div className="flex flex-col gap-2">
                 <label className="text-sm font-medium text-slate-300">
                   Állapot <span className="text-red-400">*</span>
@@ -380,10 +387,11 @@ export default function SellPage() {
                     <button
                       key={c.id}
                       onClick={() => setForm({ ...form, condition: c.id })}
-                      className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all duration-200 ${form.condition === c.id
-                        ? `bg-${c.color}-500/20 border-${c.color}-500/50 text-white`
-                        : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-500 hover:text-white"
-                        }`}
+                      className={`flex flex-col items-start px-4 py-3 rounded-xl border text-left transition-all duration-200 ${
+                        form.condition === c.id
+                          ? `bg-${c.color}-500/20 border-${c.color}-500/50 text-white`
+                          : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:border-slate-500 hover:text-white"
+                      }`}
                     >
                       <p className="text-sm font-medium">{c.label}</p>
                       <p className="text-xs opacity-60">{c.desc}</p>
@@ -392,7 +400,7 @@ export default function SellPage() {
                 </div>
               </div>
 
-              {/* Méret — csak ruha kategóriáknál */}
+              {/* Size - only for clothing categories */}
               {(form.category_id == 1 || form.category_id == 2) && (
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-slate-300">
@@ -405,10 +413,11 @@ export default function SellPage() {
                         onClick={() =>
                           setForm({ ...form, size: form.size === s ? "" : s })
                         }
-                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${form.size === s
-                          ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
-                          : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
-                          }`}
+                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${
+                          form.size === s
+                            ? "bg-violet-500/20 border-violet-500/50 text-violet-300"
+                            : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
+                        }`}
                       >
                         {s}
                       </button>
@@ -417,7 +426,7 @@ export default function SellPage() {
                 </div>
               )}
 
-              {/* Tantárgy — csak iskolai felszerelésnél */}
+              {/* Subject - only for school supplies */}
               {form.category_id == 3 && (
                 <div className="flex flex-col gap-2">
                   <label className="text-sm font-medium text-slate-300">
@@ -433,10 +442,11 @@ export default function SellPage() {
                             subject: form.subject === s ? "" : s,
                           })
                         }
-                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${form.subject === s
-                          ? "bg-amber-500/20 border-amber-500/50 text-amber-300"
-                          : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
-                          }`}
+                        className={`px-4 py-2 rounded-xl text-sm font-medium border transition-all duration-200 ${
+                          form.subject === s
+                            ? "bg-amber-500/20 border-amber-500/50 text-amber-300"
+                            : "bg-slate-800/50 border-slate-700/50 text-slate-400 hover:text-white hover:border-slate-500"
+                        }`}
                       >
                         {s}
                       </button>
@@ -445,7 +455,7 @@ export default function SellPage() {
                 </div>
               )}
 
-              {/* Átadás helye */}
+              {/* Collection Point */}
               <div className="flex flex-col gap-1.5">
                 <label className="text-sm font-medium text-slate-300">
                   Átadás helye <span className="text-red-400">*</span>
@@ -466,7 +476,7 @@ export default function SellPage() {
             </div>
           </div>
 
-          {/* JOBB OLDAL — Képek */}
+          {/* Right Side - Images */}
           <div className=" flex flex-col flex-[0.4] gap-4">
             <div className="bg-slate-900 border border-slate-700/60 rounded-2xl p-6 flex flex-col gap-5 sticky top-6">
               <div className="flex items-center justify-between pb-3 border-b border-slate-800">
@@ -481,7 +491,7 @@ export default function SellPage() {
                 </span>
               </div>
 
-              {/* Drag & Drop zóna */}
+              {/* Drag & Drop zone */}
               {images.length < 5 && (
                 <div
                   onDragOver={(e) => {
@@ -495,10 +505,11 @@ export default function SellPage() {
                     handleImageUpload(e.dataTransfer.files);
                   }}
                   onClick={() => fileInputRef.current.click()}
-                  className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${dragOver
-                    ? "border-blue-500 bg-blue-500/10"
-                    : "border-slate-700 hover:border-blue-500/50 hover:bg-slate-800/30"
-                    }`}
+                  className={`border-2 border-dashed rounded-2xl p-8 flex flex-col items-center justify-center gap-3 cursor-pointer transition-all duration-200 ${
+                    dragOver
+                      ? "border-blue-500 bg-blue-500/10"
+                      : "border-slate-700 hover:border-blue-500/50 hover:bg-slate-800/30"
+                  }`}
                 >
                   <Upload
                     className={`w-8 h-8 ${dragOver ? "text-blue-400" : "text-slate-600"}`}
@@ -521,15 +532,22 @@ export default function SellPage() {
                 </div>
               )}
 
-              {/* Képek előnézete */}
-              {/* Meglévő képek megjelenítése */}
+              {/* Existing Images */}
               {existingImages.length > 0 && images.length === 0 && (
                 <div className="flex flex-col gap-2">
-                  <p className="text-slate-500 text-xs">Jelenlegi képek — új képek feltöltésével ezek törlődnek</p>
+                  <p className="text-slate-500 text-xs">
+                    Jelenlegi képek — új képek feltöltésével ezek törlődnek
+                  </p>
                   <div className="grid grid-cols-2 gap-2">
                     {existingImages.map((img, i) => (
-                      <div key={i} className="relative rounded-xl overflow-hidden">
-                        <img src={img.product_img} className="w-full h-full object-cover" />
+                      <div
+                        key={i}
+                        className="relative rounded-xl overflow-hidden"
+                      >
+                        <img
+                          src={img.product_img}
+                          className="w-full h-full object-cover"
+                        />
                         {i === 0 && (
                           <span className="absolute top-1.5 left-1.5 text-xs font-semibold bg-blue-600 text-white px-2 py-0.5 rounded-full">
                             Borítókép
@@ -541,12 +559,18 @@ export default function SellPage() {
                 </div>
               )}
 
-              {/* Új képek előnézete */}
+              {/* New Images Preview */}
               {images.length > 0 && (
                 <div className="grid grid-cols-2 gap-2">
                   {images.map((img, i) => (
-                    <div key={i} className="relative rounded-xl overflow-hidden group">
-                      <img src={img.preview} className="w-full h-full object-cover" />
+                    <div
+                      key={i}
+                      className="relative rounded-xl overflow-hidden group"
+                    >
+                      <img
+                        src={img.preview}
+                        className="w-full h-full object-cover"
+                      />
                       {i === 0 && (
                         <span className="absolute top-1.5 left-1.5 text-xs font-semibold bg-blue-600 text-white px-2 py-0.5 rounded-full">
                           Borítókép
@@ -563,14 +587,17 @@ export default function SellPage() {
                 </div>
               )}
 
-              {/* Submit gomb */}
+              {/* Submit button */}
               <button
                 disabled={!isValid || loading}
-                onClick={() => isEditing ? handleProductEdit() : handleProductUpload()}
-                className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 mt-2 ${isValid
-                  ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20 hover:-translate-y-0.5"
-                  : "bg-slate-800 text-slate-600 cursor-not-allowed"
-                  }`}
+                onClick={() =>
+                  isEditing ? handleProductEdit() : handleProductUpload()
+                }
+                className={`w-full py-3.5 rounded-xl text-sm font-semibold transition-all duration-200 mt-2 ${
+                  isValid
+                    ? "bg-blue-600 hover:bg-blue-500 text-white shadow-lg shadow-blue-600/20 hover:-translate-y-0.5"
+                    : "bg-slate-800 text-slate-600 cursor-not-allowed"
+                }`}
               >
                 {isEditing ? (
                   "Hírdetés módosítása"

@@ -21,18 +21,15 @@ export default function DataProtModal({ isOpen, onClose }) {
           </p>
         </div>
         <div>
-          <h1 className="font-bold">2. Kezelt adatok köre</h1>
-
-     
-            A rendszer az alábbi adatokat kezelheti:
-            <ul className="list-disc list-inside">
-              <li>Név</li>
-              <li>E-mail cím (iskolai)</li>
-              <li>Osztály</li>
-              <li>Profilkép (opcionális)</li>
-              <li>Feltöltött hirdetések adatai</li>
-            </ul>
-       
+          <h1 className="font-bold">2. Kezelt adatok köre</h1>A rendszer az
+          alábbi adatokat kezelheti:
+          <ul className="list-disc list-inside">
+            <li>Név</li>
+            <li>E-mail cím (iskolai)</li>
+            <li>Osztály</li>
+            <li>Profilkép (opcionális)</li>
+            <li>Feltöltött hirdetések adatai</li>
+          </ul>
         </div>
         <div>
           <h1 className="font-bold">3. Az adatkezelés jogalapja</h1>
@@ -60,17 +57,14 @@ export default function DataProtModal({ isOpen, onClose }) {
           </p>
         </div>
         <div>
-          <h1 className="font-bold">6. Felhasználói jogok</h1>
-
-    
-            A felhasználó jogosult:
-            <ul className="list-disc list-inside">
-              <li>Adatai megtekintésére</li>
-              <li>Adatai módosítására</li>
-              <li>Fiókjának törlésére</li>
-            </ul>
-            Ezt az alkalmazáson belül vagy az üzemeltetőnél kezdeményezheti.
- 
+          <h1 className="font-bold">6. Felhasználói jogok</h1>A felhasználó
+          jogosult:
+          <ul className="list-disc list-inside">
+            <li>Adatai megtekintésére</li>
+            <li>Adatai módosítására</li>
+            <li>Fiókjának törlésére</li>
+          </ul>
+          Ezt az alkalmazáson belül vagy az üzemeltetőnél kezdeményezheti.
         </div>
       </div>
     </div>

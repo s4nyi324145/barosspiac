@@ -1,34 +1,31 @@
-import { useEffect, useState, useRef } from 'react'
-import {Routes, Route, BrowserRouter} from 'react-router-dom'
-import api from '../config/api.js'
-import { useNavigate } from 'react-router-dom'
-import {User, Book, Mail,Lock, Eye, EyeClosed} from 'lucide-react'
-import AszfModal from '../components/registerComponents/aszfModal.jsx'
-import DataProtModal from '../components/registerComponents/dataProtModal.jsx'
-import { useToast } from '../context/toastContext.jsx'
-import logo from "../assets/logo.png"
-import { useAuth } from '../context/authContext.jsx'
-
+import { useEffect, useState, useRef } from "react";
+import { Routes, Route, BrowserRouter } from "react-router-dom";
+import api from "../config/api.js";
+import { useNavigate } from "react-router-dom";
+import { User, Book, Mail, Lock, Eye, EyeClosed } from "lucide-react";
+import AszfModal from "../components/registerComponents/aszfModal.jsx";
+import DataProtModal from "../components/registerComponents/dataProtModal.jsx";
+import { useToast } from "../context/toastContext.jsx";
+import logo from "../assets/logo.png";
+import { useAuth } from "../context/authContext.jsx";
 
 function Register() {
-
   const [checked, setChecked] = useState(false);
   const [submitted, setSubmitted] = useState(false);
   const [hidePassword, setHidePassword] = useState(true);
-  const [fullname, setFullname] = useState("")
-  const [userClass, setUserClass] = useState("13/a")
-  const [email, setEmail] = useState("")
-  const [psw, setPsw] = useState("")
-  const [passwordStrength, setPasswordStrength] = useState(0)
+  const [fullname, setFullname] = useState("");
+  const [userClass, setUserClass] = useState("13/a");
+  const [email, setEmail] = useState("");
+  const [psw, setPsw] = useState("");
+  const [passwordStrength, setPasswordStrength] = useState(0);
   const [isAszfOpen, setIsAszfOpen] = useState(false);
   const [isDataProtOpen, setIsDataProtOpen] = useState(false);
   const [loading, setLoading] = useState(false);
-  const [errorField,setErrorField] = useState("")
+  const [errorField, setErrorField] = useState("");
   const navigate = useNavigate();
   const inputFocus = useRef(null);
-  const {register} = useAuth()
-  const {showSuccess, showError, toasts} = useToast()
-
+  const { register } = useAuth();
+  const { showSuccess, showError, toasts } = useToast();
 
   //useEffect(() => {console.log(toasts)}, [toasts])
 
@@ -36,54 +33,58 @@ function Register() {
     if (inputFocus.current) {
       inputFocus.current.focus();
     }
-  }, [])
+  }, []);
 
-/*  useEffect(() =>{
+  /*  useEffect(() =>{
     console.log(fullname),
     console.log(userClass),
     console.log(email),
     console.log(psw);
   }, [psw,email,fullname,userClass])*/
 
-
-
-  {/* Handle the register page data submit */}
-  const handleSubmit = async (e) =>{
-      e.preventDefault();
-      setLoading(true);
-      try {
-
-        const response = await register(fullname,email,psw,userClass)
-        //console.log(response.data);
-        showSuccess("Sikeres regisztráció")
-        setSubmitted(true)
-        setTimeout(() => {
-          navigate('/login')
-        }, 1000);
-        
-         
-      } catch (error) {
-         showError(error.response?.data?.message || error.response?.data?.error || "Hiba történt a regisztráció során.")
-         setErrorField(error.response?.data?.errorField || "")
-         setTimeout(() => {
-          setLoading(false);
-         }, 1000);
-      }
-
-
+  {
+    /* Handle the register page data submit */
   }
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    setLoading(true);
+    try {
+      const response = await register(fullname, email, psw, userClass);
+      //console.log(response.data);
+      showSuccess("Sikeres regisztráció");
+      setSubmitted(true);
+      setTimeout(() => {
+        navigate("/login");
+      }, 1000);
+    } catch (error) {
+      showError(
+        error.response?.data?.message ||
+          error.response?.data?.error ||
+          "Hiba történt a regisztráció során.",
+      );
+      setErrorField(error.response?.data?.errorField || "");
+      setTimeout(() => {
+        setLoading(false);
+      }, 1000);
+    }
+  };
 
-  useEffect(() =>{console.log(errorField)}, [errorField])
+  useEffect(() => {
+    console.log(errorField);
+  }, [errorField]);
 
-
-  {/*Validate the password, min 8 character,UpperCase,LowerCase,Number,SpecialCharacter */}
+  {
+    /*Validate the password, min 8 character,UpperCase,LowerCase,Number,SpecialCharacter */
+  }
   const passwordValidation = (password) => {
-    let passwordStrength = 0
+    let passwordStrength = 0;
     const minLength = 8;
     const hasUpperCase = /[A-Z]/.test(password);
     const hasLowerCase = /[a-z]/.test(password);
     const hasNumber = /[0-9]/.test(password);
-   const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>_\-+=~`[\]\\;/']/ .test(password);
+    const hasSpecialChar = /[!@#$%^&*(),.?":{}|<>_\-+=~`[\]\\;/']/.test(
+      password,
+    );
 
     if (password.length >= minLength) passwordStrength++;
     if (hasUpperCase) passwordStrength++;
@@ -92,226 +93,272 @@ function Register() {
     if (hasSpecialChar) passwordStrength++;
 
     return passwordStrength;
-
-  }
+  };
 
   const passwordChanged = (e) => {
     setPsw(e.target.value);
     setPasswordStrength(passwordValidation(e.target.value));
-  }
+  };
 
+  return (
+    <div className="min-h-screen bg-slate-950 flex items-center  justify-center px-4 py-12 relative overflow-hidden">
+      <div className="absolute  top-0 right-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full blur-3xl pointer-events-none" />
+      <div className="absolute   bottom-0 left-0 w-80 h-80 bg-blue-400 opacity-10 rounded-full blur-3xl pointer-events-none" />
 
-    return (
-    
-        <div className="min-h-screen bg-slate-950 flex items-center  justify-center px-4 py-12 relative overflow-hidden">
-    
-          <div className="absolute  top-0 right-0 w-96 h-96 bg-blue-600 opacity-10 rounded-full blur-3xl pointer-events-none" />
-          <div className="absolute   bottom-0 left-0 w-80 h-80 bg-blue-400 opacity-10 rounded-full blur-3xl pointer-events-none" />
+      {isAszfOpen && (
+        <AszfModal isOpen={isAszfOpen} onClose={() => setIsAszfOpen(false)} />
+      )}
+      {isDataProtOpen && (
+        <DataProtModal
+          isOpen={isDataProtOpen}
+          onClose={() => setIsDataProtOpen(false)}
+        />
+      )}
 
-          {isAszfOpen && <AszfModal isOpen={isAszfOpen} onClose={() => setIsAszfOpen(false)} />}
-          {isDataProtOpen && <DataProtModal isOpen={isDataProtOpen} onClose={() => setIsDataProtOpen(false)} />}
+      <div className="relative w-full max-w-md bg-slate-900 border border-slate-700/50 rounded-3xl p-10 shadow-2xl shadow-black/60">
+        <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
 
-          <div className="relative w-full max-w-md bg-slate-900 border border-slate-700/50 rounded-3xl p-10 shadow-2xl shadow-black/60">
-    
-      
-            <div className="absolute inset-0 rounded-3xl bg-gradient-to-br from-blue-500/5 to-transparent pointer-events-none" />
-    
-         
-            <div className="flex items-center gap-3 mb-8">
-              <img src={logo} alt="logo" className="w-16 h-16 rounded-lg" />
+        <div className="flex items-center gap-3 mb-8">
+          <img src={logo} alt="logo" className="w-16 h-16 rounded-lg" />
+        </div>
+
+        {submitted ? (
+          <div className="text-center py-10">
+            <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl mx-auto mb-5 shadow-lg shadow-green-500/30">
+              ✓
             </div>
-    
-            {submitted ? (
-              <div className="text-center py-10">
-                <div className="w-16 h-16 rounded-full bg-gradient-to-br from-green-400 to-green-600 flex items-center justify-center text-white text-2xl mx-auto mb-5 shadow-lg shadow-green-500/30">
-                  ✓
-                </div>
-                <p className="text-white font-semibold text-xl mb-2">Sikeres regisztráció!</p>
-                <p className="text-slate-400 text-sm">Hamarosan átírányítunk</p>
-              </div>
-            ) : (
-              <>
-                {/*Register input form */}
-                <h1 className="text-2xl font-bold text-white mb-1">Fiók létrehozása</h1>
-                <p className="text-slate-400 text-sm mb-8">Csatlakozz az iskolai piachoz még ma</p>
-    
-                <form onSubmit={(e) => handleSubmit(e)}>
-                {/*Full name*/}
-                <div className="mb-5">
-                  <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
-                    Teljes név
-                  </label>
-                  <div className="relative group">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors duration-200">
-                      <User className="w-4 h-4" />
-                    </span>
+            <p className="text-white font-semibold text-xl mb-2">
+              Sikeres regisztráció!
+            </p>
+            <p className="text-slate-400 text-sm">Hamarosan átírányítunk</p>
+          </div>
+        ) : (
+          <>
+            {/*Register input form */}
+            <h1 className="text-2xl font-bold text-white mb-1">
+              Fiók létrehozása
+            </h1>
+            <p className="text-slate-400 text-sm mb-8">
+              Csatlakozz az iskolai piachoz még ma
+            </p>
 
+            <form onSubmit={(e) => handleSubmit(e)}>
+              {/*Full name*/}
+              <div className="mb-5">
+                <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                  Teljes név
+                </label>
+                <div className="relative group">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 transition-colors duration-200">
+                    <User className="w-4 h-4" />
+                  </span>
+
+                  <input
+                    type="text"
+                    required
+                    ref={inputFocus}
+                    value={fullname}
+                    onChange={(e) => setFullname(e.target.value)}
+                    placeholder="pl. Kovács Anna"
+                    className="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
+                  />
+                </div>
+              </div>
+
+              {/*Class*/}
+              <div className="mb-5">
+                <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                  Osztály
+                </label>
+                <div className="relative group">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 text-sm select-none">
+                    <Book />
+                  </span>
+                  <select
+                    value={userClass}
+                    onChange={(e) => setUserClass(e.target.value)}
+                    className="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-8 py-3.5 text-sm text-slate-200 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 appearance-none cursor-pointer"
+                  >
+                    <option value="13a">13/A</option>
+                    <option value="13b">13/B</option>
+                    <option value="13c">13/C</option>
+                    <option value="12a">12/A</option>
+                    <option value="12b">12/B</option>
+                    <option value="12c">12/C</option>
+                    <option value="11a">11/A</option>
+                    <option value="11b">11/B</option>
+                    <option value="11c">11/c</option>
+                    <option value="10a">10/A</option>
+                    <option value="10b">10/B</option>
+                    <option value="10c">10/C</option>
+                    <option value="9a">9/A</option>
+                    <option value="9b">9/B</option>
+                    <option value="9c">9/C</option>
+                    <option value="tanar">Tanár</option>
+                  </select>
+                  <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none">
+                    ▾
+                  </span>
+                </div>
+              </div>
+              {/*Email address */}
+              <div className="mb-5">
+                <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                  Iskolai email cím
+                </label>
+                <div className="relative group">
+                  <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 text-sm select-none">
+                    <Mail />
+                  </span>
+                  <input
+                    type="email"
+                    required
+                    value={email}
+                    onChange={(e) => {
+                      setEmail(e.target.value);
+                      if (errorField === "email") setErrorField("");
+                    }}
+                    placeholder="kovacs.anna.400@dszcbaross.edu.hu"
+                    className={`w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 ${errorField === "email" ? "border-red-500" : ""}`}
+                  />
+                </div>
+              </div>
+
+              {/*Password*/}
+              <div className="mb-6">
+                <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
+                  Jelszó
+                </label>
+                <div className="flex items-center group bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
+                  <Lock className="w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors duration-200 shrink-0" />
+                  {hidePassword ? (
+                    <input
+                      type="password"
+                      value={psw}
+                      required
+                      onChange={(e) => passwordChanged(e)}
+                      placeholder="Legalább 8 karakter"
+                      className="flex-1 bg-transparent py-3.5 px-3 text-sm text-slate-200 placeholder-slate-600 outline-none"
+                    />
+                  ) : (
                     <input
                       type="text"
-                      required
-                      ref={inputFocus}
-                      value={fullname}
-                      onChange={(e) => setFullname(e.target.value)}
-                      placeholder="pl. Kovács Anna"
-                      className="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200"
-                    />
-                  </div>
-
-                </div>
-    
-               {/*Class*/}
-                <div className="mb-5">
-                  <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
-                    Osztály
-                  </label>
-                  <div className="relative group">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 text-sm select-none"><Book /></span>
-                    <select  value={userClass}  onChange={(e) => setUserClass(e.target.value) } className="w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-8 py-3.5 text-sm text-slate-200 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 appearance-none cursor-pointer">
-                      <option value="13a">13/A</option>
-                      <option value="13b">13/B</option>
-                      <option value="13c">13/C</option>
-                      <option value="12a">12/A</option>
-                      <option value="12b">12/B</option>
-                      <option value="12c">12/C</option>
-                      <option value="11a">11/A</option>
-                      <option value="11b">11/B</option>
-                      <option value="11c">11/c</option>
-                      <option value="10a">10/A</option>
-                      <option value="10b">10/B</option>
-                      <option value="10c">10/C</option>
-                      <option value="9a">9/A</option>
-                      <option value="9b">9/B</option>
-                      <option value="9c">9/C</option>
-                      <option value="tanar">Tanár</option>
-                    </select>
-                    <span className="absolute right-4 top-1/2 -translate-y-1/2 text-slate-500 text-xs pointer-events-none">▾</span>
-                  </div>
-                </div>
-                {/*Email address */}
-                <div className="mb-5">
-                  <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
-                    Iskolai email cím
-                  </label>
-                  <div className="relative group">
-                    <span className="absolute left-4 top-1/2 -translate-y-1/2 text-slate-500 group-focus-within:text-blue-500 text-sm select-none"><Mail /></span>
-                    <input
-                      type="email"
-                      required
-                      value={email}
-                      onChange={(e) => {
-                        setEmail(e.target.value)
-                        if(errorField === "email") setErrorField("")
-                        
-                      }}
-                      placeholder="kovacs.anna.400@dszcbaross.edu.hu"
-                      className={`w-full bg-slate-800/60 border border-slate-700/60 rounded-xl pl-12 pr-4 py-3.5 text-sm text-slate-200 placeholder-slate-600 outline-none focus:border-blue-500 focus:bg-slate-800 focus:ring-2 focus:ring-blue-500/20 transition-all duration-200 ${errorField === "email" ? 'border-red-500' : ''}`}
-                    />
-                  </div>
-                </div>
-    
-                {/*Password*/}
-                <div className="mb-6">
-                  <label className="block text-xs font-medium text-slate-400 uppercase tracking-wider mb-2">
-                    Jelszó
-                  </label>
-                  <div className="flex items-center group bg-slate-800/60 border border-slate-700/60 rounded-xl px-4 focus-within:border-blue-500 focus-within:ring-2 focus-within:ring-blue-500/20 transition-all duration-200">
-                    <Lock className="w-5 h-5 text-slate-500 group-focus-within:text-blue-500 transition-colors duration-200 shrink-0" />
-                    {hidePassword ? <input
-                      type='password'
                       value={psw}
                       required
                       onChange={(e) => passwordChanged(e)}
                       placeholder="Legalább 8 karakter"
                       className="flex-1 bg-transparent py-3.5 px-3 text-sm text-slate-200 placeholder-slate-600 outline-none"
-                    /> :
-                    <input
-                      type='text'
-                      value={psw}
-                      required
-                      onChange={(e) => passwordChanged(e)}
-                      placeholder="Legalább 8 karakter"
-                      className="flex-1 bg-transparent py-3.5 px-3 text-sm text-slate-200 placeholder-slate-600 outline-none"
-                    />}
-                    {hidePassword ? <EyeClosed onClick={() => setHidePassword(!hidePassword)} className="w-4 h-4 text-slate-500 shrink-0 cursor-pointer hover:text-blue-500 transition-colors duration-200" /> : <Eye onClick={() => setHidePassword(!hidePassword)} className="w-4 h-4 text-slate-500 shrink-0 cursor-pointer hover:text-blue-500 transition-colors duration-200" />}
-                
-                  </div>
-                    {psw.length > 0 &&  <div>
+                    />
+                  )}
+                  {hidePassword ? (
+                    <EyeClosed
+                      onClick={() => setHidePassword(!hidePassword)}
+                      className="w-4 h-4 text-slate-500 shrink-0 cursor-pointer hover:text-blue-500 transition-colors duration-200"
+                    />
+                  ) : (
+                    <Eye
+                      onClick={() => setHidePassword(!hidePassword)}
+                      className="w-4 h-4 text-slate-500 shrink-0 cursor-pointer hover:text-blue-500 transition-colors duration-200"
+                    />
+                  )}
+                </div>
+                {psw.length > 0 && (
+                  <div>
                     <p className="text-xs mt-3 text-slate-400">
                       Jelszó erőssége:
-                      <span className={`font-medium ${passwordStrength <= 2 ? "text-red-500" : passwordStrength === 3 ? "text-yellow-500" : "text-green-500"}`}>
-                        {passwordStrength <= 2 ? " Gyenge" : passwordStrength === 3 ? " Közepes" : " Erős"}
+                      <span
+                        className={`font-medium ${passwordStrength <= 2 ? "text-red-500" : passwordStrength === 3 ? "text-yellow-500" : "text-green-500"}`}
+                      >
+                        {passwordStrength <= 2
+                          ? " Gyenge"
+                          : passwordStrength === 3
+                            ? " Közepes"
+                            : " Erős"}
                       </span>
                     </p>
-                  </div>}
-                </div>
-    
-                {/*CheckBox */}
-                <div className="flex items-start gap-3 mb-7">
-                  <input
-                    type="checkbox"
-                    checked={checked} 
-                    onChange={() => setChecked(!checked)}
-                    className={`flex-shrink-0 mt-0.5 w-5 h-5 rounded-md border transition-all duration-200 flex items-center justify-center ${
-                      checked
-                        ? "bg-blue-500 border-blue-500 shadow-lg shadow-blue-500/30"
-                        : "bg-slate-800 border-slate-600 hover:border-slate-400"
-                    }`}
-                  >
-                    
-                  </input>
-                  <p className="text-xs text-slate-400 leading-relaxed">
-                    A regisztrációval elfogadom a{" "}
-                    <a href="#" onClick={() => setIsAszfOpen(true)} className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
-                      Baross Piac Általános Szerződési Feltételeit
-                    </a>{" "}
-                    és az{" "}
-                    <a href="#" onClick={() => setIsDataProtOpen(true)} className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
-                      Adatkezelési Tájékoztatót
-                    </a>
-                    .
-                  </p>
-                </div>
-    
-                
-                <button
-                  type='submit'
-                  disabled={!checked || passwordStrength < 3 || psw.length < 8 || loading}
-                  className={`w-full py-4 rounded-xl text-sm font-semibold text-white tracking-wide transition-all duration-200 ${
-                    checked && passwordStrength >= 3 && psw.length >= 8 && !loading
-                      ? "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-lg shadow-blue-600/30 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
-                      : "bg-slate-800 text-slate-500 cursor-not-allowed"
-                  }`}
-                >
-                  {loading ? (
-                    <span className="flex items-center justify-center">
-                      <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
-                      Regisztráció folyamatban...
-                    </span>
-                  ) : (
-                    "Regisztráció →"
-                  )}
-                </button>
-                </form>
-    
-           
-                <div className="flex items-center gap-3 my-6">
-                  <div className="flex-1 h-px bg-slate-800" />
-                  <span className="text-xs text-slate-600">vagy</span>
-                  <div className="flex-1 h-px bg-slate-800" />
-                </div>
-    
-           
-                <p className="text-center text-xs text-slate-500">
-                  Már van fiókod?{" "}
-                  <a href="#" onClick={() => navigate("/login")} className="text-blue-400 hover:text-blue-300 font-medium transition-colors">
-                    Jelentkezz be
-                  </a>
-                </p>
-              </>
-            )}
-          </div>
-        </div>
-    )
-  }
+                  </div>
+                )}
+              </div>
 
-export default Register
+              {/*CheckBox */}
+              <div className="flex items-start gap-3 mb-7">
+                <input
+                  type="checkbox"
+                  checked={checked}
+                  onChange={() => setChecked(!checked)}
+                  className={`flex-shrink-0 mt-0.5 w-5 h-5 rounded-md border transition-all duration-200 flex items-center justify-center ${
+                    checked
+                      ? "bg-blue-500 border-blue-500 shadow-lg shadow-blue-500/30"
+                      : "bg-slate-800 border-slate-600 hover:border-slate-400"
+                  }`}
+                ></input>
+                <p className="text-xs text-slate-400 leading-relaxed">
+                  A regisztrációval elfogadom a{" "}
+                  <a
+                    href="#"
+                    onClick={() => setIsAszfOpen(true)}
+                    className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                  >
+                    Baross Piac Általános Szerződési Feltételeit
+                  </a>{" "}
+                  és az{" "}
+                  <a
+                    href="#"
+                    onClick={() => setIsDataProtOpen(true)}
+                    className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+                  >
+                    Adatkezelési Tájékoztatót
+                  </a>
+                  .
+                </p>
+              </div>
+
+              <button
+                type="submit"
+                disabled={
+                  !checked || passwordStrength < 3 || psw.length < 8 || loading
+                }
+                className={`w-full py-4 rounded-xl text-sm font-semibold text-white tracking-wide transition-all duration-200 ${
+                  checked &&
+                  passwordStrength >= 3 &&
+                  psw.length >= 8 &&
+                  !loading
+                    ? "bg-gradient-to-r from-blue-600 to-blue-500 hover:from-blue-500 hover:to-blue-400 shadow-lg shadow-blue-600/30 hover:shadow-blue-500/40 hover:-translate-y-0.5 active:translate-y-0 cursor-pointer"
+                    : "bg-slate-800 text-slate-500 cursor-not-allowed"
+                }`}
+              >
+                {loading ? (
+                  <span className="flex items-center justify-center">
+                    <span className="animate-spin rounded-full h-4 w-4 border-b-2 border-white mr-2"></span>
+                    Regisztráció folyamatban...
+                  </span>
+                ) : (
+                  "Regisztráció →"
+                )}
+              </button>
+            </form>
+
+            <div className="flex items-center gap-3 my-6">
+              <div className="flex-1 h-px bg-slate-800" />
+              <span className="text-xs text-slate-600">vagy</span>
+              <div className="flex-1 h-px bg-slate-800" />
+            </div>
+
+            <p className="text-center text-xs text-slate-500">
+              Már van fiókod?{" "}
+              <a
+                href="#"
+                onClick={() => navigate("/login")}
+                className="text-blue-400 hover:text-blue-300 font-medium transition-colors"
+              >
+                Jelentkezz be
+              </a>
+            </p>
+          </>
+        )}
+      </div>
+    </div>
+  );
+}
+
+export default Register;
